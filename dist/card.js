@@ -123,7 +123,7 @@ function init() {
     this.Zb = -this.Qn * (Z + (0, $jMhd5.default)(this.gtu, 2 * Z));
 }
 function forward(p) {
-    var Ce = (0, $dbd4D.default)(p.x - this.long0);
+    var Ce = (0, $dbd4D.default)(p.x - this.long0, this.over);
     var Cn = p.y;
     Cn = (0, $1o8BV.default)(this.cbg, Cn);
     var sin_Cn = Math.sin(Cn);
@@ -167,7 +167,7 @@ function inverse(p) {
         var cos_Ce = Math.cos(Ce);
         Cn = Math.atan2(sin_Cn * cos_Ce, (0, $9WCjH.default)(sin_Ce, cos_Ce * cos_Cn));
         Ce = Math.atan2(sin_Ce, cos_Ce * cos_Cn);
-        lon = (0, $dbd4D.default)(Ce + this.long0);
+        lon = (0, $dbd4D.default)(Ce + this.long0, this.over);
         lat = (0, $1o8BV.default)(this.cgb, Cn);
     } else {
         lon = Infinity;
@@ -178,14 +178,14 @@ function inverse(p) {
     return p;
 }
 var names = [
-    "Extended_Transverse_Mercator",
-    "Extended Transverse Mercator",
-    "etmerc",
-    "Transverse_Mercator",
-    "Transverse Mercator",
-    "Gauss Kruger",
-    "Gauss_Kruger",
-    "tmerc"
+    'Extended_Transverse_Mercator',
+    'Extended Transverse Mercator',
+    'etmerc',
+    'Transverse_Mercator',
+    'Transverse Mercator',
+    'Gauss Kruger',
+    'Gauss_Kruger',
+    'tmerc'
 ];
 var $3e037cff57fd6873$export$2e2bcd8739ae039 = {
     init: init,
@@ -225,7 +225,7 @@ function $e4ffe2b2434d382e$export$2cd8252107eb640b() {
 function $e4ffe2b2434d382e$export$174bb771924e7eb1(p) {
     var lon = p.x;
     var lat = p.y;
-    var delta_lon = (0, $dbd4D.default)(lon - this.long0);
+    var delta_lon = (0, $dbd4D.default)(lon - this.long0, this.over);
     var con;
     var x, y;
     var sin_phi = Math.sin(lat);
@@ -276,7 +276,7 @@ function $e4ffe2b2434d382e$export$70ae2c07e401031b(p) {
         lat = Math.asin(con);
         if (y < 0) lat = -lat;
         if (g === 0 && h === 0) lon = 0;
-        else lon = (0, $dbd4D.default)(Math.atan2(g, h) + this.long0);
+        else lon = (0, $dbd4D.default)(Math.atan2(g, h) + this.long0, this.over);
     } else {
         con = this.ml0 + y / this.k0;
         phi = (0, $jZzoQ.default)(con, this.es, this.en);
@@ -293,7 +293,7 @@ function $e4ffe2b2434d382e$export$70ae2c07e401031b(p) {
             var ds = Math.pow(d, 2);
             con = con * tan_phi;
             lat = phi - con * ds / (1 - this.es) * 0.5 * (1 - ds / 12 * (5 + 3 * t - 9 * c * t + c - 4 * cs - ds / 30 * (61 + 90 * t - 252 * c * t + 45 * ts + 46 * c - ds / 56 * (1385 + 3633 * t + 4095 * ts + 1574 * ts * t))));
-            lon = (0, $dbd4D.default)(this.long0 + d * (1 - ds / 6 * (1 + 2 * t + c - ds / 20 * (5 + 28 * t + 24 * ts + 8 * c * t + 6 * c - ds / 42 * (61 + 662 * t + 1320 * ts + 720 * ts * t)))) / cos_phi);
+            lon = (0, $dbd4D.default)(this.long0 + d * (1 - ds / 6 * (1 + 2 * t + c - ds / 20 * (5 + 28 * t + 24 * ts + 8 * c * t + 6 * c - ds / 42 * (61 + 662 * t + 1320 * ts + 720 * ts * t)))) / cos_phi, this.over);
         } else {
             lat = (0, $7B7Eg.HALF_PI) * (0, $9lchO.default)(y);
             lon = 0;
@@ -304,8 +304,8 @@ function $e4ffe2b2434d382e$export$70ae2c07e401031b(p) {
     return p;
 }
 var $e4ffe2b2434d382e$export$e4b2ac9215619f8d = [
-    "Fast_Transverse_Mercator",
-    "Fast Transverse Mercator"
+    'Fast_Transverse_Mercator',
+    'Fast Transverse Mercator'
 ];
 var $e4ffe2b2434d382e$export$2e2bcd8739ae039 = {
     init: $e4ffe2b2434d382e$export$2cd8252107eb640b,
@@ -369,13 +369,13 @@ function $e8df2c7586634726$export$2e2bcd8739ae039(arg, es, en) {
     for(var i = $e8df2c7586634726$var$MAX_ITER; i; --i){
         var s = Math.sin(phi);
         var t = 1 - es * s * s;
-        //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
-        //phi -= t * (t * Math.sqrt(t)) * k;
+        // t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
+        // phi -= t * (t * Math.sqrt(t)) * k;
         t = ((0, $doDgE.default)(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
         phi -= t;
         if (Math.abs(t) < (0, $7B7Eg.EPSLN)) return phi;
     }
-    //..reportError("cass:pj_inv_mlfn: Convergence error");
+    // ..reportError("cass:pj_inv_mlfn: Convergence error");
     return phi;
 }
 
@@ -431,7 +431,8 @@ $parcel$export(module.exports, "default", () => $9986719d2ff72393$export$2e2bcd8
 var $7B7Eg = parcelRequire("7B7Eg");
 
 var $9lchO = parcelRequire("9lchO");
-function $9986719d2ff72393$export$2e2bcd8739ae039(x) {
+function $9986719d2ff72393$export$2e2bcd8739ae039(x, skipAdjust) {
+    if (skipAdjust) return x;
     return Math.abs(x) <= (0, $7B7Eg.SPI) ? x : x - (0, $9lchO.default)(x) * (0, $7B7Eg.TWO_PI);
 }
 
@@ -586,218 +587,6 @@ function $2d502fa933d591df$export$2e2bcd8739ae039(x) {
 
 
 
-parcelRegister("2nJNQ", function(module, exports) {
-
-$parcel$export(module.exports, "ssfn_", () => ssfn_);
-$parcel$export(module.exports, "init", () => init);
-$parcel$export(module.exports, "forward", () => forward);
-$parcel$export(module.exports, "inverse", () => inverse);
-$parcel$export(module.exports, "names", () => names);
-$parcel$export(module.exports, "default", () => $1bc14248ab97445a$export$2e2bcd8739ae039);
-
-var $7B7Eg = parcelRequire("7B7Eg");
-
-var $9lchO = parcelRequire("9lchO");
-
-var $4MKOs = parcelRequire("4MKOs");
-
-var $biomK = parcelRequire("biomK");
-
-var $i2VbV = parcelRequire("i2VbV");
-
-var $dbd4D = parcelRequire("dbd4D");
-function ssfn_(phit, sinphi, eccen) {
-    sinphi *= eccen;
-    return Math.tan(0.5 * ((0, $7B7Eg.HALF_PI) + phit)) * Math.pow((1 - sinphi) / (1 + sinphi), 0.5 * eccen);
-}
-function init() {
-    // setting default parameters
-    this.x0 = this.x0 || 0;
-    this.y0 = this.y0 || 0;
-    this.lat0 = this.lat0 || 0;
-    this.long0 = this.long0 || 0;
-    this.coslat0 = Math.cos(this.lat0);
-    this.sinlat0 = Math.sin(this.lat0);
-    if (this.sphere) {
-        if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= (0, $7B7Eg.EPSLN)) this.k0 = 0.5 * (1 + (0, $9lchO.default)(this.lat0) * Math.sin(this.lat_ts));
-    } else {
-        if (Math.abs(this.coslat0) <= (0, $7B7Eg.EPSLN)) {
-            if (this.lat0 > 0) //North pole
-            //trace('stere:north pole');
-            this.con = 1;
-            else //South pole
-            //trace('stere:south pole');
-            this.con = -1;
-        }
-        this.cons = Math.sqrt(Math.pow(1 + this.e, 1 + this.e) * Math.pow(1 - this.e, 1 - this.e));
-        if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= (0, $7B7Eg.EPSLN) && Math.abs(Math.cos(this.lat_ts)) > (0, $7B7Eg.EPSLN)) // When k0 is 1 (default value) and lat_ts is a vaild number and lat0 is at a pole and lat_ts is not at a pole
-        // Recalculate k0 using formula 21-35 from p161 of Snyder, 1987
-        this.k0 = 0.5 * this.cons * (0, $4MKOs.default)(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts)) / (0, $biomK.default)(this.e, this.con * this.lat_ts, this.con * Math.sin(this.lat_ts));
-        this.ms1 = (0, $4MKOs.default)(this.e, this.sinlat0, this.coslat0);
-        this.X0 = 2 * Math.atan(this.ssfn_(this.lat0, this.sinlat0, this.e)) - (0, $7B7Eg.HALF_PI);
-        this.cosX0 = Math.cos(this.X0);
-        this.sinX0 = Math.sin(this.X0);
-    }
-}
-function forward(p) {
-    var lon = p.x;
-    var lat = p.y;
-    var sinlat = Math.sin(lat);
-    var coslat = Math.cos(lat);
-    var A, X, sinX, cosX, ts, rh;
-    var dlon = (0, $dbd4D.default)(lon - this.long0);
-    if (Math.abs(Math.abs(lon - this.long0) - Math.PI) <= (0, $7B7Eg.EPSLN) && Math.abs(lat + this.lat0) <= (0, $7B7Eg.EPSLN)) {
-        //case of the origine point
-        //trace('stere:this is the origin point');
-        p.x = NaN;
-        p.y = NaN;
-        return p;
-    }
-    if (this.sphere) {
-        //trace('stere:sphere case');
-        A = 2 * this.k0 / (1 + this.sinlat0 * sinlat + this.coslat0 * coslat * Math.cos(dlon));
-        p.x = this.a * A * coslat * Math.sin(dlon) + this.x0;
-        p.y = this.a * A * (this.coslat0 * sinlat - this.sinlat0 * coslat * Math.cos(dlon)) + this.y0;
-        return p;
-    } else {
-        X = 2 * Math.atan(this.ssfn_(lat, sinlat, this.e)) - (0, $7B7Eg.HALF_PI);
-        cosX = Math.cos(X);
-        sinX = Math.sin(X);
-        if (Math.abs(this.coslat0) <= (0, $7B7Eg.EPSLN)) {
-            ts = (0, $biomK.default)(this.e, lat * this.con, this.con * sinlat);
-            rh = 2 * this.a * this.k0 * ts / this.cons;
-            p.x = this.x0 + rh * Math.sin(lon - this.long0);
-            p.y = this.y0 - this.con * rh * Math.cos(lon - this.long0);
-            //trace(p.toString());
-            return p;
-        } else if (Math.abs(this.sinlat0) < (0, $7B7Eg.EPSLN)) {
-            //Eq
-            //trace('stere:equateur');
-            A = 2 * this.a * this.k0 / (1 + cosX * Math.cos(dlon));
-            p.y = A * sinX;
-        } else {
-            //other case
-            //trace('stere:normal case');
-            A = 2 * this.a * this.k0 * this.ms1 / (this.cosX0 * (1 + this.sinX0 * sinX + this.cosX0 * cosX * Math.cos(dlon)));
-            p.y = A * (this.cosX0 * sinX - this.sinX0 * cosX * Math.cos(dlon)) + this.y0;
-        }
-        p.x = A * cosX * Math.sin(dlon) + this.x0;
-    }
-    //trace(p.toString());
-    return p;
-}
-function inverse(p) {
-    p.x -= this.x0;
-    p.y -= this.y0;
-    var lon, lat, ts, ce, Chi;
-    var rh = Math.sqrt(p.x * p.x + p.y * p.y);
-    if (this.sphere) {
-        var c = 2 * Math.atan(rh / (2 * this.a * this.k0));
-        lon = this.long0;
-        lat = this.lat0;
-        if (rh <= (0, $7B7Eg.EPSLN)) {
-            p.x = lon;
-            p.y = lat;
-            return p;
-        }
-        lat = Math.asin(Math.cos(c) * this.sinlat0 + p.y * Math.sin(c) * this.coslat0 / rh);
-        if (Math.abs(this.coslat0) < (0, $7B7Eg.EPSLN)) {
-            if (this.lat0 > 0) lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x, -1 * p.y));
-            else lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x, p.y));
-        } else lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x * Math.sin(c), rh * this.coslat0 * Math.cos(c) - p.y * this.sinlat0 * Math.sin(c)));
-        p.x = lon;
-        p.y = lat;
-        return p;
-    } else if (Math.abs(this.coslat0) <= (0, $7B7Eg.EPSLN)) {
-        if (rh <= (0, $7B7Eg.EPSLN)) {
-            lat = this.lat0;
-            lon = this.long0;
-            p.x = lon;
-            p.y = lat;
-            //trace(p.toString());
-            return p;
-        }
-        p.x *= this.con;
-        p.y *= this.con;
-        ts = rh * this.cons / (2 * this.a * this.k0);
-        lat = this.con * (0, $i2VbV.default)(this.e, ts);
-        lon = this.con * (0, $dbd4D.default)(this.con * this.long0 + Math.atan2(p.x, -1 * p.y));
-    } else {
-        ce = 2 * Math.atan(rh * this.cosX0 / (2 * this.a * this.k0 * this.ms1));
-        lon = this.long0;
-        if (rh <= (0, $7B7Eg.EPSLN)) Chi = this.X0;
-        else {
-            Chi = Math.asin(Math.cos(ce) * this.sinX0 + p.y * Math.sin(ce) * this.cosX0 / rh);
-            lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x * Math.sin(ce), rh * this.cosX0 * Math.cos(ce) - p.y * this.sinX0 * Math.sin(ce)));
-        }
-        lat = -1 * (0, $i2VbV.default)(this.e, Math.tan(0.5 * ((0, $7B7Eg.HALF_PI) + Chi)));
-    }
-    p.x = lon;
-    p.y = lat;
-    //trace(p.toString());
-    return p;
-}
-var names = [
-    "stere",
-    "Stereographic_South_Pole",
-    "Polar Stereographic (variant B)",
-    "Polar_Stereographic"
-];
-var $1bc14248ab97445a$export$2e2bcd8739ae039 = {
-    init: init,
-    forward: forward,
-    inverse: inverse,
-    names: names,
-    ssfn_: ssfn_
-};
-
-});
-parcelRegister("4MKOs", function(module, exports) {
-
-$parcel$export(module.exports, "default", () => $37bff52fdf35284f$export$2e2bcd8739ae039);
-function $37bff52fdf35284f$export$2e2bcd8739ae039(eccent, sinphi, cosphi) {
-    var con = eccent * sinphi;
-    return cosphi / Math.sqrt(1 - con * con);
-}
-
-});
-
-parcelRegister("biomK", function(module, exports) {
-
-$parcel$export(module.exports, "default", () => $839446b123659551$export$2e2bcd8739ae039);
-
-var $7B7Eg = parcelRequire("7B7Eg");
-function $839446b123659551$export$2e2bcd8739ae039(eccent, phi, sinphi) {
-    var con = eccent * sinphi;
-    var com = 0.5 * eccent;
-    con = Math.pow((1 - con) / (1 + con), com);
-    return Math.tan(0.5 * ((0, $7B7Eg.HALF_PI) - phi)) / con;
-}
-
-});
-
-parcelRegister("i2VbV", function(module, exports) {
-
-$parcel$export(module.exports, "default", () => $d234c6e4c40200dc$export$2e2bcd8739ae039);
-
-var $7B7Eg = parcelRequire("7B7Eg");
-function $d234c6e4c40200dc$export$2e2bcd8739ae039(eccent, ts) {
-    var eccnth = 0.5 * eccent;
-    var con, dphi;
-    var phi = (0, $7B7Eg.HALF_PI) - 2 * Math.atan(ts);
-    for(var i = 0; i <= 15; i++){
-        con = eccent * Math.sin(phi);
-        dphi = (0, $7B7Eg.HALF_PI) - 2 * Math.atan(ts * Math.pow((1 - con) / (1 + con), eccnth)) - phi;
-        phi += dphi;
-        if (Math.abs(dphi) <= 0.0000000001) return phi;
-    }
-    //console.log("phi2z has NoConvergence");
-    return -9999;
-}
-
-});
-
-
 parcelRegister("1UqH0", function(module, exports) {
 
 $parcel$export(module.exports, "S_POLE", () => S_POLE);
@@ -821,28 +610,28 @@ var EQUIT = 3;
 var OBLIQ = 4;
 function init() {
     var t = Math.abs(this.lat0);
-    if (Math.abs(t - (0, $7B7Eg.HALF_PI)) < (0, $7B7Eg.EPSLN)) this.mode = this.lat0 < 0 ? this.S_POLE : this.N_POLE;
-    else if (Math.abs(t) < (0, $7B7Eg.EPSLN)) this.mode = this.EQUIT;
-    else this.mode = this.OBLIQ;
+    if (Math.abs(t - (0, $7B7Eg.HALF_PI)) < (0, $7B7Eg.EPSLN)) this.mode = this.lat0 < 0 ? S_POLE : N_POLE;
+    else if (Math.abs(t) < (0, $7B7Eg.EPSLN)) this.mode = EQUIT;
+    else this.mode = OBLIQ;
     if (this.es > 0) {
         var sinphi;
         this.qp = (0, $ef5fU.default)(this.e, 1);
         this.mmf = 0.5 / (1 - this.es);
         this.apa = authset(this.es);
         switch(this.mode){
-            case this.N_POLE:
+            case N_POLE:
                 this.dd = 1;
                 break;
-            case this.S_POLE:
+            case S_POLE:
                 this.dd = 1;
                 break;
-            case this.EQUIT:
+            case EQUIT:
                 this.rq = Math.sqrt(0.5 * this.qp);
                 this.dd = 1 / this.rq;
                 this.xmf = 1;
                 this.ymf = 0.5 * this.qp;
                 break;
-            case this.OBLIQ:
+            case OBLIQ:
                 this.rq = Math.sqrt(0.5 * this.qp);
                 sinphi = Math.sin(this.lat0);
                 this.sinb1 = (0, $ef5fU.default)(this.e, sinphi) / this.qp;
@@ -852,17 +641,17 @@ function init() {
                 this.xmf *= this.dd;
                 break;
         }
-    } else if (this.mode === this.OBLIQ) {
+    } else if (this.mode === OBLIQ) {
         this.sinph0 = Math.sin(this.lat0);
         this.cosph0 = Math.cos(this.lat0);
     }
 }
 function forward(p) {
     /* Forward equations
-      -----------------*/ var x, y, coslam, sinlam, sinphi, q, sinb, cosb, b, cosphi;
+      ----------------- */ var x, y, coslam, sinlam, sinphi, q, sinb, cosb, b, cosphi;
     var lam = p.x;
     var phi = p.y;
-    lam = (0, $dbd4D.default)(lam - this.long0);
+    lam = (0, $dbd4D.default)(lam - this.long0, this.over);
     if (this.sphere) {
         sinphi = Math.sin(phi);
         cosphi = Math.cos(phi);
@@ -1004,7 +793,7 @@ function inverse(p) {
         lam = Math.atan2(x, y);
         phi = authlat(Math.asin(ab), this.apa);
     }
-    p.x = (0, $dbd4D.default)(this.long0 + lam);
+    p.x = (0, $dbd4D.default)(this.long0 + lam, this.over);
     p.y = phi;
     return p;
 }
@@ -1032,9 +821,9 @@ function authlat(beta, APA) {
     return beta + APA[0] * Math.sin(t) + APA[1] * Math.sin(t + t) + APA[2] * Math.sin(t + t + t);
 }
 var names = [
-    "Lambert Azimuthal Equal Area",
-    "Lambert_Azimuthal_Equal_Area",
-    "laea"
+    'Lambert Azimuthal Equal Area',
+    'Lambert_Azimuthal_Equal_Area',
+    'laea'
 ];
 var $163fb9ff403f01cd$export$2e2bcd8739ae039 = {
     init: init,
@@ -1112,7 +901,7 @@ function forward(p) {
     this.cos_phi = Math.cos(lat);
     var qs = (0, $ef5fU.default)(this.e3, this.sin_phi);
     var rh1 = this.a * Math.sqrt(this.c - this.ns0 * qs) / this.ns0;
-    var theta = this.ns0 * (0, $dbd4D.default)(lon - this.long0);
+    var theta = this.ns0 * (0, $dbd4D.default)(lon - this.long0, this.over);
     var x = rh1 * Math.sin(theta) + this.x0;
     var y = this.rh - rh1 * Math.cos(theta) + this.y0;
     p.x = x;
@@ -1138,7 +927,7 @@ function inverse(p) {
         qs = (this.c - con * con) / this.ns0;
         lat = this.phi1z(this.e3, qs);
     }
-    lon = (0, $dbd4D.default)(theta / this.ns0 + this.long0);
+    lon = (0, $dbd4D.default)(theta / this.ns0 + this.long0, this.over);
     p.x = lon;
     p.y = lat;
     return p;
@@ -1160,9 +949,10 @@ function phi1z(eccent, qs) {
     return null;
 }
 var names = [
-    "Albers_Conic_Equal_Area",
-    "Albers",
-    "aea"
+    'Albers_Conic_Equal_Area',
+    'Albers_Equal_Area',
+    'Albers',
+    'aea'
 ];
 var $a60ae048a89c9697$export$2e2bcd8739ae039 = {
     init: init,
@@ -1173,6 +963,16 @@ var $a60ae048a89c9697$export$2e2bcd8739ae039 = {
 };
 
 });
+parcelRegister("4MKOs", function(module, exports) {
+
+$parcel$export(module.exports, "default", () => $37bff52fdf35284f$export$2e2bcd8739ae039);
+function $37bff52fdf35284f$export$2e2bcd8739ae039(eccent, sinphi, cosphi) {
+    var con = eccent * sinphi;
+    return cosphi / Math.sqrt(1 - con * con);
+}
+
+});
+
 parcelRegister("7sb7x", function(module, exports) {
 
 $parcel$export(module.exports, "default", () => $56d3c6389945d09c$export$2e2bcd8739ae039);
@@ -1363,8 +1163,8 @@ function inverse(p) {
     return p;
 }
 var names = [
-    "New_Zealand_Map_Grid",
-    "nzmg"
+    'New_Zealand_Map_Grid',
+    'nzmg'
 ];
 var $709549f51d50dd41$export$2e2bcd8739ae039 = {
     init: init,
@@ -1776,11 +1576,19 @@ var $24c52f343453d62d$var$__setModuleDefault = Object.create ? function(o, v) {
 } : function(o, v) {
     o["default"] = v;
 };
+var $24c52f343453d62d$var$ownKeys = function(o) {
+    $24c52f343453d62d$var$ownKeys = Object.getOwnPropertyNames || function(o) {
+        var ar = [];
+        for(var k in o)if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+        return ar;
+    };
+    return $24c52f343453d62d$var$ownKeys(o);
+};
 function $24c52f343453d62d$export$c21735bcef00d192(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
-        for(var k in mod)if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) $24c52f343453d62d$export$45d3717a4c69092e(result, mod, k);
+        for(var k = $24c52f343453d62d$var$ownKeys(mod), i = 0; i < k.length; i++)if (k[i] !== "default") $24c52f343453d62d$export$45d3717a4c69092e(result, mod, k[i]);
     }
     $24c52f343453d62d$var$__setModuleDefault(result, mod);
     return result;
@@ -1864,12 +1672,22 @@ function $24c52f343453d62d$export$8f076105dc360e92(env) {
     }
     return next();
 }
+function $24c52f343453d62d$export$889dfb5d17574b0b(path, preserveJsx) {
+    if (typeof path === "string" && /^\.\.?\//.test(path)) return path.replace(/\.(tsx)$|((?:\.d)?)((?:\.[^./]+?)?)\.([cm]?)ts$/i, function(m, tsx, d, ext, cm) {
+        return tsx ? preserveJsx ? ".jsx" : ".js" : d && (!ext || !cm) ? m : d + ext + "." + cm.toLowerCase() + "js";
+    });
+    return path;
+}
 var $24c52f343453d62d$export$2e2bcd8739ae039 = {
     __extends: $24c52f343453d62d$export$a8ba968b8961cb8a,
     __assign: $24c52f343453d62d$export$18ce0697a983be9b,
     __rest: $24c52f343453d62d$export$3c9a16f847548506,
     __decorate: $24c52f343453d62d$export$29e00dfd3077644b,
     __param: $24c52f343453d62d$export$d5ad3fd78186038f,
+    __esDecorate: $24c52f343453d62d$export$3a84e1ae4e97e9b0,
+    __runInitializers: $24c52f343453d62d$export$d831c04e792af3d,
+    __propKey: $24c52f343453d62d$export$6a2a36740a146cb8,
+    __setFunctionName: $24c52f343453d62d$export$d1a06452d3489bc7,
     __metadata: $24c52f343453d62d$export$f1db080c865becb9,
     __awaiter: $24c52f343453d62d$export$1050f835b63b671e,
     __generator: $24c52f343453d62d$export$67ebef60e6f28a6,
@@ -1891,7 +1709,8 @@ var $24c52f343453d62d$export$2e2bcd8739ae039 = {
     __classPrivateFieldSet: $24c52f343453d62d$export$d40a35129aaff81f,
     __classPrivateFieldIn: $24c52f343453d62d$export$81fdc39f203e4e04,
     __addDisposableResource: $24c52f343453d62d$export$88ac25d8e944e405,
-    __disposeResources: $24c52f343453d62d$export$8f076105dc360e92
+    __disposeResources: $24c52f343453d62d$export$8f076105dc360e92,
+    __rewriteRelativeImportExtension: $24c52f343453d62d$export$889dfb5d17574b0b
 };
 
 
@@ -1982,7 +1801,7 @@ const $19fe8e3abedf4df0$var$e = window, $19fe8e3abedf4df0$var$r = $19fe8e3abedf4
 }, $19fe8e3abedf4df0$var$d = "finalized";
 class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
     constructor(){
-        super(), this._$Ei = new Map, this.isUpdatePending = !1, this.hasUpdated = !1, this._$El = null, this._$Eu();
+        super(), this._$Ei = new Map, this.isUpdatePending = !1, this.hasUpdated = !1, this._$El = null, this.u();
     }
     static addInitializer(t) {
         var i;
@@ -2045,7 +1864,7 @@ class $19fe8e3abedf4df0$export$c7c07a37856565d extends HTMLElement {
         const s = i.attribute;
         return !1 === s ? void 0 : "string" == typeof s ? s : "string" == typeof t ? t.toLowerCase() : void 0;
     }
-    _$Eu() {
+    u() {
         var t;
         this._$E_ = new Promise((t)=>this.enableUpdating = t), this._$AL = new Map, this._$Eg(), this.requestUpdate(), null === (t = this.constructor.h) || void 0 === t || t.forEach((t)=>t(this));
     }
@@ -2166,7 +1985,7 @@ $19fe8e3abedf4df0$export$c7c07a37856565d[$19fe8e3abedf4df0$var$d] = !0, $19fe8e3
     mode: "open"
 }, null == $19fe8e3abedf4df0$var$o || $19fe8e3abedf4df0$var$o({
     ReactiveElement: $19fe8e3abedf4df0$export$c7c07a37856565d
-}), (null !== ($19fe8e3abedf4df0$var$s = $19fe8e3abedf4df0$var$e.reactiveElementVersions) && void 0 !== $19fe8e3abedf4df0$var$s ? $19fe8e3abedf4df0$var$s : $19fe8e3abedf4df0$var$e.reactiveElementVersions = []).push("1.6.3");
+}), (null !== ($19fe8e3abedf4df0$var$s = $19fe8e3abedf4df0$var$e.reactiveElementVersions) && void 0 !== $19fe8e3abedf4df0$var$s ? $19fe8e3abedf4df0$var$s : $19fe8e3abedf4df0$var$e.reactiveElementVersions = []).push("1.6.2");
 
 
 /**
@@ -2176,37 +1995,34 @@ $19fe8e3abedf4df0$export$c7c07a37856565d[$19fe8e3abedf4df0$var$d] = !0, $19fe8e3
  */ var $f58f44579a4747ac$var$t;
 const $f58f44579a4747ac$var$i = window, $f58f44579a4747ac$var$s = $f58f44579a4747ac$var$i.trustedTypes, $f58f44579a4747ac$var$e = $f58f44579a4747ac$var$s ? $f58f44579a4747ac$var$s.createPolicy("lit-html", {
     createHTML: (t)=>t
-}) : void 0, $f58f44579a4747ac$var$o = "$lit$", $f58f44579a4747ac$var$n = `lit$${(Math.random() + "").slice(9)}$`, $f58f44579a4747ac$var$l = "?" + $f58f44579a4747ac$var$n, $f58f44579a4747ac$var$h = `<${$f58f44579a4747ac$var$l}>`, $f58f44579a4747ac$var$r = document, $f58f44579a4747ac$var$u = ()=>$f58f44579a4747ac$var$r.createComment(""), $f58f44579a4747ac$var$d = (t)=>null === t || "object" != typeof t && "function" != typeof t, $f58f44579a4747ac$var$c = Array.isArray, $f58f44579a4747ac$var$v = (t)=>$f58f44579a4747ac$var$c(t) || "function" == typeof (null == t ? void 0 : t[Symbol.iterator]), $f58f44579a4747ac$var$a = "[ 	\n\f\r]", $f58f44579a4747ac$var$f = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, $f58f44579a4747ac$var$_ = /-->/g, $f58f44579a4747ac$var$m = />/g, $f58f44579a4747ac$var$p = RegExp(`>|${$f58f44579a4747ac$var$a}(?:([^\\s"'>=/]+)(${$f58f44579a4747ac$var$a}*=${$f58f44579a4747ac$var$a}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), $f58f44579a4747ac$var$g = /'/g, $f58f44579a4747ac$var$$ = /"/g, $f58f44579a4747ac$var$y = /^(?:script|style|textarea|title)$/i, $f58f44579a4747ac$var$w = (t)=>(i, ...s)=>({
+}) : void 0, $f58f44579a4747ac$var$o = "$lit$", $f58f44579a4747ac$var$n = `lit$${(Math.random() + "").slice(9)}$`, $f58f44579a4747ac$var$l = "?" + $f58f44579a4747ac$var$n, $f58f44579a4747ac$var$h = `<${$f58f44579a4747ac$var$l}>`, $f58f44579a4747ac$var$r = document, $f58f44579a4747ac$var$d = ()=>$f58f44579a4747ac$var$r.createComment(""), $f58f44579a4747ac$var$u = (t)=>null === t || "object" != typeof t && "function" != typeof t, $f58f44579a4747ac$var$c = Array.isArray, $f58f44579a4747ac$var$v = (t)=>$f58f44579a4747ac$var$c(t) || "function" == typeof (null == t ? void 0 : t[Symbol.iterator]), $f58f44579a4747ac$var$a = "[ \t\n\f\r]", $f58f44579a4747ac$var$f = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, $f58f44579a4747ac$var$_ = /-->/g, $f58f44579a4747ac$var$m = />/g, $f58f44579a4747ac$var$p = RegExp(`>|${$f58f44579a4747ac$var$a}(?:([^\\s"'>=/]+)(${$f58f44579a4747ac$var$a}*=${$f58f44579a4747ac$var$a}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), $f58f44579a4747ac$var$g = /'/g, $f58f44579a4747ac$var$$ = /"/g, $f58f44579a4747ac$var$y = /^(?:script|style|textarea|title)$/i, $f58f44579a4747ac$var$w = (t)=>(i, ...s)=>({
             _$litType$: t,
             strings: i,
             values: s
-        }), $f58f44579a4747ac$export$c0bb0b647f701bb5 = $f58f44579a4747ac$var$w(1), $f58f44579a4747ac$export$7ed1367e7fa1ad68 = $f58f44579a4747ac$var$w(2), $f58f44579a4747ac$export$9c068ae9cc5db4e8 = Symbol.for("lit-noChange"), $f58f44579a4747ac$export$45b790e32b2810ee = Symbol.for("lit-nothing"), $f58f44579a4747ac$var$E = new WeakMap, $f58f44579a4747ac$var$C = $f58f44579a4747ac$var$r.createTreeWalker($f58f44579a4747ac$var$r, 129, null, !1);
-function $f58f44579a4747ac$var$P(t, i) {
-    if (!Array.isArray(t) || !t.hasOwnProperty("raw")) throw Error("invalid template strings array");
-    return void 0 !== $f58f44579a4747ac$var$e ? $f58f44579a4747ac$var$e.createHTML(i) : i;
-}
-const $f58f44579a4747ac$var$V = (t, i)=>{
-    const s = t.length - 1, e = [];
-    let l, r = 2 === i ? "<svg>" : "", u = $f58f44579a4747ac$var$f;
+        }), $f58f44579a4747ac$export$c0bb0b647f701bb5 = $f58f44579a4747ac$var$w(1), $f58f44579a4747ac$export$7ed1367e7fa1ad68 = $f58f44579a4747ac$var$w(2), $f58f44579a4747ac$export$9c068ae9cc5db4e8 = Symbol.for("lit-noChange"), $f58f44579a4747ac$export$45b790e32b2810ee = Symbol.for("lit-nothing"), $f58f44579a4747ac$var$E = new WeakMap, $f58f44579a4747ac$var$C = $f58f44579a4747ac$var$r.createTreeWalker($f58f44579a4747ac$var$r, 129, null, !1), $f58f44579a4747ac$var$P = (t, i)=>{
+    const s = t.length - 1, l = [];
+    let r, d = 2 === i ? "<svg>" : "", u = $f58f44579a4747ac$var$f;
     for(let i = 0; i < s; i++){
         const s = t[i];
-        let d, c, v = -1, a = 0;
-        for(; a < s.length && (u.lastIndex = a, c = u.exec(s), null !== c);)a = u.lastIndex, u === $f58f44579a4747ac$var$f ? "!--" === c[1] ? u = $f58f44579a4747ac$var$_ : void 0 !== c[1] ? u = $f58f44579a4747ac$var$m : void 0 !== c[2] ? ($f58f44579a4747ac$var$y.test(c[2]) && (l = RegExp("</" + c[2], "g")), u = $f58f44579a4747ac$var$p) : void 0 !== c[3] && (u = $f58f44579a4747ac$var$p) : u === $f58f44579a4747ac$var$p ? ">" === c[0] ? (u = null != l ? l : $f58f44579a4747ac$var$f, v = -1) : void 0 === c[1] ? v = -2 : (v = u.lastIndex - c[2].length, d = c[1], u = void 0 === c[3] ? $f58f44579a4747ac$var$p : '"' === c[3] ? $f58f44579a4747ac$var$$ : $f58f44579a4747ac$var$g) : u === $f58f44579a4747ac$var$$ || u === $f58f44579a4747ac$var$g ? u = $f58f44579a4747ac$var$p : u === $f58f44579a4747ac$var$_ || u === $f58f44579a4747ac$var$m ? u = $f58f44579a4747ac$var$f : (u = $f58f44579a4747ac$var$p, l = void 0);
+        let e, c, v = -1, a = 0;
+        for(; a < s.length && (u.lastIndex = a, c = u.exec(s), null !== c);)a = u.lastIndex, u === $f58f44579a4747ac$var$f ? "!--" === c[1] ? u = $f58f44579a4747ac$var$_ : void 0 !== c[1] ? u = $f58f44579a4747ac$var$m : void 0 !== c[2] ? ($f58f44579a4747ac$var$y.test(c[2]) && (r = RegExp("</" + c[2], "g")), u = $f58f44579a4747ac$var$p) : void 0 !== c[3] && (u = $f58f44579a4747ac$var$p) : u === $f58f44579a4747ac$var$p ? ">" === c[0] ? (u = null != r ? r : $f58f44579a4747ac$var$f, v = -1) : void 0 === c[1] ? v = -2 : (v = u.lastIndex - c[2].length, e = c[1], u = void 0 === c[3] ? $f58f44579a4747ac$var$p : '"' === c[3] ? $f58f44579a4747ac$var$$ : $f58f44579a4747ac$var$g) : u === $f58f44579a4747ac$var$$ || u === $f58f44579a4747ac$var$g ? u = $f58f44579a4747ac$var$p : u === $f58f44579a4747ac$var$_ || u === $f58f44579a4747ac$var$m ? u = $f58f44579a4747ac$var$f : (u = $f58f44579a4747ac$var$p, r = void 0);
         const w = u === $f58f44579a4747ac$var$p && t[i + 1].startsWith("/>") ? " " : "";
-        r += u === $f58f44579a4747ac$var$f ? s + $f58f44579a4747ac$var$h : v >= 0 ? (e.push(d), s.slice(0, v) + $f58f44579a4747ac$var$o + s.slice(v) + $f58f44579a4747ac$var$n + w) : s + $f58f44579a4747ac$var$n + (-2 === v ? (e.push(void 0), i) : w);
+        d += u === $f58f44579a4747ac$var$f ? s + $f58f44579a4747ac$var$h : v >= 0 ? (l.push(e), s.slice(0, v) + $f58f44579a4747ac$var$o + s.slice(v) + $f58f44579a4747ac$var$n + w) : s + $f58f44579a4747ac$var$n + (-2 === v ? (l.push(void 0), i) : w);
     }
+    const c = d + (t[s] || "<?>") + (2 === i ? "</svg>" : "");
+    if (!Array.isArray(t) || !t.hasOwnProperty("raw")) throw Error("invalid template strings array");
     return [
-        $f58f44579a4747ac$var$P(t, r + (t[s] || "<?>") + (2 === i ? "</svg>" : "")),
-        e
+        void 0 !== $f58f44579a4747ac$var$e ? $f58f44579a4747ac$var$e.createHTML(c) : c,
+        l
     ];
 };
-class $f58f44579a4747ac$var$N {
+class $f58f44579a4747ac$var$V {
     constructor({ strings: t, _$litType$: i }, e){
         let h;
         this.parts = [];
-        let r = 0, d = 0;
-        const c = t.length - 1, v = this.parts, [a, f] = $f58f44579a4747ac$var$V(t, i);
-        if (this.el = $f58f44579a4747ac$var$N.createElement(a, e), $f58f44579a4747ac$var$C.currentNode = this.el.content, 2 === i) {
+        let r = 0, u = 0;
+        const c = t.length - 1, v = this.parts, [a, f] = $f58f44579a4747ac$var$P(t, i);
+        if (this.el = $f58f44579a4747ac$var$V.createElement(a, e), $f58f44579a4747ac$var$C.currentNode = this.el.content, 2 === i) {
             const t = this.el.content, i = t.firstChild;
             i.remove(), t.append(...i.childNodes);
         }
@@ -2215,7 +2031,7 @@ class $f58f44579a4747ac$var$N {
                 if (h.hasAttributes()) {
                     const t = [];
                     for (const i of h.getAttributeNames())if (i.endsWith($f58f44579a4747ac$var$o) || i.startsWith($f58f44579a4747ac$var$n)) {
-                        const s = f[d++];
+                        const s = f[u++];
                         if (t.push(i), void 0 !== s) {
                             const t = h.getAttribute(s.toLowerCase() + $f58f44579a4747ac$var$o).split($f58f44579a4747ac$var$n), i = /([.?@])?(.*)/.exec(s);
                             v.push({
@@ -2223,7 +2039,7 @@ class $f58f44579a4747ac$var$N {
                                 index: r,
                                 name: i[2],
                                 strings: t,
-                                ctor: "." === i[1] ? $f58f44579a4747ac$var$H : "?" === i[1] ? $f58f44579a4747ac$var$L : "@" === i[1] ? $f58f44579a4747ac$var$z : $f58f44579a4747ac$var$k
+                                ctor: "." === i[1] ? $f58f44579a4747ac$var$k : "?" === i[1] ? $f58f44579a4747ac$var$I : "@" === i[1] ? $f58f44579a4747ac$var$L : $f58f44579a4747ac$var$R
                             });
                         } else v.push({
                             type: 6,
@@ -2236,11 +2052,11 @@ class $f58f44579a4747ac$var$N {
                     const t = h.textContent.split($f58f44579a4747ac$var$n), i = t.length - 1;
                     if (i > 0) {
                         h.textContent = $f58f44579a4747ac$var$s ? $f58f44579a4747ac$var$s.emptyScript : "";
-                        for(let s = 0; s < i; s++)h.append(t[s], $f58f44579a4747ac$var$u()), $f58f44579a4747ac$var$C.nextNode(), v.push({
+                        for(let s = 0; s < i; s++)h.append(t[s], $f58f44579a4747ac$var$d()), $f58f44579a4747ac$var$C.nextNode(), v.push({
                             type: 2,
                             index: ++r
                         });
-                        h.append(t[i], $f58f44579a4747ac$var$u());
+                        h.append(t[i], $f58f44579a4747ac$var$d());
                     }
                 }
             } else if (8 === h.nodeType) {
@@ -2264,14 +2080,14 @@ class $f58f44579a4747ac$var$N {
         return s.innerHTML = t, s;
     }
 }
-function $f58f44579a4747ac$var$S(t, i, s = t, e) {
+function $f58f44579a4747ac$var$N(t, i, s = t, e) {
     var o, n, l, h;
     if (i === $f58f44579a4747ac$export$9c068ae9cc5db4e8) return i;
     let r = void 0 !== e ? null === (o = s._$Co) || void 0 === o ? void 0 : o[e] : s._$Cl;
-    const u = $f58f44579a4747ac$var$d(i) ? void 0 : i._$litDirective$;
-    return (null == r ? void 0 : r.constructor) !== u && (null === (n = null == r ? void 0 : r._$AO) || void 0 === n || n.call(r, !1), void 0 === u ? r = void 0 : (r = new u(t), r._$AT(t, s, e)), void 0 !== e ? (null !== (l = (h = s)._$Co) && void 0 !== l ? l : h._$Co = [])[e] = r : s._$Cl = r), void 0 !== r && (i = $f58f44579a4747ac$var$S(t, r._$AS(t, i.values), r, e)), i;
+    const d = $f58f44579a4747ac$var$u(i) ? void 0 : i._$litDirective$;
+    return (null == r ? void 0 : r.constructor) !== d && (null === (n = null == r ? void 0 : r._$AO) || void 0 === n || n.call(r, !1), void 0 === d ? r = void 0 : (r = new d(t), r._$AT(t, s, e)), void 0 !== e ? (null !== (l = (h = s)._$Co) && void 0 !== l ? l : h._$Co = [])[e] = r : s._$Cl = r), void 0 !== r && (i = $f58f44579a4747ac$var$N(t, r._$AS(t, i.values), r, e)), i;
 }
-class $f58f44579a4747ac$var$M {
+class $f58f44579a4747ac$var$S {
     constructor(t, i){
         this._$AV = [], this._$AN = void 0, this._$AD = t, this._$AM = i;
     }
@@ -2285,13 +2101,13 @@ class $f58f44579a4747ac$var$M {
         var i;
         const { el: { content: s }, parts: e } = this._$AD, o = (null !== (i = null == t ? void 0 : t.creationScope) && void 0 !== i ? i : $f58f44579a4747ac$var$r).importNode(s, !0);
         $f58f44579a4747ac$var$C.currentNode = o;
-        let n = $f58f44579a4747ac$var$C.nextNode(), l = 0, h = 0, u = e[0];
-        for(; void 0 !== u;){
-            if (l === u.index) {
+        let n = $f58f44579a4747ac$var$C.nextNode(), l = 0, h = 0, d = e[0];
+        for(; void 0 !== d;){
+            if (l === d.index) {
                 let i;
-                2 === u.type ? i = new $f58f44579a4747ac$var$R(n, n.nextSibling, this, t) : 1 === u.type ? i = new u.ctor(n, u.name, u.strings, this, t) : 6 === u.type && (i = new $f58f44579a4747ac$var$Z(n, this, t)), this._$AV.push(i), u = e[++h];
+                2 === d.type ? i = new $f58f44579a4747ac$var$M(n, n.nextSibling, this, t) : 1 === d.type ? i = new d.ctor(n, d.name, d.strings, this, t) : 6 === d.type && (i = new $f58f44579a4747ac$var$z(n, this, t)), this._$AV.push(i), d = e[++h];
             }
-            l !== (null == u ? void 0 : u.index) && (n = $f58f44579a4747ac$var$C.nextNode(), l++);
+            l !== (null == d ? void 0 : d.index) && (n = $f58f44579a4747ac$var$C.nextNode(), l++);
         }
         return $f58f44579a4747ac$var$C.currentNode = $f58f44579a4747ac$var$r, o;
     }
@@ -2300,7 +2116,7 @@ class $f58f44579a4747ac$var$M {
         for (const s of this._$AV)void 0 !== s && (void 0 !== s.strings ? (s._$AI(t, s, i), i += s.strings.length - 2) : s._$AI(t[i])), i++;
     }
 }
-class $f58f44579a4747ac$var$R {
+class $f58f44579a4747ac$var$M {
     constructor(t, i, s, e){
         var o;
         this.type = 2, this._$AH = $f58f44579a4747ac$export$45b790e32b2810ee, this._$AN = void 0, this._$AA = t, this._$AB = i, this._$AM = s, this.options = e, this._$Cp = null === (o = null == e ? void 0 : e.isConnected) || void 0 === o || o;
@@ -2321,7 +2137,7 @@ class $f58f44579a4747ac$var$R {
         return this._$AB;
     }
     _$AI(t, i = this) {
-        t = $f58f44579a4747ac$var$S(this, t, i), $f58f44579a4747ac$var$d(t) ? t === $f58f44579a4747ac$export$45b790e32b2810ee || null == t || "" === t ? (this._$AH !== $f58f44579a4747ac$export$45b790e32b2810ee && this._$AR(), this._$AH = $f58f44579a4747ac$export$45b790e32b2810ee) : t !== this._$AH && t !== $f58f44579a4747ac$export$9c068ae9cc5db4e8 && this._(t) : void 0 !== t._$litType$ ? this.g(t) : void 0 !== t.nodeType ? this.$(t) : $f58f44579a4747ac$var$v(t) ? this.T(t) : this._(t);
+        t = $f58f44579a4747ac$var$N(this, t, i), $f58f44579a4747ac$var$u(t) ? t === $f58f44579a4747ac$export$45b790e32b2810ee || null == t || "" === t ? (this._$AH !== $f58f44579a4747ac$export$45b790e32b2810ee && this._$AR(), this._$AH = $f58f44579a4747ac$export$45b790e32b2810ee) : t !== this._$AH && t !== $f58f44579a4747ac$export$9c068ae9cc5db4e8 && this._(t) : void 0 !== t._$litType$ ? this.g(t) : void 0 !== t.nodeType ? this.$(t) : $f58f44579a4747ac$var$v(t) ? this.T(t) : this._(t);
     }
     k(t) {
         return this._$AA.parentNode.insertBefore(t, this._$AB);
@@ -2330,26 +2146,26 @@ class $f58f44579a4747ac$var$R {
         this._$AH !== t && (this._$AR(), this._$AH = this.k(t));
     }
     _(t) {
-        this._$AH !== $f58f44579a4747ac$export$45b790e32b2810ee && $f58f44579a4747ac$var$d(this._$AH) ? this._$AA.nextSibling.data = t : this.$($f58f44579a4747ac$var$r.createTextNode(t)), this._$AH = t;
+        this._$AH !== $f58f44579a4747ac$export$45b790e32b2810ee && $f58f44579a4747ac$var$u(this._$AH) ? this._$AA.nextSibling.data = t : this.$($f58f44579a4747ac$var$r.createTextNode(t)), this._$AH = t;
     }
     g(t) {
         var i;
-        const { values: s, _$litType$: e } = t, o = "number" == typeof e ? this._$AC(t) : (void 0 === e.el && (e.el = $f58f44579a4747ac$var$N.createElement($f58f44579a4747ac$var$P(e.h, e.h[0]), this.options)), e);
+        const { values: s, _$litType$: e } = t, o = "number" == typeof e ? this._$AC(t) : (void 0 === e.el && (e.el = $f58f44579a4747ac$var$V.createElement(e.h, this.options)), e);
         if ((null === (i = this._$AH) || void 0 === i ? void 0 : i._$AD) === o) this._$AH.v(s);
         else {
-            const t = new $f58f44579a4747ac$var$M(o, this), i = t.u(this.options);
+            const t = new $f58f44579a4747ac$var$S(o, this), i = t.u(this.options);
             t.v(s), this.$(i), this._$AH = t;
         }
     }
     _$AC(t) {
         let i = $f58f44579a4747ac$var$E.get(t.strings);
-        return void 0 === i && $f58f44579a4747ac$var$E.set(t.strings, i = new $f58f44579a4747ac$var$N(t)), i;
+        return void 0 === i && $f58f44579a4747ac$var$E.set(t.strings, i = new $f58f44579a4747ac$var$V(t)), i;
     }
     T(t) {
         $f58f44579a4747ac$var$c(this._$AH) || (this._$AH = [], this._$AR());
         const i = this._$AH;
         let s, e = 0;
-        for (const o of t)e === i.length ? i.push(s = new $f58f44579a4747ac$var$R(this.k($f58f44579a4747ac$var$u()), this.k($f58f44579a4747ac$var$u()), this, this.options)) : s = i[e], s._$AI(o), e++;
+        for (const o of t)e === i.length ? i.push(s = new $f58f44579a4747ac$var$M(this.k($f58f44579a4747ac$var$d()), this.k($f58f44579a4747ac$var$d()), this, this.options)) : s = i[e], s._$AI(o), e++;
         e < i.length && (this._$AR(s && s._$AB.nextSibling, e), i.length = e);
     }
     _$AR(t = this._$AA.nextSibling, i) {
@@ -2364,7 +2180,7 @@ class $f58f44579a4747ac$var$R {
         void 0 === this._$AM && (this._$Cp = t, null === (i = this._$AP) || void 0 === i || i.call(this, t));
     }
 }
-class $f58f44579a4747ac$var$k {
+class $f58f44579a4747ac$var$R {
     constructor(t, i, s, e, o){
         this.type = 1, this._$AH = $f58f44579a4747ac$export$45b790e32b2810ee, this._$AN = void 0, this.element = t, this.name = i, this._$AM = e, this.options = o, s.length > 2 || "" !== s[0] || "" !== s[1] ? (this._$AH = Array(s.length - 1).fill(new String), this.strings = s) : this._$AH = $f58f44579a4747ac$export$45b790e32b2810ee;
     }
@@ -2377,11 +2193,11 @@ class $f58f44579a4747ac$var$k {
     _$AI(t, i = this, s, e) {
         const o = this.strings;
         let n = !1;
-        if (void 0 === o) t = $f58f44579a4747ac$var$S(this, t, i, 0), n = !$f58f44579a4747ac$var$d(t) || t !== this._$AH && t !== $f58f44579a4747ac$export$9c068ae9cc5db4e8, n && (this._$AH = t);
+        if (void 0 === o) t = $f58f44579a4747ac$var$N(this, t, i, 0), n = !$f58f44579a4747ac$var$u(t) || t !== this._$AH && t !== $f58f44579a4747ac$export$9c068ae9cc5db4e8, n && (this._$AH = t);
         else {
             const e = t;
             let l, h;
-            for(t = o[0], l = 0; l < o.length - 1; l++)h = $f58f44579a4747ac$var$S(this, e[s + l], i, l), h === $f58f44579a4747ac$export$9c068ae9cc5db4e8 && (h = this._$AH[l]), n || (n = !$f58f44579a4747ac$var$d(h) || h !== this._$AH[l]), h === $f58f44579a4747ac$export$45b790e32b2810ee ? t = $f58f44579a4747ac$export$45b790e32b2810ee : t !== $f58f44579a4747ac$export$45b790e32b2810ee && (t += (null != h ? h : "") + o[l + 1]), this._$AH[l] = h;
+            for(t = o[0], l = 0; l < o.length - 1; l++)h = $f58f44579a4747ac$var$N(this, e[s + l], i, l), h === $f58f44579a4747ac$export$9c068ae9cc5db4e8 && (h = this._$AH[l]), n || (n = !$f58f44579a4747ac$var$u(h) || h !== this._$AH[l]), h === $f58f44579a4747ac$export$45b790e32b2810ee ? t = $f58f44579a4747ac$export$45b790e32b2810ee : t !== $f58f44579a4747ac$export$45b790e32b2810ee && (t += (null != h ? h : "") + o[l + 1]), this._$AH[l] = h;
         }
         n && !e && this.j(t);
     }
@@ -2389,7 +2205,7 @@ class $f58f44579a4747ac$var$k {
         t === $f58f44579a4747ac$export$45b790e32b2810ee ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, null != t ? t : "");
     }
 }
-class $f58f44579a4747ac$var$H extends $f58f44579a4747ac$var$k {
+class $f58f44579a4747ac$var$k extends $f58f44579a4747ac$var$R {
     constructor(){
         super(...arguments), this.type = 3;
     }
@@ -2397,22 +2213,22 @@ class $f58f44579a4747ac$var$H extends $f58f44579a4747ac$var$k {
         this.element[this.name] = t === $f58f44579a4747ac$export$45b790e32b2810ee ? void 0 : t;
     }
 }
-const $f58f44579a4747ac$var$I = $f58f44579a4747ac$var$s ? $f58f44579a4747ac$var$s.emptyScript : "";
-class $f58f44579a4747ac$var$L extends $f58f44579a4747ac$var$k {
+const $f58f44579a4747ac$var$H = $f58f44579a4747ac$var$s ? $f58f44579a4747ac$var$s.emptyScript : "";
+class $f58f44579a4747ac$var$I extends $f58f44579a4747ac$var$R {
     constructor(){
         super(...arguments), this.type = 4;
     }
     j(t) {
-        t && t !== $f58f44579a4747ac$export$45b790e32b2810ee ? this.element.setAttribute(this.name, $f58f44579a4747ac$var$I) : this.element.removeAttribute(this.name);
+        t && t !== $f58f44579a4747ac$export$45b790e32b2810ee ? this.element.setAttribute(this.name, $f58f44579a4747ac$var$H) : this.element.removeAttribute(this.name);
     }
 }
-class $f58f44579a4747ac$var$z extends $f58f44579a4747ac$var$k {
+class $f58f44579a4747ac$var$L extends $f58f44579a4747ac$var$R {
     constructor(t, i, s, e, o){
         super(t, i, s, e, o), this.type = 5;
     }
     _$AI(t, i = this) {
         var s;
-        if ((t = null !== (s = $f58f44579a4747ac$var$S(this, t, i, 0)) && void 0 !== s ? s : $f58f44579a4747ac$export$45b790e32b2810ee) === $f58f44579a4747ac$export$9c068ae9cc5db4e8) return;
+        if ((t = null !== (s = $f58f44579a4747ac$var$N(this, t, i, 0)) && void 0 !== s ? s : $f58f44579a4747ac$export$45b790e32b2810ee) === $f58f44579a4747ac$export$9c068ae9cc5db4e8) return;
         const e = this._$AH, o = t === $f58f44579a4747ac$export$45b790e32b2810ee && e !== $f58f44579a4747ac$export$45b790e32b2810ee || t.capture !== e.capture || t.once !== e.once || t.passive !== e.passive, n = t !== $f58f44579a4747ac$export$45b790e32b2810ee && (e === $f58f44579a4747ac$export$45b790e32b2810ee || o);
         o && this.element.removeEventListener(this.name, this, e), n && this.element.addEventListener(this.name, this, t), this._$AH = t;
     }
@@ -2421,7 +2237,7 @@ class $f58f44579a4747ac$var$z extends $f58f44579a4747ac$var$k {
         "function" == typeof this._$AH ? this._$AH.call(null !== (s = null === (i = this.options) || void 0 === i ? void 0 : i.host) && void 0 !== s ? s : this.element, t) : this._$AH.handleEvent(t);
     }
 }
-class $f58f44579a4747ac$var$Z {
+class $f58f44579a4747ac$var$z {
     constructor(t, i, s){
         this.element = t, this.type = 6, this._$AN = void 0, this._$AM = i, this.options = s;
     }
@@ -2429,7 +2245,7 @@ class $f58f44579a4747ac$var$Z {
         return this._$AM._$AU;
     }
     _$AI(t) {
-        $f58f44579a4747ac$var$S(this, t);
+        $f58f44579a4747ac$var$N(this, t);
     }
 }
 const $f58f44579a4747ac$export$8613d1ca9052b22e = {
@@ -2437,25 +2253,25 @@ const $f58f44579a4747ac$export$8613d1ca9052b22e = {
     P: $f58f44579a4747ac$var$n,
     A: $f58f44579a4747ac$var$l,
     C: 1,
-    M: $f58f44579a4747ac$var$V,
-    L: $f58f44579a4747ac$var$M,
-    R: $f58f44579a4747ac$var$v,
-    D: $f58f44579a4747ac$var$S,
-    I: $f58f44579a4747ac$var$R,
-    V: $f58f44579a4747ac$var$k,
-    H: $f58f44579a4747ac$var$L,
-    N: $f58f44579a4747ac$var$z,
-    U: $f58f44579a4747ac$var$H,
-    F: $f58f44579a4747ac$var$Z
-}, $f58f44579a4747ac$var$B = $f58f44579a4747ac$var$i.litHtmlPolyfillSupport;
-null == $f58f44579a4747ac$var$B || $f58f44579a4747ac$var$B($f58f44579a4747ac$var$N, $f58f44579a4747ac$var$R), (null !== ($f58f44579a4747ac$var$t = $f58f44579a4747ac$var$i.litHtmlVersions) && void 0 !== $f58f44579a4747ac$var$t ? $f58f44579a4747ac$var$t : $f58f44579a4747ac$var$i.litHtmlVersions = []).push("2.8.0");
+    M: $f58f44579a4747ac$var$P,
+    L: $f58f44579a4747ac$var$S,
+    D: $f58f44579a4747ac$var$v,
+    R: $f58f44579a4747ac$var$N,
+    I: $f58f44579a4747ac$var$M,
+    V: $f58f44579a4747ac$var$R,
+    H: $f58f44579a4747ac$var$I,
+    N: $f58f44579a4747ac$var$L,
+    U: $f58f44579a4747ac$var$k,
+    F: $f58f44579a4747ac$var$z
+}, $f58f44579a4747ac$var$j = $f58f44579a4747ac$var$i.litHtmlPolyfillSupport;
+null == $f58f44579a4747ac$var$j || $f58f44579a4747ac$var$j($f58f44579a4747ac$var$V, $f58f44579a4747ac$var$M), (null !== ($f58f44579a4747ac$var$t = $f58f44579a4747ac$var$i.litHtmlVersions) && void 0 !== $f58f44579a4747ac$var$t ? $f58f44579a4747ac$var$t : $f58f44579a4747ac$var$i.litHtmlVersions = []).push("2.7.4");
 const $f58f44579a4747ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
     var e, o;
     const n = null !== (e = null == s ? void 0 : s.renderBefore) && void 0 !== e ? e : i;
     let l = n._$litPart$;
     if (void 0 === l) {
         const t = null !== (o = null == s ? void 0 : s.renderBefore) && void 0 !== o ? o : null;
-        n._$litPart$ = l = new $f58f44579a4747ac$var$R(i.insertBefore($f58f44579a4747ac$var$u(), t), t, void 0, null != s ? s : {});
+        n._$litPart$ = l = new $f58f44579a4747ac$var$M(i.insertBefore($f58f44579a4747ac$var$d(), t), t, void 0, null != s ? s : {});
     }
     return l._$AI(t), l;
 };
@@ -2509,7 +2325,7 @@ const $ab210b2da7b39b9d$export$f5c524615a7708d6 = {
     },
     _$AL: (t)=>t._$AL
 };
-(null !== ($ab210b2da7b39b9d$var$o = globalThis.litElementVersions) && void 0 !== $ab210b2da7b39b9d$var$o ? $ab210b2da7b39b9d$var$o : globalThis.litElementVersions = []).push("3.3.3");
+(null !== ($ab210b2da7b39b9d$var$o = globalThis.litElementVersions) && void 0 !== $ab210b2da7b39b9d$var$o ? $ab210b2da7b39b9d$var$o : globalThis.litElementVersions = []).push("3.3.2");
 
 
 /**
@@ -2831,7 +2647,7 @@ var $f22c10e3757627da$export$2e2bcd8739ae039 = $f22c10e3757627da$var$BaseEvent;
    * Triggered when a property is changed.
    * @event module:ol/Object.ObjectEvent#propertychange
    * @api
-   */ PROPERTYCHANGE: "propertychange"
+   */ PROPERTYCHANGE: 'propertychange'
 };
 
 
@@ -2909,7 +2725,7 @@ function $69c1cc8ae30f997f$export$8a3786cc03fdb777(arr, target, direction) {
     if (arr[0] <= target) return 0;
     const n = arr.length;
     if (target <= arr[n - 1]) return n - 1;
-    if (typeof direction === "function") {
+    if (typeof direction === 'function') {
         for(let i = 1; i < n; ++i){
             const candidate = arr[i];
             if (candidate === target) return i;
@@ -3104,7 +2920,7 @@ function $e2dfef87a88758ed$export$dd1bc94b04021eeb(object) {
    *     event object or if any of the listeners returned false.
    * @api
    */ dispatchEvent(event) {
-        const isString = typeof event === "string";
+        const isString = typeof event === 'string';
         const type = isString ? event : event.type;
         const listeners = this.listeners_ && this.listeners_[type];
         if (!listeners) return;
@@ -3119,7 +2935,7 @@ function $e2dfef87a88758ed$export$dd1bc94b04021eeb(object) {
         ++dispatching[type];
         let propagate;
         for(let i = 0, ii = listeners.length; i < ii; ++i){
-            if ("handleEvent" in listeners[i]) propagate = /** @type {import("../events.js").ListenerObject} */ listeners[i].handleEvent(evt);
+            if ('handleEvent' in listeners[i]) propagate = /** @type {import("../events.js").ListenerObject} */ listeners[i].handleEvent(evt);
             else propagate = /** @type {import("../events.js").ListenerFunction} */ listeners[i].call(this, evt);
             if (propagate === false || evt.propagationStopped) {
                 propagate = false;
@@ -3189,27 +3005,27 @@ var $fd4e3201ad7386dc$export$2e2bcd8739ae039 = $fd4e3201ad7386dc$var$Target;
    * Generic change event. Triggered when the revision counter is increased.
    * @event module:ol/events/Event~BaseEvent#change
    * @api
-   */ CHANGE: "change",
+   */ CHANGE: 'change',
     /**
    * Generic error event. Triggered when an error occurs.
    * @event module:ol/events/Event~BaseEvent#error
    * @api
-   */ ERROR: "error",
-    BLUR: "blur",
-    CLEAR: "clear",
-    CONTEXTMENU: "contextmenu",
-    CLICK: "click",
-    DBLCLICK: "dblclick",
-    DRAGENTER: "dragenter",
-    DRAGOVER: "dragover",
-    DROP: "drop",
-    FOCUS: "focus",
-    KEYDOWN: "keydown",
-    KEYPRESS: "keypress",
-    LOAD: "load",
-    RESIZE: "resize",
-    TOUCHMOVE: "touchmove",
-    WHEEL: "wheel"
+   */ ERROR: 'error',
+    BLUR: 'blur',
+    CLEAR: 'clear',
+    CONTEXTMENU: 'contextmenu',
+    CLICK: 'click',
+    DBLCLICK: 'dblclick',
+    DRAGENTER: 'dragenter',
+    DRAGOVER: 'dragover',
+    DROP: 'drop',
+    FOCUS: 'focus',
+    KEYDOWN: 'keydown',
+    KEYPRESS: 'keypress',
+    LOAD: 'load',
+    RESIZE: 'resize',
+    TOUCHMOVE: 'touchmove',
+    WHEEL: 'wheel'
 };
 
 
@@ -3374,7 +3190,7 @@ var $0a5ecae53e50aa57$export$2e2bcd8739ae039 = $0a5ecae53e50aa57$var$Observable;
  */ /**
  * @return {never} Any return.
  */ function $ae7eaaa2c9c1e05d$export$817eb92a8194bab0() {
-    throw new Error("Unimplemented abstract method.");
+    throw new Error('Unimplemented abstract method.');
 }
 /**
  * Counter for getUid.
@@ -3384,7 +3200,7 @@ var $0a5ecae53e50aa57$export$2e2bcd8739ae039 = $0a5ecae53e50aa57$var$Observable;
 function $ae7eaaa2c9c1e05d$export$5e82334337e0f204(obj) {
     return obj.ol_uid || (obj.ol_uid = String(++$ae7eaaa2c9c1e05d$var$uidCounter_));
 }
-const $ae7eaaa2c9c1e05d$export$a4ad2735b021c132 = "7.5.2";
+const $ae7eaaa2c9c1e05d$export$a4ad2735b021c132 = '7.5.2';
 
 
 
@@ -3586,63 +3402,63 @@ var $d6cd7f1b627d5e92$export$2e2bcd8739ae039 = $d6cd7f1b627d5e92$var$BaseObject;
  */ /**
  * @module ol/AssertionError
  */ /** @type {Object<number, string>} */ const $fc1e13bda45b0626$var$messages = {
-    1: "The view center is not defined",
-    2: "The view resolution is not defined",
-    3: "The view rotation is not defined",
-    4: "`image` and `src` cannot be provided at the same time",
-    5: "`imgSize` must be set when `image` is provided",
-    7: "`format` must be set when `url` is set",
-    8: "Unknown `serverType` configured",
-    9: "`url` must be configured or set using `#setUrl()`",
-    10: "The default `geometryFunction` can only handle `Point` geometries",
-    11: "`options.featureTypes` must be an Array",
-    12: "`options.geometryName` must also be provided when `options.bbox` is set",
-    13: "Invalid corner",
-    14: "Invalid color",
-    15: "Tried to get a value for a key that does not exist in the cache",
-    16: "Tried to set a value for a key that is used already",
-    17: "`resolutions` must be sorted in descending order",
-    18: "Either `origin` or `origins` must be configured, never both",
-    19: "Number of `tileSizes` and `resolutions` must be equal",
-    20: "Number of `origins` and `resolutions` must be equal",
-    22: "Either `tileSize` or `tileSizes` must be configured, never both",
-    24: "Invalid extent or geometry provided as `geometry`",
-    25: "Cannot fit empty extent provided as `geometry`",
-    26: "Features must have an id set",
-    27: "Features must have an id set",
+    1: 'The view center is not defined',
+    2: 'The view resolution is not defined',
+    3: 'The view rotation is not defined',
+    4: '`image` and `src` cannot be provided at the same time',
+    5: '`imgSize` must be set when `image` is provided',
+    7: '`format` must be set when `url` is set',
+    8: 'Unknown `serverType` configured',
+    9: '`url` must be configured or set using `#setUrl()`',
+    10: 'The default `geometryFunction` can only handle `Point` geometries',
+    11: '`options.featureTypes` must be an Array',
+    12: '`options.geometryName` must also be provided when `options.bbox` is set',
+    13: 'Invalid corner',
+    14: 'Invalid color',
+    15: 'Tried to get a value for a key that does not exist in the cache',
+    16: 'Tried to set a value for a key that is used already',
+    17: '`resolutions` must be sorted in descending order',
+    18: 'Either `origin` or `origins` must be configured, never both',
+    19: 'Number of `tileSizes` and `resolutions` must be equal',
+    20: 'Number of `origins` and `resolutions` must be equal',
+    22: 'Either `tileSize` or `tileSizes` must be configured, never both',
+    24: 'Invalid extent or geometry provided as `geometry`',
+    25: 'Cannot fit empty extent provided as `geometry`',
+    26: 'Features must have an id set',
+    27: 'Features must have an id set',
     28: '`renderMode` must be `"hybrid"` or `"vector"`',
-    30: "The passed `feature` was already added to the source",
-    31: "Tried to enqueue an `element` that was already added to the queue",
-    32: "Transformation matrix cannot be inverted",
-    33: "Invalid units",
-    34: "Invalid geometry layout",
-    36: "Unknown SRS type",
-    37: "Unknown geometry type found",
-    38: "`styleMapValue` has an unknown type",
-    39: "Unknown geometry type",
-    40: "Expected `feature` to have a geometry",
-    41: "Expected an `ol/style/Style` or an array of `ol/style/Style.js`",
-    42: "Question unknown, the answer is 42",
-    43: "Expected `layers` to be an array or a `Collection`",
-    47: "Expected `controls` to be an array or an `ol/Collection`",
-    48: "Expected `interactions` to be an array or an `ol/Collection`",
-    49: "Expected `overlays` to be an array or an `ol/Collection`",
-    50: "`options.featureTypes` should be an Array",
-    51: "Either `url` or `tileJSON` options must be provided",
-    52: "Unknown `serverType` configured",
-    53: "Unknown `tierSizeCalculation` configured",
-    55: "The {-y} placeholder requires a tile grid with extent",
-    56: "mapBrowserEvent must originate from a pointer event",
-    57: "At least 2 conditions are required",
-    59: "Invalid command found in the PBF",
-    60: "Missing or invalid `size`",
-    61: "Cannot determine IIIF Image API version from provided image information JSON",
-    62: "A `WebGLArrayBuffer` must either be of type `ELEMENT_ARRAY_BUFFER` or `ARRAY_BUFFER`",
-    64: "Layer opacity must be a number",
-    66: "`forEachFeatureAtCoordinate` cannot be used on a WebGL layer if the hit detection logic has not been enabled. This is done by providing adequate shaders using the `hitVertexShader` and `hitFragmentShader` properties of `WebGLPointsLayerRenderer`",
-    67: "A layer can only be added to the map once. Use either `layer.setMap()` or `map.addLayer()`, not both",
-    68: "A VectorTile source can only be rendered if it has a projection compatible with the view projection",
-    69: "`width` or `height` cannot be provided together with `scale`"
+    30: 'The passed `feature` was already added to the source',
+    31: 'Tried to enqueue an `element` that was already added to the queue',
+    32: 'Transformation matrix cannot be inverted',
+    33: 'Invalid units',
+    34: 'Invalid geometry layout',
+    36: 'Unknown SRS type',
+    37: 'Unknown geometry type found',
+    38: '`styleMapValue` has an unknown type',
+    39: 'Unknown geometry type',
+    40: 'Expected `feature` to have a geometry',
+    41: 'Expected an `ol/style/Style` or an array of `ol/style/Style.js`',
+    42: 'Question unknown, the answer is 42',
+    43: 'Expected `layers` to be an array or a `Collection`',
+    47: 'Expected `controls` to be an array or an `ol/Collection`',
+    48: 'Expected `interactions` to be an array or an `ol/Collection`',
+    49: 'Expected `overlays` to be an array or an `ol/Collection`',
+    50: '`options.featureTypes` should be an Array',
+    51: 'Either `url` or `tileJSON` options must be provided',
+    52: 'Unknown `serverType` configured',
+    53: 'Unknown `tierSizeCalculation` configured',
+    55: 'The {-y} placeholder requires a tile grid with extent',
+    56: 'mapBrowserEvent must originate from a pointer event',
+    57: 'At least 2 conditions are required',
+    59: 'Invalid command found in the PBF',
+    60: 'Missing or invalid `size`',
+    61: 'Cannot determine IIIF Image API version from provided image information JSON',
+    62: 'A `WebGLArrayBuffer` must either be of type `ELEMENT_ARRAY_BUFFER` or `ARRAY_BUFFER`',
+    64: 'Layer opacity must be a number',
+    66: '`forEachFeatureAtCoordinate` cannot be used on a WebGL layer if the hit detection logic has not been enabled. This is done by providing adequate shaders using the `hitVertexShader` and `hitFragmentShader` properties of `WebGLPointsLayerRenderer`',
+    67: 'A layer can only be added to the map once. Use either `layer.setMap()` or `map.addLayer()`, not both',
+    68: 'A VectorTile source can only be rendered if it has a projection compatible with the view projection',
+    69: '`width` or `height` cannot be provided together with `scale`'
 };
 /**
  * Error object thrown when an assertion failed. This is an ECMA-262 Error,
@@ -3665,7 +3481,7 @@ var $d6cd7f1b627d5e92$export$2e2bcd8739ae039 = $d6cd7f1b627d5e92$var$BaseObject;
      */ this.code = code;
         /**
      * @type {string}
-     */ this.name = "AssertionError";
+     */ this.name = 'AssertionError';
         // Re-assign message, see https://github.com/Rich-Harris/buble/issues/40
         this.message = message;
     }
@@ -3760,7 +3576,7 @@ function $1e19c69d18d8b77c$export$a7a9523472993e97(assertion, errorCode) {
         /**
      * @type {string}
      * @private
-     */ this.geometryName_ = "geometry";
+     */ this.geometryName_ = 'geometry';
         /**
      * User provided style.
      * @private
@@ -3776,7 +3592,7 @@ function $1e19c69d18d8b77c$export$a7a9523472993e97(assertion, errorCode) {
      */ this.geometryChangeKey_ = null;
         this.addChangeListener(this.geometryName_, this.handleGeometryChanged_);
         if (geometryOrProperties) {
-            if (typeof /** @type {?} */ geometryOrProperties.getSimplifiedGeometry === "function") {
+            if (typeof /** @type {?} */ geometryOrProperties.getSimplifiedGeometry === 'function') {
                 const geometry = /** @type {Geometry} */ geometryOrProperties;
                 this.setGeometry(geometry);
             } else {
@@ -3907,13 +3723,13 @@ function $1e19c69d18d8b77c$export$a7a9523472993e97(assertion, errorCode) {
     }
 }
 function $488541e07685eb37$export$bb06ddfd5d66e02e(obj) {
-    if (typeof obj === "function") return obj;
+    if (typeof obj === 'function') return obj;
     /**
    * @type {Array<import("./style/Style.js").default>}
    */ let styles;
     if (Array.isArray(obj)) styles = obj;
     else {
-        (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof /** @type {?} */ obj.getZIndex === "function", 41); // Expected an `import("./style/Style.js").Style` or an array of `import("./style/Style.js").Style`
+        (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof /** @type {?} */ obj.getZIndex === 'function', 41); // Expected an `import("./style/Style.js").Style` or an array of `import("./style/Style.js").Style`
         const style = /** @type {import("./style/Style.js").default} */ obj;
         styles = [
             style
@@ -3941,12 +3757,12 @@ var $488541e07685eb37$export$2e2bcd8739ae039 = $488541e07685eb37$var$Feature;
    * Triggered when an item is added to the collection.
    * @event module:ol/Collection.CollectionEvent#add
    * @api
-   */ ADD: "add",
+   */ ADD: 'add',
     /**
    * Triggered when an item is removed from the collection.
    * @event module:ol/Collection.CollectionEvent#remove
    * @api
-   */ REMOVE: "remove"
+   */ REMOVE: 'remove'
 };
 
 
@@ -3955,7 +3771,7 @@ var $488541e07685eb37$export$2e2bcd8739ae039 = $488541e07685eb37$var$Feature;
  * @enum {string}
  * @private
  */ const $6ba3969272323605$var$Property = {
-    LENGTH: "length"
+    LENGTH: 'length'
 };
 class $6ba3969272323605$export$a87ae6eb2761ec6d extends (0, $f22c10e3757627da$export$2e2bcd8739ae039) {
     /**
@@ -4085,7 +3901,7 @@ class $6ba3969272323605$export$a87ae6eb2761ec6d extends (0, $f22c10e3757627da$ex
    * @param {T} elem Element.
    * @api
    */ insertAt(index, elem) {
-        if (index < 0 || index > this.getLength()) throw new Error("Index out of bounds: " + index);
+        if (index < 0 || index > this.getLength()) throw new Error('Index out of bounds: ' + index);
         if (this.unique_) this.assertUnique_(elem);
         this.array_.splice(index, 0, elem);
         this.updateLength_();
@@ -4147,7 +3963,7 @@ class $6ba3969272323605$export$a87ae6eb2761ec6d extends (0, $f22c10e3757627da$ex
             this.insertAt(index, elem);
             return;
         }
-        if (index < 0) throw new Error("Index out of bounds: " + index);
+        if (index < 0) throw new Error('Index out of bounds: ' + index);
         if (this.unique_) this.assertUnique_(elem, index);
         const prev = this.array_[index];
         this.array_[index] = elem;
@@ -4184,25 +4000,25 @@ var $6ba3969272323605$export$2e2bcd8739ae039 = $6ba3969272323605$var$Collection;
  * @module ol/transform
  */ /**
  * @module ol/has
- */ const $253e11c6a01eb5bc$var$ua = typeof navigator !== "undefined" && typeof navigator.userAgent !== "undefined" ? navigator.userAgent.toLowerCase() : "";
-const $253e11c6a01eb5bc$export$8442bdfd18b7b8a6 = $253e11c6a01eb5bc$var$ua.includes("firefox");
-const $253e11c6a01eb5bc$export$3227bfbdaa9275de = $253e11c6a01eb5bc$var$ua.includes("safari") && !$253e11c6a01eb5bc$var$ua.includes("chrom");
-const $253e11c6a01eb5bc$export$b23eed0e325a206a = $253e11c6a01eb5bc$export$3227bfbdaa9275de && ($253e11c6a01eb5bc$var$ua.includes("version/15.4") || /cpu (os|iphone os) 15_4 like mac os x/.test($253e11c6a01eb5bc$var$ua));
-const $253e11c6a01eb5bc$export$39dfd62a25e0fe93 = $253e11c6a01eb5bc$var$ua.includes("webkit") && !$253e11c6a01eb5bc$var$ua.includes("edge");
-const $253e11c6a01eb5bc$export$76c0a3b101d93136 = $253e11c6a01eb5bc$var$ua.includes("macintosh");
-const $253e11c6a01eb5bc$export$6b83a0446fc26f94 = typeof devicePixelRatio !== "undefined" ? devicePixelRatio : 1;
-const $253e11c6a01eb5bc$export$98fcef3dc9973292 = typeof WorkerGlobalScope !== "undefined" && typeof OffscreenCanvas !== "undefined" && self instanceof WorkerGlobalScope; //eslint-disable-line
-const $253e11c6a01eb5bc$export$716f8695eedb9bad = typeof Image !== "undefined" && Image.prototype.decode;
+ */ const $253e11c6a01eb5bc$var$ua = typeof navigator !== 'undefined' && typeof navigator.userAgent !== 'undefined' ? navigator.userAgent.toLowerCase() : '';
+const $253e11c6a01eb5bc$export$8442bdfd18b7b8a6 = $253e11c6a01eb5bc$var$ua.includes('firefox');
+const $253e11c6a01eb5bc$export$3227bfbdaa9275de = $253e11c6a01eb5bc$var$ua.includes('safari') && !$253e11c6a01eb5bc$var$ua.includes('chrom');
+const $253e11c6a01eb5bc$export$b23eed0e325a206a = $253e11c6a01eb5bc$export$3227bfbdaa9275de && ($253e11c6a01eb5bc$var$ua.includes('version/15.4') || /cpu (os|iphone os) 15_4 like mac os x/.test($253e11c6a01eb5bc$var$ua));
+const $253e11c6a01eb5bc$export$39dfd62a25e0fe93 = $253e11c6a01eb5bc$var$ua.includes('webkit') && !$253e11c6a01eb5bc$var$ua.includes('edge');
+const $253e11c6a01eb5bc$export$76c0a3b101d93136 = $253e11c6a01eb5bc$var$ua.includes('macintosh');
+const $253e11c6a01eb5bc$export$6b83a0446fc26f94 = typeof devicePixelRatio !== 'undefined' ? devicePixelRatio : 1;
+const $253e11c6a01eb5bc$export$98fcef3dc9973292 = typeof WorkerGlobalScope !== 'undefined' && typeof OffscreenCanvas !== 'undefined' && self instanceof WorkerGlobalScope; //eslint-disable-line
+const $253e11c6a01eb5bc$export$716f8695eedb9bad = typeof Image !== 'undefined' && Image.prototype.decode;
 const $253e11c6a01eb5bc$export$f751ce96c6c4e4fc = function() {
     let passive = false;
     try {
-        const options = Object.defineProperty({}, "passive", {
+        const options = Object.defineProperty({}, 'passive', {
             get: function() {
                 passive = true;
             }
         });
-        window.addEventListener("_", null, options);
-        window.removeEventListener("_", null, options);
+        window.addEventListener('_', null, options);
+        window.removeEventListener('_', null, options);
     } catch (error) {
     // passive not supported
     }
@@ -4345,9 +4161,9 @@ function $d59a735b25ae191a$export$a04698f914c55ed9(mat) {
  * @private
  */ let $d59a735b25ae191a$var$transformStringDiv;
 function $d59a735b25ae191a$export$f84e8e69fd4488a5(mat) {
-    const transformString = "matrix(" + mat.join(", ") + ")";
+    const transformString = 'matrix(' + mat.join(', ') + ')';
     if (0, $253e11c6a01eb5bc$export$98fcef3dc9973292) return transformString;
-    const node = $d59a735b25ae191a$var$transformStringDiv || ($d59a735b25ae191a$var$transformStringDiv = document.createElement("div"));
+    const node = $d59a735b25ae191a$var$transformStringDiv || ($d59a735b25ae191a$var$transformStringDiv = document.createElement('div'));
     node.style.transform = transformString;
     return node.style.transform;
 }
@@ -4565,10 +4381,10 @@ function $84be800ca44e672c$export$c91255cadecfe081(extent) {
 }
 function $84be800ca44e672c$export$a1cfd206661d0801(extent, corner) {
     let coordinate;
-    if (corner === "bottom-left") coordinate = $84be800ca44e672c$export$8d09f5e2e1bf560d(extent);
-    else if (corner === "bottom-right") coordinate = $84be800ca44e672c$export$e77c1cf70445e168(extent);
-    else if (corner === "top-left") coordinate = $84be800ca44e672c$export$cb1538b07e6964ff(extent);
-    else if (corner === "top-right") coordinate = $84be800ca44e672c$export$b84fa077c8b05295(extent);
+    if (corner === 'bottom-left') coordinate = $84be800ca44e672c$export$8d09f5e2e1bf560d(extent);
+    else if (corner === 'bottom-right') coordinate = $84be800ca44e672c$export$e77c1cf70445e168(extent);
+    else if (corner === 'top-left') coordinate = $84be800ca44e672c$export$cb1538b07e6964ff(extent);
+    else if (corner === 'top-right') coordinate = $84be800ca44e672c$export$b84fa077c8b05295(extent);
     else (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(false, 13); // Invalid corner
     return coordinate;
 }
@@ -4930,7 +4746,7 @@ function $57ec69d152197e1d$export$803ce6b71a0a94b2(n, decimals) {
  * @private
  */ const $d32b89243a698e8b$var$NAMED_COLOR_RE_ = /^([a-z]*)$|^hsla?\(.*\)$/i;
 function $d32b89243a698e8b$export$590567be997858b6(color) {
-    if (typeof color === "string") return color;
+    if (typeof color === 'string') return color;
     return $d32b89243a698e8b$export$f84e8e69fd4488a5(color);
 }
 /**
@@ -4938,15 +4754,15 @@ function $d32b89243a698e8b$export$590567be997858b6(color) {
  * @param {string} color Named color.
  * @return {string} Rgb string.
  */ function $d32b89243a698e8b$var$fromNamed(color) {
-    const el = document.createElement("div");
+    const el = document.createElement('div');
     el.style.color = color;
-    if (el.style.color !== "") {
+    if (el.style.color !== '') {
         document.body.appendChild(el);
         const rgb = getComputedStyle(el).color;
         document.body.removeChild(el);
         return rgb;
     }
-    return "";
+    return '';
 }
 const $d32b89243a698e8b$export$3004f64547af360e = function() {
     // We maintain a small cache of parsed strings.  To provide cheap LRU-like
@@ -5018,13 +4834,13 @@ function $d32b89243a698e8b$export$75093a47a9fa838d(color) {
             b,
             a / 255
         ];
-    } else if (s.startsWith("rgba(")) {
+    } else if (s.startsWith('rgba(')) {
         // rgba()
-        color = s.slice(5, -1).split(",").map(Number);
+        color = s.slice(5, -1).split(',').map(Number);
         $d32b89243a698e8b$export$a3295358bff77e(color);
-    } else if (s.startsWith("rgb(")) {
+    } else if (s.startsWith('rgb(')) {
         // rgb()
-        color = s.slice(4, -1).split(",").map(Number);
+        color = s.slice(4, -1).split(',').map(Number);
         color.push(1);
         $d32b89243a698e8b$export$a3295358bff77e(color);
     } else (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(false, 14); // Invalid color
@@ -5045,11 +4861,11 @@ function $d32b89243a698e8b$export$f84e8e69fd4488a5(color) {
     let b = color[2];
     if (b != (b | 0)) b = b + 0.5 | 0;
     const a = color[3] === undefined ? 1 : Math.round(color[3] * 100) / 100;
-    return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
 }
 function $d32b89243a698e8b$export$40dd713d7775a0b1(s) {
     if ($d32b89243a698e8b$var$NAMED_COLOR_RE_.test(s)) s = $d32b89243a698e8b$var$fromNamed(s);
-    return $d32b89243a698e8b$var$HEX_COLOR_RE_.test(s) || s.startsWith("rgba(") || s.startsWith("rgb(");
+    return $d32b89243a698e8b$var$HEX_COLOR_RE_.test(s) || s.startsWith('rgba(') || s.startsWith('rgb(');
 }
 
 
@@ -5132,8 +4948,8 @@ function $d32b89243a698e8b$export$40dd713d7775a0b1(s) {
  * @param {import("../color.js").Color} color Color.
  * @return {string} Cache key.
  */ function $82136d2ec01af9ba$var$getKey(src, crossOrigin, color) {
-    const colorString = color ? (0, $d32b89243a698e8b$export$590567be997858b6)(color) : "null";
-    return crossOrigin + ":" + src + ":" + colorString;
+    const colorString = color ? (0, $d32b89243a698e8b$export$590567be997858b6)(color) : 'null';
+    return crossOrigin + ':' + src + ':' + colorString;
 }
 var $82136d2ec01af9ba$export$2e2bcd8739ae039 = $82136d2ec01af9ba$var$IconImageCache;
 const $82136d2ec01af9ba$export$747ccdf771a87ab8 = new $82136d2ec01af9ba$var$IconImageCache();
@@ -5149,16 +4965,16 @@ const $82136d2ec01af9ba$export$747ccdf771a87ab8 = new $82136d2ec01af9ba$var$Icon
  */ /**
  * @enum {string}
  */ var $e777f004feefd0c5$export$2e2bcd8739ae039 = {
-    OPACITY: "opacity",
-    VISIBLE: "visible",
-    EXTENT: "extent",
-    Z_INDEX: "zIndex",
-    MAX_RESOLUTION: "maxResolution",
-    MIN_RESOLUTION: "minResolution",
-    MAX_ZOOM: "maxZoom",
-    MIN_ZOOM: "minZoom",
-    SOURCE: "source",
-    MAP: "map"
+    OPACITY: 'opacity',
+    VISIBLE: 'visible',
+    EXTENT: 'extent',
+    Z_INDEX: 'zIndex',
+    MAX_RESOLUTION: 'maxResolution',
+    MIN_RESOLUTION: 'minResolution',
+    MAX_ZOOM: 'maxZoom',
+    MIN_ZOOM: 'minZoom',
+    SOURCE: 'source',
+    MAP: 'map'
 };
 
 
@@ -5230,12 +5046,12 @@ const $82136d2ec01af9ba$export$747ccdf771a87ab8 = new $82136d2ec01af9ba$var$Icon
         /**
      * @type {Object<string, *>}
      */ const properties = Object.assign({}, options);
-        if (typeof options.properties === "object") {
+        if (typeof options.properties === 'object') {
             delete properties.properties;
             Object.assign(properties, options.properties);
         }
         properties[(0, $e777f004feefd0c5$export$2e2bcd8739ae039).OPACITY] = options.opacity !== undefined ? options.opacity : 1;
-        (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof properties[(0, $e777f004feefd0c5$export$2e2bcd8739ae039).OPACITY] === "number", 64); // Layer opacity must be a number
+        (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof properties[(0, $e777f004feefd0c5$export$2e2bcd8739ae039).OPACITY] === 'number', 64); // Layer opacity must be a number
         properties[(0, $e777f004feefd0c5$export$2e2bcd8739ae039).VISIBLE] = options.visible !== undefined ? options.visible : true;
         properties[(0, $e777f004feefd0c5$export$2e2bcd8739ae039).Z_INDEX] = options.zIndex;
         properties[(0, $e777f004feefd0c5$export$2e2bcd8739ae039).MAX_RESOLUTION] = options.maxResolution !== undefined ? options.maxResolution : Infinity;
@@ -5245,7 +5061,7 @@ const $82136d2ec01af9ba$export$747ccdf771a87ab8 = new $82136d2ec01af9ba$var$Icon
         /**
      * @type {string}
      * @private
-     */ this.className_ = properties.className !== undefined ? properties.className : "ol-layer";
+     */ this.className_ = properties.className !== undefined ? properties.className : 'ol-layer';
         delete properties.className;
         this.setProperties(properties);
         /**
@@ -5434,7 +5250,7 @@ const $82136d2ec01af9ba$export$747ccdf771a87ab8 = new $82136d2ec01af9ba$var$Icon
    * @observable
    * @api
    */ setOpacity(opacity) {
-        (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof opacity === "number", 64); // Layer opacity must be a number
+        (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof opacity === 'number', 64); // Layer opacity must be a number
         this.set((0, $e777f004feefd0c5$export$2e2bcd8739ae039).OPACITY, opacity);
     }
     /**
@@ -5482,33 +5298,33 @@ var $caae539137eb9fda$export$2e2bcd8739ae039 = $caae539137eb9fda$var$BaseLayer;
    * Triggered before a layer is rendered.
    * @event module:ol/render/Event~RenderEvent#prerender
    * @api
-   */ PRERENDER: "prerender",
+   */ PRERENDER: 'prerender',
     /**
    * Triggered after a layer is rendered.
    * @event module:ol/render/Event~RenderEvent#postrender
    * @api
-   */ POSTRENDER: "postrender",
+   */ POSTRENDER: 'postrender',
     /**
    * Triggered before layers are composed.  When dispatched by the map, the event object will not have
    * a `context` set.  When dispatched by a layer, the event object will have a `context` set.  Only
    * WebGL layers currently dispatch this event.
    * @event module:ol/render/Event~RenderEvent#precompose
    * @api
-   */ PRECOMPOSE: "precompose",
+   */ PRECOMPOSE: 'precompose',
     /**
    * Triggered after layers are composed.  When dispatched by the map, the event object will not have
    * a `context` set.  When dispatched by a layer, the event object will have a `context` set.  Only
    * WebGL layers currently dispatch this event.
    * @event module:ol/render/Event~RenderEvent#postcompose
    * @api
-   */ POSTCOMPOSE: "postcompose",
+   */ POSTCOMPOSE: 'postcompose',
     /**
    * Triggered when rendering is complete, i.e. all sources and tiles have
    * finished loading for the current viewport, and all tiles are faded in.
    * The event object will not have a `context` set.
    * @event module:ol/render/Event~RenderEvent#rendercomplete
    * @api
-   */ RENDERCOMPLETE: "rendercomplete"
+   */ RENDERCOMPLETE: 'rendercomplete'
 };
 
 
@@ -5530,9 +5346,9 @@ var $caae539137eb9fda$export$2e2bcd8739ae039 = $caae539137eb9fda$var$BaseLayer;
  */ /**
  * @enum {string}
  */ var $6221a0fc70b5fd5c$export$2e2bcd8739ae039 = {
-    CENTER: "center",
-    RESOLUTION: "resolution",
-    ROTATION: "rotation"
+    CENTER: 'center',
+    RESOLUTION: 'resolution',
+    ROTATION: 'rotation'
 };
 
 
@@ -5611,22 +5427,22 @@ const $a96901ad7de10b0c$export$6b8cb5cd370bd90c = 256;
  * See http://duff.ess.washington.edu/data/raster/drg/docs/geotiff.txt
  * @type {Object<number, Units>}
  */ const $6a4fde186e5464e9$var$unitByCode = {
-    "9001": "m",
-    "9002": "ft",
-    "9003": "us-ft",
-    "9101": "radians",
-    "9102": "degrees"
+    '9001': 'm',
+    '9002': 'ft',
+    '9003': 'us-ft',
+    '9101': 'radians',
+    '9102': 'degrees'
 };
 function $6a4fde186e5464e9$export$7f58726df3255edc(code) {
     return $6a4fde186e5464e9$var$unitByCode[code];
 }
 const $6a4fde186e5464e9$export$1482081eec883108 = {
     // use the radius of the Normal sphere
-    "radians": 6370997 / (2 * Math.PI),
-    "degrees": 2 * Math.PI * 6370997 / 360,
-    "ft": 0.3048,
-    "m": 1,
-    "us-ft": 1200 / 3937
+    'radians': 6370997 / (2 * Math.PI),
+    'degrees': 2 * Math.PI * 6370997 / 360,
+    'ft': 0.3048,
+    'm': 1,
+    'us-ft': 1200 / 3937
 };
 
 
@@ -5705,7 +5521,7 @@ const $6a4fde186e5464e9$export$1482081eec883108 = {
         /**
      * @private
      * @type {string}
-     */ this.axisOrientation_ = options.axisOrientation !== undefined ? options.axisOrientation : "enu";
+     */ this.axisOrientation_ = options.axisOrientation !== undefined ? options.axisOrientation : 'enu';
         /**
      * @private
      * @type {boolean}
@@ -5866,7 +5682,7 @@ const $e6bed287da12a40a$export$d26945d1ad52feeb = $e6bed287da12a40a$export$2d2c9
    */ constructor(code){
         super({
             code: code,
-            units: "m",
+            units: 'm',
             extent: $e6bed287da12a40a$export$21e6da8a7375dfe8,
             global: true,
             worldExtent: $e6bed287da12a40a$export$ae9d6ed80df710e5,
@@ -5877,12 +5693,12 @@ const $e6bed287da12a40a$export$d26945d1ad52feeb = $e6bed287da12a40a$export$2d2c9
     }
 }
 const $e6bed287da12a40a$export$b508d7ad9a891c1b = [
-    new $e6bed287da12a40a$var$EPSG3857Projection("EPSG:3857"),
-    new $e6bed287da12a40a$var$EPSG3857Projection("EPSG:102100"),
-    new $e6bed287da12a40a$var$EPSG3857Projection("EPSG:102113"),
-    new $e6bed287da12a40a$var$EPSG3857Projection("EPSG:900913"),
-    new $e6bed287da12a40a$var$EPSG3857Projection("http://www.opengis.net/def/crs/EPSG/0/3857"),
-    new $e6bed287da12a40a$var$EPSG3857Projection("http://www.opengis.net/gml/srs/epsg.xml#3857")
+    new $e6bed287da12a40a$var$EPSG3857Projection('EPSG:3857'),
+    new $e6bed287da12a40a$var$EPSG3857Projection('EPSG:102100'),
+    new $e6bed287da12a40a$var$EPSG3857Projection('EPSG:102113'),
+    new $e6bed287da12a40a$var$EPSG3857Projection('EPSG:900913'),
+    new $e6bed287da12a40a$var$EPSG3857Projection('http://www.opengis.net/def/crs/EPSG/0/3857'),
+    new $e6bed287da12a40a$var$EPSG3857Projection('http://www.opengis.net/gml/srs/epsg.xml#3857')
 ];
 function $e6bed287da12a40a$export$1ff8bb36c0983070(input, output, dimension) {
     const length = input.length;
@@ -5942,7 +5758,7 @@ const $366cef9ace33c799$export$1482081eec883108 = Math.PI * $366cef9ace33c799$ex
    */ constructor(code, axisOrientation){
         super({
             code: code,
-            units: "degrees",
+            units: 'degrees',
             extent: $366cef9ace33c799$export$21e6da8a7375dfe8,
             axisOrientation: axisOrientation,
             global: true,
@@ -5952,13 +5768,13 @@ const $366cef9ace33c799$export$1482081eec883108 = Math.PI * $366cef9ace33c799$ex
     }
 }
 const $366cef9ace33c799$export$b508d7ad9a891c1b = [
-    new $366cef9ace33c799$var$EPSG4326Projection("CRS:84"),
-    new $366cef9ace33c799$var$EPSG4326Projection("EPSG:4326", "neu"),
-    new $366cef9ace33c799$var$EPSG4326Projection("urn:ogc:def:crs:OGC:1.3:CRS84"),
-    new $366cef9ace33c799$var$EPSG4326Projection("urn:ogc:def:crs:OGC:2:84"),
-    new $366cef9ace33c799$var$EPSG4326Projection("http://www.opengis.net/def/crs/OGC/1.3/CRS84"),
-    new $366cef9ace33c799$var$EPSG4326Projection("http://www.opengis.net/gml/srs/epsg.xml#4326", "neu"),
-    new $366cef9ace33c799$var$EPSG4326Projection("http://www.opengis.net/def/crs/EPSG/0/4326", "neu")
+    new $366cef9ace33c799$var$EPSG4326Projection('CRS:84'),
+    new $366cef9ace33c799$var$EPSG4326Projection('EPSG:4326', 'neu'),
+    new $366cef9ace33c799$var$EPSG4326Projection('urn:ogc:def:crs:OGC:1.3:CRS84'),
+    new $366cef9ace33c799$var$EPSG4326Projection('urn:ogc:def:crs:OGC:2:84'),
+    new $366cef9ace33c799$var$EPSG4326Projection('http://www.opengis.net/def/crs/OGC/1.3/CRS84'),
+    new $366cef9ace33c799$var$EPSG4326Projection('http://www.opengis.net/gml/srs/epsg.xml#4326', 'neu'),
+    new $366cef9ace33c799$var$EPSG4326Projection('http://www.opengis.net/def/crs/EPSG/0/4326', 'neu')
 ];
 
 
@@ -5972,7 +5788,7 @@ function $685869700e166c3a$export$42ffd38884aecdac() {
     $685869700e166c3a$var$cache = {};
 }
 function $685869700e166c3a$export$3988ae62b71be9a3(code) {
-    return $685869700e166c3a$var$cache[code] || $685869700e166c3a$var$cache[code.replace(/urn:(x-)?ogc:def:crs:EPSG:(.*:)?(\w+)$/, "EPSG:$3")] || null;
+    return $685869700e166c3a$var$cache[code] || $685869700e166c3a$var$cache[code.replace(/urn:(x-)?ogc:def:crs:EPSG:(.*:)?(\w+)$/, 'EPSG:$3')] || null;
 }
 function $685869700e166c3a$export$e16d8520af44a096(code, projection) {
     $685869700e166c3a$var$cache[code] = projection;
@@ -6024,17 +5840,17 @@ function $00727a2fe5eeabf8$export$3988ae62b71be9a3(sourceCode, destinationCode) 
  * @param {number} [precision] Precision of the output string (i.e. number of decimal places)
  * @return {string} Formatted string
  */ function $104d4d01eb549908$export$24be126cb0a7bbeb(number, width, precision) {
-    const numberString = precision !== undefined ? number.toFixed(precision) : "" + number;
-    let decimal = numberString.indexOf(".");
+    const numberString = precision !== undefined ? number.toFixed(precision) : '' + number;
+    let decimal = numberString.indexOf('.');
     decimal = decimal === -1 ? numberString.length : decimal;
-    return decimal > width ? numberString : new Array(1 + width - decimal).join("0") + numberString;
+    return decimal > width ? numberString : new Array(1 + width - decimal).join('0') + numberString;
 }
 function $104d4d01eb549908$export$66e1c0999abad646(v1, v2) {
-    const s1 = ("" + v1).split(".");
-    const s2 = ("" + v2).split(".");
+    const s1 = ('' + v1).split('.');
+    const s2 = ('' + v2).split('.');
     for(let i = 0; i < Math.max(s1.length, s2.length); i++){
-        const n1 = parseInt(s1[i] || "0", 10);
-        const n2 = parseInt(s2[i] || "0", 10);
+        const n1 = parseInt(s1[i] || '0', 10);
+        const n2 = parseInt(s2[i] || '0', 10);
         if (n1 > n2) return 1;
         if (n2 > n1) return -1;
     }
@@ -6116,15 +5932,15 @@ function $c65bc16e55ef0e33$export$6eb0ac5f024d8590(hemispheres, degrees, fractio
         min = 0;
         deg += 1;
     }
-    let hdms = deg + "\xb0";
-    if (min !== 0 || sec !== 0) hdms += " " + (0, $104d4d01eb549908$export$24be126cb0a7bbeb)(min, 2) + "\u2032";
-    if (sec !== 0) hdms += " " + (0, $104d4d01eb549908$export$24be126cb0a7bbeb)(sec, 2, decimals) + "\u2033";
-    if (normalizedDegrees !== 0) hdms += " " + hemispheres.charAt(normalizedDegrees < 0 ? 1 : 0);
+    let hdms = deg + '\u00b0';
+    if (min !== 0 || sec !== 0) hdms += ' ' + (0, $104d4d01eb549908$export$24be126cb0a7bbeb)(min, 2) + '\u2032';
+    if (sec !== 0) hdms += ' ' + (0, $104d4d01eb549908$export$24be126cb0a7bbeb)(sec, 2, decimals) + '\u2033';
+    if (normalizedDegrees !== 0) hdms += ' ' + hemispheres.charAt(normalizedDegrees < 0 ? 1 : 0);
     return hdms;
 }
 function $c65bc16e55ef0e33$export$d9468344d3651243(coordinate, template, fractionDigits) {
-    if (coordinate) return template.replace("{x}", coordinate[0].toFixed(fractionDigits)).replace("{y}", coordinate[1].toFixed(fractionDigits));
-    return "";
+    if (coordinate) return template.replace('{x}', coordinate[0].toFixed(fractionDigits)).replace('{y}', coordinate[1].toFixed(fractionDigits));
+    return '';
 }
 function $c65bc16e55ef0e33$export$e9bab7fafb253603(coordinate1, coordinate2) {
     let equals = true;
@@ -6160,11 +5976,11 @@ function $c65bc16e55ef0e33$export$6985570514055196(coordinate, segment) {
     return $c65bc16e55ef0e33$export$88e6ebb4fe54f538(coordinate, $c65bc16e55ef0e33$export$18cdd31d17f97131(coordinate, segment));
 }
 function $c65bc16e55ef0e33$export$c883fd238161f841(coordinate, fractionDigits) {
-    if (coordinate) return $c65bc16e55ef0e33$export$6eb0ac5f024d8590("NS", coordinate[1], fractionDigits) + " " + $c65bc16e55ef0e33$export$6eb0ac5f024d8590("EW", coordinate[0], fractionDigits);
-    return "";
+    if (coordinate) return $c65bc16e55ef0e33$export$6eb0ac5f024d8590('NS', coordinate[1], fractionDigits) + ' ' + $c65bc16e55ef0e33$export$6eb0ac5f024d8590('EW', coordinate[0], fractionDigits);
+    return '';
 }
 function $c65bc16e55ef0e33$export$9ff8f16060979e0a(coordinate, fractionDigits) {
-    return $c65bc16e55ef0e33$export$d9468344d3651243(coordinate, "{x}, {y}", fractionDigits);
+    return $c65bc16e55ef0e33$export$d9468344d3651243(coordinate, '{x}, {y}', fractionDigits);
 }
 function $c65bc16e55ef0e33$export$39a9ce3624977b84(coordinate, projection) {
     if (projection.canWrapX()) {
@@ -6211,40 +6027,40 @@ function $d164a570a58ed2be$export$79376507b09a66f(c1, c2, radius) {
 function $d164a570a58ed2be$export$f0d11c074a923179(geometry, options) {
     options = options || {};
     const radius = options.radius || $d164a570a58ed2be$export$63f2df7bd7371262;
-    const projection = options.projection || "EPSG:3857";
+    const projection = options.projection || 'EPSG:3857';
     const type = geometry.getType();
-    if (type !== "GeometryCollection") geometry = geometry.clone().transform(projection, "EPSG:4326");
+    if (type !== 'GeometryCollection') geometry = geometry.clone().transform(projection, 'EPSG:4326');
     let length = 0;
     let coordinates, coords, i, ii, j, jj;
     switch(type){
-        case "Point":
-        case "MultiPoint":
+        case 'Point':
+        case 'MultiPoint':
             break;
-        case "LineString":
-        case "LinearRing":
+        case 'LineString':
+        case 'LinearRing':
             coordinates = /** @type {import("./geom/SimpleGeometry.js").default} */ geometry.getCoordinates();
             length = $d164a570a58ed2be$var$getLengthInternal(coordinates, radius);
             break;
-        case "MultiLineString":
-        case "Polygon":
+        case 'MultiLineString':
+        case 'Polygon':
             coordinates = /** @type {import("./geom/SimpleGeometry.js").default} */ geometry.getCoordinates();
             for(i = 0, ii = coordinates.length; i < ii; ++i)length += $d164a570a58ed2be$var$getLengthInternal(coordinates[i], radius);
             break;
-        case "MultiPolygon":
+        case 'MultiPolygon':
             coordinates = /** @type {import("./geom/SimpleGeometry.js").default} */ geometry.getCoordinates();
             for(i = 0, ii = coordinates.length; i < ii; ++i){
                 coords = coordinates[i];
                 for(j = 0, jj = coords.length; j < jj; ++j)length += $d164a570a58ed2be$var$getLengthInternal(coords[j], radius);
             }
             break;
-        case "GeometryCollection":
+        case 'GeometryCollection':
             {
                 const geometries = /** @type {import("./geom/GeometryCollection.js").default} */ geometry.getGeometries();
                 for(i = 0, ii = geometries.length; i < ii; ++i)length += $d164a570a58ed2be$export$f0d11c074a923179(geometries[i], options);
                 break;
             }
         default:
-            throw new Error("Unsupported geometry type: " + type);
+            throw new Error('Unsupported geometry type: ' + type);
     }
     return length;
 }
@@ -6278,24 +6094,24 @@ function $d164a570a58ed2be$export$f0d11c074a923179(geometry, options) {
 function $d164a570a58ed2be$export$520c40045967cb15(geometry, options) {
     options = options || {};
     const radius = options.radius || $d164a570a58ed2be$export$63f2df7bd7371262;
-    const projection = options.projection || "EPSG:3857";
+    const projection = options.projection || 'EPSG:3857';
     const type = geometry.getType();
-    if (type !== "GeometryCollection") geometry = geometry.clone().transform(projection, "EPSG:4326");
+    if (type !== 'GeometryCollection') geometry = geometry.clone().transform(projection, 'EPSG:4326');
     let area = 0;
     let coordinates, coords, i, ii, j, jj;
     switch(type){
-        case "Point":
-        case "MultiPoint":
-        case "LineString":
-        case "MultiLineString":
-        case "LinearRing":
+        case 'Point':
+        case 'MultiPoint':
+        case 'LineString':
+        case 'MultiLineString':
+        case 'LinearRing':
             break;
-        case "Polygon":
+        case 'Polygon':
             coordinates = /** @type {import("./geom/Polygon.js").default} */ geometry.getCoordinates();
             area = Math.abs($d164a570a58ed2be$var$getAreaInternal(coordinates[0], radius));
             for(i = 1, ii = coordinates.length; i < ii; ++i)area -= Math.abs($d164a570a58ed2be$var$getAreaInternal(coordinates[i], radius));
             break;
-        case "MultiPolygon":
+        case 'MultiPolygon':
             coordinates = /** @type {import("./geom/SimpleGeometry.js").default} */ geometry.getCoordinates();
             for(i = 0, ii = coordinates.length; i < ii; ++i){
                 coords = coordinates[i];
@@ -6303,14 +6119,14 @@ function $d164a570a58ed2be$export$520c40045967cb15(geometry, options) {
                 for(j = 1, jj = coords.length; j < jj; ++j)area -= Math.abs($d164a570a58ed2be$var$getAreaInternal(coords[j], radius));
             }
             break;
-        case "GeometryCollection":
+        case 'GeometryCollection':
             {
                 const geometries = /** @type {import("./geom/GeometryCollection.js").default} */ geometry.getGeometries();
                 for(i = 0, ii = geometries.length; i < ii; ++i)area += $d164a570a58ed2be$export$520c40045967cb15(geometries[i], options);
                 break;
             }
         default:
-            throw new Error("Unsupported geometry type: " + type);
+            throw new Error('Unsupported geometry type: ' + type);
     }
     return area;
 }
@@ -6387,7 +6203,7 @@ function $983289ae1d13cd2a$export$638ad73f7aafb913(projections) {
     projections.forEach($983289ae1d13cd2a$export$59ae956cd3e343f7);
 }
 function $983289ae1d13cd2a$export$3988ae62b71be9a3(projectionLike) {
-    return typeof projectionLike === "string" ? (0, $685869700e166c3a$export$3988ae62b71be9a3)(/** @type {string} */ projectionLike) : /** @type {Projection} */ projectionLike || null;
+    return typeof projectionLike === 'string' ? (0, $685869700e166c3a$export$3988ae62b71be9a3)(/** @type {string} */ projectionLike) : /** @type {Projection} */ projectionLike || null;
 }
 function $983289ae1d13cd2a$export$2d8f7b4eec383d44(projection, resolution, point, units) {
     projection = $983289ae1d13cd2a$export$3988ae62b71be9a3(projection);
@@ -6401,13 +6217,13 @@ function $983289ae1d13cd2a$export$2d8f7b4eec383d44(projection, resolution, point
         }
     } else {
         const projUnits = projection.getUnits();
-        if (projUnits == "degrees" && !units || units == "degrees") pointResolution = resolution;
+        if (projUnits == 'degrees' && !units || units == 'degrees') pointResolution = resolution;
         else {
             // Estimate point resolution by transforming the center pixel to EPSG:4326,
             // measuring its width and height on the normal sphere, and taking the
             // average of the width and height.
-            const toEPSG4326 = $983289ae1d13cd2a$export$e3c4995a701c26a3(projection, $983289ae1d13cd2a$export$3988ae62b71be9a3("EPSG:4326"));
-            if (toEPSG4326 === $983289ae1d13cd2a$export$83e8ab53904f8022 && projUnits !== "degrees") // no transform is available
+            const toEPSG4326 = $983289ae1d13cd2a$export$e3c4995a701c26a3(projection, $983289ae1d13cd2a$export$3988ae62b71be9a3('EPSG:4326'));
+            if (toEPSG4326 === $983289ae1d13cd2a$export$83e8ab53904f8022 && projUnits !== 'degrees') // no transform is available
             pointResolution = resolution * projection.getMetersPerUnit();
             else {
                 let vertices = [
@@ -6453,7 +6269,7 @@ function $983289ae1d13cd2a$export$4860237d10380594() {
 }
 function $983289ae1d13cd2a$export$549167224996a0fb(projection, defaultCode) {
     if (!projection) return $983289ae1d13cd2a$export$3988ae62b71be9a3(defaultCode);
-    if (typeof projection === "string") return $983289ae1d13cd2a$export$3988ae62b71be9a3(projection);
+    if (typeof projection === 'string') return $983289ae1d13cd2a$export$3988ae62b71be9a3(projection);
     return /** @type {Projection} */ projection;
 }
 function $983289ae1d13cd2a$export$6b4aafd331159e0d(coordTransform) {
@@ -6482,10 +6298,10 @@ function $983289ae1d13cd2a$export$6b1c2e6623f4f49d(source, destination, forward,
 }
 function $983289ae1d13cd2a$export$b15d9668511529b9(coordinate, projection) {
     $983289ae1d13cd2a$export$ed949affbc7c4223();
-    return $983289ae1d13cd2a$export$51186ad6e864892a(coordinate, "EPSG:4326", projection !== undefined ? projection : "EPSG:3857");
+    return $983289ae1d13cd2a$export$51186ad6e864892a(coordinate, 'EPSG:4326', projection !== undefined ? projection : 'EPSG:3857');
 }
 function $983289ae1d13cd2a$export$3fb495868742d370(coordinate, projection) {
-    const lonLat = $983289ae1d13cd2a$export$51186ad6e864892a(coordinate, projection !== undefined ? projection : "EPSG:3857", "EPSG:4326");
+    const lonLat = $983289ae1d13cd2a$export$51186ad6e864892a(coordinate, projection !== undefined ? projection : 'EPSG:3857', 'EPSG:4326');
     const lon = lonLat[0];
     if (lon < -180 || lon > 180) lonLat[0] = (0, $57ec69d152197e1d$export$ba467bec01d66def)(lon + 180, 360) - 180;
     return lonLat;
@@ -6534,7 +6350,7 @@ function $983289ae1d13cd2a$export$3973b77d5f6f2790() {
     return $983289ae1d13cd2a$var$userProjection;
 }
 function $983289ae1d13cd2a$export$aa7494edfbe36197() {
-    $983289ae1d13cd2a$export$d0aeadbeac54116e("EPSG:4326");
+    $983289ae1d13cd2a$export$d0aeadbeac54116e('EPSG:4326');
 }
 function $983289ae1d13cd2a$export$698f563af1ba02a5(coordinate, sourceProjection) {
     if (!$983289ae1d13cd2a$var$userProjection) return coordinate;
@@ -6547,7 +6363,7 @@ function $983289ae1d13cd2a$export$d4b8ec0b96db1ee2(coordinate, destProjection) {
             0
         ]) && coordinate[0] >= -180 && coordinate[0] <= 180 && coordinate[1] >= -90 && coordinate[1] <= 90) {
             $983289ae1d13cd2a$var$showCoordinateWarning = false;
-            (0, $46b514704f775400$export$c106dd0671a0fc2d)("Call useGeographic() from ol/proj once to work with [longitude, latitude] coordinates.");
+            (0, $46b514704f775400$export$c106dd0671a0fc2d)('Call useGeographic() from ol/proj once to work with [longitude, latitude] coordinates.');
         }
         return coordinate;
     }
@@ -7159,7 +6975,7 @@ function $9a4105a6a338adf4$export$d73ee8ef04f5226a(flatCoordinates, offset, end,
    * @api
    */ transform(source, destination) {
         /** @type {import("../proj/Projection.js").default} */ const sourceProj = (0, $983289ae1d13cd2a$export$3988ae62b71be9a3)(source);
-        const transformFn = sourceProj.getUnits() == "tile-pixels" ? function(inCoordinates, outCoordinates, stride) {
+        const transformFn = sourceProj.getUnits() == 'tile-pixels' ? function(inCoordinates, outCoordinates, stride) {
             const pixelExtent = sourceProj.getExtent();
             const projectedExtent = sourceProj.getWorldExtent();
             const scale = (0, $84be800ca44e672c$export$c08559766941f856)(projectedExtent) / (0, $84be800ca44e672c$export$c08559766941f856)(pixelExtent);
@@ -7190,7 +7006,7 @@ var $05f95d883ca13ae5$export$2e2bcd8739ae039 = $05f95d883ca13ae5$var$Geometry;
         /**
      * @protected
      * @type {import("./Geometry.js").GeometryLayout}
-     */ this.layout = "XY";
+     */ this.layout = 'XY';
         /**
      * @protected
      * @type {number}
@@ -7301,7 +7117,7 @@ var $05f95d883ca13ae5$export$2e2bcd8739ae039 = $05f95d883ca13ae5$var$Geometry;
         else {
             for(let i = 0; i < nesting; ++i){
                 if (coordinates.length === 0) {
-                    this.layout = "XY";
+                    this.layout = 'XY';
                     this.stride = 2;
                     return;
                 }
@@ -7379,16 +7195,16 @@ var $05f95d883ca13ae5$export$2e2bcd8739ae039 = $05f95d883ca13ae5$var$Geometry;
  * @return {import("./Geometry.js").GeometryLayout} layout Layout.
  */ function $ecdcc798f2987118$var$getLayoutForStride(stride) {
     let layout;
-    if (stride == 2) layout = "XY";
-    else if (stride == 3) layout = "XYZ";
-    else if (stride == 4) layout = "XYZM";
+    if (stride == 2) layout = 'XY';
+    else if (stride == 3) layout = 'XYZ';
+    else if (stride == 4) layout = 'XYZM';
     return /** @type {import("./Geometry.js").GeometryLayout} */ layout;
 }
 function $ecdcc798f2987118$export$6af0c1b4a8549a43(layout) {
     let stride;
-    if (layout == "XY") stride = 2;
-    else if (layout == "XYZ" || layout == "XYM") stride = 3;
-    else if (layout == "XYZM") stride = 4;
+    if (layout == 'XY') stride = 2;
+    else if (layout == 'XYZ' || layout == 'XYM') stride = 3;
+    else if (layout == 'XYZM') stride = 4;
     return /** @type {number} */ stride;
 }
 function $ecdcc798f2987118$export$a3767472617c7861(simpleGeometry, transform, dest) {
@@ -7956,14 +7772,14 @@ function $808945bcd5aac66c$export$78e139679ca7205(flatCoordinates, offset, endss
    */ getSimplifiedGeometryInternal(squaredTolerance) {
         const simplifiedFlatCoordinates = [];
         simplifiedFlatCoordinates.length = (0, $116cc918e3d500bf$export$ef693d1572e64fb8)(this.flatCoordinates, 0, this.flatCoordinates.length, this.stride, squaredTolerance, simplifiedFlatCoordinates, 0);
-        return new $10811f4228331a2d$var$LinearRing(simplifiedFlatCoordinates, "XY");
+        return new $10811f4228331a2d$var$LinearRing(simplifiedFlatCoordinates, 'XY');
     }
     /**
    * Get the type of this geometry.
    * @return {import("./Geometry.js").Type} Geometry type.
    * @api
    */ getType() {
-        return "LinearRing";
+        return 'LinearRing';
     }
     /**
    * Test if the geometry and the passed extent intersect.
@@ -8052,7 +7868,7 @@ var $10811f4228331a2d$export$2e2bcd8739ae039 = $10811f4228331a2d$var$LinearRing;
    * @return {import("./Geometry.js").Type} Geometry type.
    * @api
    */ getType() {
-        return "Point";
+        return 'Point';
     }
     /**
    * Test if the geometry and the passed extent intersect.
@@ -8514,7 +8330,7 @@ function $3ab399f8a01aefd6$export$cb72ae403d6e78e6(flatCoordinates, ends) {
    * length of the horizontal intersection that the point belongs to.
    * @api
    */ getInteriorPoint() {
-        return new (0, $de620c8161ba008b$export$2e2bcd8739ae039)(this.getFlatInteriorPoint(), "XYM");
+        return new (0, $de620c8161ba008b$export$2e2bcd8739ae039)(this.getFlatInteriorPoint(), 'XYM');
     }
     /**
    * Return the number of rings of the polygon,  this includes the exterior
@@ -8578,14 +8394,14 @@ function $3ab399f8a01aefd6$export$cb72ae403d6e78e6(flatCoordinates, ends) {
         const simplifiedFlatCoordinates = [];
         const simplifiedEnds = [];
         simplifiedFlatCoordinates.length = (0, $116cc918e3d500bf$export$60a9904b67f8d51b)(this.flatCoordinates, 0, this.ends_, this.stride, Math.sqrt(squaredTolerance), simplifiedFlatCoordinates, 0, simplifiedEnds);
-        return new $8fedf7da5a76e7a9$var$Polygon(simplifiedFlatCoordinates, "XY", simplifiedEnds);
+        return new $8fedf7da5a76e7a9$var$Polygon(simplifiedFlatCoordinates, 'XY', simplifiedEnds);
     }
     /**
    * Get the type of this geometry.
    * @return {import("./Geometry.js").Type} Geometry type.
    * @api
    */ getType() {
-        return "Polygon";
+        return 'Polygon';
     }
     /**
    * Test if the geometry and the passed extent intersect.
@@ -8614,12 +8430,12 @@ function $8fedf7da5a76e7a9$export$f99d756c6d81ae3f(center, radius, n, sphereRadi
     /** @type {Array<number>} */ const flatCoordinates = [];
     for(let i = 0; i < n; ++i)(0, $69c1cc8ae30f997f$export$8b58be045bf06082)(flatCoordinates, (0, $d164a570a58ed2be$export$cc800923e997bb8)(center, radius, 2 * Math.PI * i / n, sphereRadius));
     flatCoordinates.push(flatCoordinates[0], flatCoordinates[1]);
-    return new $8fedf7da5a76e7a9$var$Polygon(flatCoordinates, "XY", [
+    return new $8fedf7da5a76e7a9$var$Polygon(flatCoordinates, 'XY', [
         flatCoordinates.length
     ]);
 }
 function $8fedf7da5a76e7a9$export$c16b671815801c75(extent) {
-    if ((0, $84be800ca44e672c$export$dd1bc94b04021eeb)(extent)) throw new Error("Cannot create polygon from empty extent");
+    if ((0, $84be800ca44e672c$export$dd1bc94b04021eeb)(extent)) throw new Error('Cannot create polygon from empty extent');
     const minX = extent[0];
     const minY = extent[1];
     const maxX = extent[2];
@@ -8636,7 +8452,7 @@ function $8fedf7da5a76e7a9$export$c16b671815801c75(extent) {
         minX,
         minY
     ];
-    return new $8fedf7da5a76e7a9$var$Polygon(flatCoordinates, "XY", [
+    return new $8fedf7da5a76e7a9$var$Polygon(flatCoordinates, 'XY', [
         flatCoordinates.length
     ]);
 }
@@ -8949,7 +8765,7 @@ function $8fedf7da5a76e7a9$export$87d6a1539a56e47f(polygon, center, radius, angl
      * @private
      * @const
      * @type {import("./proj/Projection.js").default}
-     */ this.projection_ = (0, $983289ae1d13cd2a$export$549167224996a0fb)(options.projection, "EPSG:3857");
+     */ this.projection_ = (0, $983289ae1d13cd2a$export$549167224996a0fb)(options.projection, 'EPSG:3857');
         /**
      * @private
      * @type {import("./size.js").Size}
@@ -9147,7 +8963,7 @@ function $8fedf7da5a76e7a9$export$87d6a1539a56e47f(polygon, center, radius, angl
    */ animateInternal(var_args) {
         let animationCount = arguments.length;
         let callback;
-        if (animationCount > 1 && typeof arguments[animationCount - 1] === "function") {
+        if (animationCount > 1 && typeof arguments[animationCount - 1] === 'function') {
             callback = arguments[animationCount - 1];
             --animationCount;
         }
@@ -9408,7 +9224,7 @@ function $8fedf7da5a76e7a9$export$87d6a1539a56e47f(polygon, center, radius, angl
     /**
    * @return {boolean} Resolution constraint is set
    */ getConstrainResolution() {
-        return this.get("constrainResolution");
+        return this.get('constrainResolution');
     }
     /**
    * @param {Array<number>} [hints] Destination array.
@@ -9697,12 +9513,12 @@ function $8fedf7da5a76e7a9$export$87d6a1539a56e47f(polygon, center, radius, angl
    * @api
    */ fit(geometryOrExtent, options) {
         /** @type {import("./geom/SimpleGeometry.js").default} */ let geometry;
-        (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(Array.isArray(geometryOrExtent) || typeof /** @type {?} */ geometryOrExtent.getSimplifiedGeometry === "function", 24); // Invalid extent or geometry provided as `geometry`
+        (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(Array.isArray(geometryOrExtent) || typeof /** @type {?} */ geometryOrExtent.getSimplifiedGeometry === 'function', 24); // Invalid extent or geometry provided as `geometry`
         if (Array.isArray(geometryOrExtent)) {
             (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(!(0, $84be800ca44e672c$export$dd1bc94b04021eeb)(geometryOrExtent), 25); // Cannot fit empty extent provided as `geometry`
             const extent = (0, $983289ae1d13cd2a$export$494be3a3a25689ca)(geometryOrExtent, this.getProjection());
             geometry = (0, $8fedf7da5a76e7a9$export$c16b671815801c75)(extent);
-        } else if (geometryOrExtent.getType() === "Circle") {
+        } else if (geometryOrExtent.getType() === 'Circle') {
             const extent = (0, $983289ae1d13cd2a$export$494be3a3a25689ca)(geometryOrExtent.getExtent(), this.getProjection());
             geometry = (0, $8fedf7da5a76e7a9$export$c16b671815801c75)(extent);
             geometry.rotate(this.getRotation(), (0, $84be800ca44e672c$export$c91255cadecfe081)(extent));
@@ -9978,7 +9794,7 @@ function $8fedf7da5a76e7a9$export$87d6a1539a56e47f(polygon, center, radius, angl
         if (this.get((0, $6221a0fc70b5fd5c$export$2e2bcd8739ae039).ROTATION) !== newRotation) this.set((0, $6221a0fc70b5fd5c$export$2e2bcd8739ae039).ROTATION, newRotation);
         if (this.get((0, $6221a0fc70b5fd5c$export$2e2bcd8739ae039).RESOLUTION) !== newResolution) {
             this.set((0, $6221a0fc70b5fd5c$export$2e2bcd8739ae039).RESOLUTION, newResolution);
-            this.set("zoom", this.getZoom(), true);
+            this.set('zoom', this.getZoom(), true);
         }
         if (!newCenter || !this.get((0, $6221a0fc70b5fd5c$export$2e2bcd8739ae039).CENTER) || !(0, $c65bc16e55ef0e33$export$e9bab7fafb253603)(this.get((0, $6221a0fc70b5fd5c$export$2e2bcd8739ae039).CENTER), newCenter)) this.set((0, $6221a0fc70b5fd5c$export$2e2bcd8739ae039).CENTER, newCenter);
         if (this.getAnimating() && !doNotCancelAnims) this.cancelAnimations();
@@ -10100,7 +9916,7 @@ function $5c065e8fdff88e40$export$964345001ee9ac52(options) {
         const smooth = options.smoothExtentConstraint !== undefined ? options.smoothExtentConstraint : true;
         return (0, $266312e45c8c12e4$export$c2f0af2c946f6897)(options.extent, options.constrainOnlyCenter, smooth);
     }
-    const projection = (0, $983289ae1d13cd2a$export$549167224996a0fb)(options.projection, "EPSG:3857");
+    const projection = (0, $983289ae1d13cd2a$export$549167224996a0fb)(options.projection, 'EPSG:3857');
     if (options.multiWorld !== true && projection.isGlobal()) {
         const extent = projection.getExtent().slice();
         extent[0] = -Infinity;
@@ -10123,7 +9939,7 @@ function $5c065e8fdff88e40$export$c68d65f9148da196(options) {
     const multiWorld = options.multiWorld !== undefined ? options.multiWorld : false;
     const smooth = options.smoothResolutionConstraint !== undefined ? options.smoothResolutionConstraint : true;
     const showFullExtent = options.showFullExtent !== undefined ? options.showFullExtent : false;
-    const projection = (0, $983289ae1d13cd2a$export$549167224996a0fb)(options.projection, "EPSG:3857");
+    const projection = (0, $983289ae1d13cd2a$export$549167224996a0fb)(options.projection, 'EPSG:3857');
     const projExtent = projection.getExtent();
     let constrainOnlyCenter = options.constrainOnlyCenter;
     let extent = options.extent;
@@ -10174,7 +9990,7 @@ function $5c065e8fdff88e40$export$4eeaa08dd550e3c0(options) {
         const constrainRotation = options.constrainRotation;
         if (constrainRotation === undefined || constrainRotation === true) return (0, $4412a0460d6cbb1d$export$17a6e6f3448b17e8)();
         if (constrainRotation === false) return 0, $4412a0460d6cbb1d$export$f883a24d5edde77c;
-        if (typeof constrainRotation === "number") return (0, $4412a0460d6cbb1d$export$9ba78806de831083)(constrainRotation);
+        if (typeof constrainRotation === 'number') return (0, $4412a0460d6cbb1d$export$9ba78806de831083)(constrainRotation);
         return 0, $4412a0460d6cbb1d$export$f883a24d5edde77c;
     }
     return 0, $4412a0460d6cbb1d$export$e20fbacbb41798b;
@@ -10373,15 +10189,15 @@ var $5c065e8fdff88e40$export$2e2bcd8739ae039 = $5c065e8fdff88e40$var$View;
    * @return {import("../source/Source.js").State} Source state.
    */ getSourceState() {
         const source = this.getSource();
-        return !source ? "undefined" : source.getState();
+        return !source ? 'undefined' : source.getState();
     }
     /**
    * @private
    */ handleSourceChange_() {
         this.changed();
-        if (this.sourceReady_ || this.getSource().getState() !== "ready") return;
+        if (this.sourceReady_ || this.getSource().getState() !== 'ready') return;
         this.sourceReady_ = true;
-        this.dispatchEvent("sourceready");
+        this.dispatchEvent('sourceready');
     }
     /**
    * @private
@@ -10394,10 +10210,10 @@ var $5c065e8fdff88e40$export$2e2bcd8739ae039 = $5c065e8fdff88e40$var$View;
         const source = this.getSource();
         if (source) {
             this.sourceChangeKey_ = (0, $776f68d2a754760b$export$63174c828edd6ff8)(source, (0, $f13d17e3c190470c$export$2e2bcd8739ae039).CHANGE, this.handleSourceChange_, this);
-            if (source.getState() === "ready") {
+            if (source.getState() === 'ready') {
                 this.sourceReady_ = true;
                 setTimeout(()=>{
-                    this.dispatchEvent("sourceready");
+                    this.dispatchEvent('sourceready');
                 }, 0);
             }
         }
@@ -10789,41 +10605,41 @@ var $b9deb9d8bf8584f6$export$2e2bcd8739ae039 = $b9deb9d8bf8584f6$var$RenderEvent
  *
  * @const
  * @type {string}
- */ const $7309508e6173a6a6$export$981241db82723ce2 = "ol-hidden";
-const $7309508e6173a6a6$export$99b49471b0394319 = "ol-selectable";
-const $7309508e6173a6a6$export$1afde3d6e16a7b29 = "ol-unselectable";
-const $7309508e6173a6a6$export$68eede0dd8c6c1da = "ol-unsupported";
-const $7309508e6173a6a6$export$4d4f8be70b656192 = "ol-control";
-const $7309508e6173a6a6$export$e16017ac68d14492 = "ol-collapsed";
+ */ const $7309508e6173a6a6$export$981241db82723ce2 = 'ol-hidden';
+const $7309508e6173a6a6$export$99b49471b0394319 = 'ol-selectable';
+const $7309508e6173a6a6$export$1afde3d6e16a7b29 = 'ol-unselectable';
+const $7309508e6173a6a6$export$68eede0dd8c6c1da = 'ol-unsupported';
+const $7309508e6173a6a6$export$4d4f8be70b656192 = 'ol-control';
+const $7309508e6173a6a6$export$e16017ac68d14492 = 'ol-collapsed';
 /**
  * From https://stackoverflow.com/questions/10135697/regex-to-parse-any-css-font
  * @type {RegExp}
  */ const $7309508e6173a6a6$var$fontRegEx = new RegExp([
-    "^\\s*(?=(?:(?:[-a-z]+\\s*){0,2}(italic|oblique))?)",
-    "(?=(?:(?:[-a-z]+\\s*){0,2}(small-caps))?)",
-    "(?=(?:(?:[-a-z]+\\s*){0,2}(bold(?:er)?|lighter|[1-9]00 ))?)",
-    "(?:(?:normal|\\1|\\2|\\3)\\s*){0,3}((?:xx?-)?",
-    "(?:small|large)|medium|smaller|larger|[\\.\\d]+(?:\\%|in|[cem]m|ex|p[ctx]))",
-    "(?:\\s*\\/\\s*(normal|[\\.\\d]+(?:\\%|in|[cem]m|ex|p[ctx])?))",
-    "?\\s*([-,\\\"\\'\\sa-z]+?)\\s*$"
-].join(""), "i");
+    '^\\s*(?=(?:(?:[-a-z]+\\s*){0,2}(italic|oblique))?)',
+    '(?=(?:(?:[-a-z]+\\s*){0,2}(small-caps))?)',
+    '(?=(?:(?:[-a-z]+\\s*){0,2}(bold(?:er)?|lighter|[1-9]00 ))?)',
+    '(?:(?:normal|\\1|\\2|\\3)\\s*){0,3}((?:xx?-)?',
+    '(?:small|large)|medium|smaller|larger|[\\.\\d]+(?:\\%|in|[cem]m|ex|p[ctx]))',
+    '(?:\\s*\\/\\s*(normal|[\\.\\d]+(?:\\%|in|[cem]m|ex|p[ctx])?))',
+    '?\\s*([-,\\"\\\'\\sa-z]+?)\\s*$'
+].join(''), 'i');
 const $7309508e6173a6a6$var$fontRegExMatchIndex = [
-    "style",
-    "variant",
-    "weight",
-    "size",
-    "lineHeight",
-    "family"
+    'style',
+    'variant',
+    'weight',
+    'size',
+    'lineHeight',
+    'family'
 ];
 const $7309508e6173a6a6$export$5abde8a6aec4a131 = function(fontSpec) {
     const match = fontSpec.match($7309508e6173a6a6$var$fontRegEx);
     if (!match) return null;
     const style = /** @type {FontParameters} */ {
-        lineHeight: "normal",
-        size: "1.2em",
-        style: "normal",
-        weight: "normal",
-        variant: "normal"
+        lineHeight: 'normal',
+        size: '1.2em',
+        style: 'normal',
+        weight: 'normal',
+        variant: 'normal'
     };
     for(let i = 0, ii = $7309508e6173a6a6$var$fontRegExMatchIndex.length; i < ii; ++i){
         const value = match[i + 1];
@@ -10844,11 +10660,11 @@ function $1d92219e1eaa7bd2$export$9e05d10eae75c464(width, height, canvasPool, se
     /** @type {HTMLCanvasElement|OffscreenCanvas} */ let canvas;
     if (canvasPool && canvasPool.length) canvas = canvasPool.shift();
     else if (0, $253e11c6a01eb5bc$export$98fcef3dc9973292) canvas = new OffscreenCanvas(width || 300, height || 300);
-    else canvas = document.createElement("canvas");
+    else canvas = document.createElement('canvas');
     if (width) canvas.width = width;
     if (height) canvas.height = height;
     //FIXME Allow OffscreenCanvasRenderingContext2D as return type
-    return /** @type {CanvasRenderingContext2D} */ canvas.getContext("2d", settings);
+    return /** @type {CanvasRenderingContext2D} */ canvas.getContext('2d', settings);
 }
 function $1d92219e1eaa7bd2$export$e918ac6a1026a12a(context) {
     const canvas = context.canvas;
@@ -10905,16 +10721,16 @@ function $1d92219e1eaa7bd2$export$caeacfe04f52533a(node, children) {
 
 
 
-const $ba06fcc662408736$export$3847dfea4f8d4dfa = "10px sans-serif";
-const $ba06fcc662408736$export$c495d52ee3fd74b2 = "#000";
-const $ba06fcc662408736$export$17bd0c38d6ae694e = "round";
+const $ba06fcc662408736$export$3847dfea4f8d4dfa = '10px sans-serif';
+const $ba06fcc662408736$export$c495d52ee3fd74b2 = '#000';
+const $ba06fcc662408736$export$17bd0c38d6ae694e = 'round';
 const $ba06fcc662408736$export$e21b4112fdc612fc = [];
 const $ba06fcc662408736$export$e06efc2409049f76 = 0;
-const $ba06fcc662408736$export$365eb9648cf19bd0 = "round";
+const $ba06fcc662408736$export$365eb9648cf19bd0 = 'round';
 const $ba06fcc662408736$export$80c1c01844597b7b = 10;
-const $ba06fcc662408736$export$1eb2eaecacf2031e = "#000";
-const $ba06fcc662408736$export$94d53b95641b5766 = "center";
-const $ba06fcc662408736$export$cf2279a1bff62eb = "middle";
+const $ba06fcc662408736$export$1eb2eaecacf2031e = '#000';
+const $ba06fcc662408736$export$94d53b95641b5766 = 'center';
+const $ba06fcc662408736$export$cf2279a1bff62eb = 'middle';
 const $ba06fcc662408736$export$40a9eeef55665a40 = [
     0,
     0,
@@ -10932,13 +10748,13 @@ const $ba06fcc662408736$export$1d36981fcadac93b = new (0, $d6cd7f1b627d5e92$expo
 const $ba06fcc662408736$export$7fdcec604f0b1fa7 = {};
 const $ba06fcc662408736$export$a534074a28fa87ff = function() {
     const retries = 100;
-    const size = "32px ";
+    const size = '32px ';
     const referenceFonts = [
-        "monospace",
-        "serif"
+        'monospace',
+        'serif'
     ];
     const len = referenceFonts.length;
-    const text = "wmytzilWMYTZIL@#/&?$%10\uF013";
+    const text = 'wmytzilWMYTZIL@#/&?$%10\uF013';
     let interval, referenceWidth;
     /**
    * @param {string} fontStyle Css font-style
@@ -10949,9 +10765,9 @@ const $ba06fcc662408736$export$a534074a28fa87ff = function() {
         let available = true;
         for(let i = 0; i < len; ++i){
             const referenceFont = referenceFonts[i];
-            referenceWidth = $ba06fcc662408736$export$4ea92329b673abd1(fontStyle + " " + fontWeight + " " + size + referenceFont, text);
+            referenceWidth = $ba06fcc662408736$export$4ea92329b673abd1(fontStyle + ' ' + fontWeight + ' ' + size + referenceFont, text);
             if (fontFamily != referenceFont) {
-                const width = $ba06fcc662408736$export$4ea92329b673abd1(fontStyle + " " + fontWeight + " " + size + fontFamily + "," + referenceFont, text);
+                const width = $ba06fcc662408736$export$4ea92329b673abd1(fontStyle + ' ' + fontWeight + ' ' + size + fontFamily + ',' + referenceFont, text);
                 // If width and referenceWidth are the same, then the fallback was used
                 // instead of the font we wanted, so the font is not available.
                 available = available && width != referenceWidth;
@@ -10966,7 +10782,7 @@ const $ba06fcc662408736$export$a534074a28fa87ff = function() {
         for(let i = 0, ii = fonts.length; i < ii; ++i){
             const font = fonts[i];
             if ($ba06fcc662408736$export$1d36981fcadac93b.get(font) < retries) {
-                if (isAvailable.apply(this, font.split("\n"))) {
+                if (isAvailable.apply(this, font.split('\n'))) {
                     (0, $e2dfef87a88758ed$export$42ffd38884aecdac)($ba06fcc662408736$export$7fdcec604f0b1fa7);
                     // Make sure that loaded fonts are picked up by Safari
                     $ba06fcc662408736$var$measureContext = null;
@@ -10989,7 +10805,7 @@ const $ba06fcc662408736$export$a534074a28fa87ff = function() {
         const families = font.families;
         for(let i = 0, ii = families.length; i < ii; ++i){
             const family = families[i];
-            const key = font.style + "\n" + font.weight + "\n" + family;
+            const key = font.style + '\n' + font.weight + '\n' + family;
             if ($ba06fcc662408736$export$1d36981fcadac93b.get(key) === undefined) {
                 $ba06fcc662408736$export$1d36981fcadac93b.set(key, retries, true);
                 if (!isAvailable(font.style, font.weight, family)) {
@@ -11014,16 +10830,16 @@ const $ba06fcc662408736$export$4feaf6852ff92513 = function() {
                 height = lineHeight * (metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent);
             } else {
                 if (!measureElement) {
-                    measureElement = document.createElement("div");
-                    measureElement.innerHTML = "M";
-                    measureElement.style.minHeight = "0";
-                    measureElement.style.maxHeight = "none";
-                    measureElement.style.height = "auto";
-                    measureElement.style.padding = "0";
-                    measureElement.style.border = "none";
-                    measureElement.style.position = "absolute";
-                    measureElement.style.display = "block";
-                    measureElement.style.left = "-99999px";
+                    measureElement = document.createElement('div');
+                    measureElement.innerHTML = 'M';
+                    measureElement.style.minHeight = '0';
+                    measureElement.style.maxHeight = 'none';
+                    measureElement.style.height = 'auto';
+                    measureElement.style.padding = '0';
+                    measureElement.style.border = 'none';
+                    measureElement.style.position = 'absolute';
+                    measureElement.style.display = 'block';
+                    measureElement.style.left = '-99999px';
                 }
                 measureElement.style.font = fontSpec;
                 document.body.appendChild(measureElement);
@@ -11052,7 +10868,7 @@ function $ba06fcc662408736$export$4ea92329b673abd1(font, text) {
 }
 function $ba06fcc662408736$export$915c7ba51467308f(font, text, cache) {
     if (text in cache) return cache[text];
-    const width = text.split("\n").reduce((prev, curr)=>Math.max(prev, $ba06fcc662408736$export$4ea92329b673abd1(font, curr)), 0);
+    const width = text.split('\n').reduce((prev, curr)=>Math.max(prev, $ba06fcc662408736$export$4ea92329b673abd1(font, curr)), 0);
     cache[text] = width;
     return width;
 }
@@ -11066,7 +10882,7 @@ function $ba06fcc662408736$export$7d7c13020df1e791(baseStyle, chunks) {
     let lineHeight = 0;
     for(let i = 0, ii = chunks.length; i <= ii; i += 2){
         const text = chunks[i];
-        if (text === "\n" || i === ii) {
+        if (text === '\n' || i === ii) {
             width = Math.max(width, lineWidth);
             lineWidths.push(lineWidth);
             lineWidth = 0;
@@ -11142,13 +10958,13 @@ function $ba06fcc662408736$export$3cb6f3a6e49cc0ee(context, transform, opacity, 
         /**
      * @private
      * @type {HTMLDivElement}
-     */ this.element_ = document.createElement("div");
+     */ this.element_ = document.createElement('div');
         const style = this.element_.style;
-        style.position = "absolute";
-        style.width = "100%";
-        style.height = "100%";
-        style.zIndex = "0";
-        this.element_.className = (0, $7309508e6173a6a6$export$1afde3d6e16a7b29) + " ol-layers";
+        style.position = 'absolute';
+        style.width = '100%';
+        style.height = '100%';
+        style.zIndex = '0';
+        this.element_.className = (0, $7309508e6173a6a6$export$1afde3d6e16a7b29) + ' ol-layers';
         const container = map.getViewport();
         container.insertBefore(this.element_, container.firstChild || null);
         /**
@@ -11184,7 +11000,7 @@ function $ba06fcc662408736$export$3cb6f3a6e49cc0ee(context, transform, opacity, 
    */ renderFrame(frameState) {
         if (!frameState) {
             if (this.renderedVisible_) {
-                this.element_.style.display = "none";
+                this.element_.style.display = 'none';
                 this.renderedVisible_ = false;
             }
             return;
@@ -11204,7 +11020,7 @@ function $ba06fcc662408736$export$3cb6f3a6e49cc0ee(context, transform, opacity, 
             frameState.layerIndex = i;
             const layer = layerState.layer;
             const sourceState = layer.getSourceState();
-            if (!(0, $14019fcc7ba24fd5$export$acb1e9cb9ce4ca56)(layerState, viewState) || sourceState != "ready" && sourceState != "undefined") {
+            if (!(0, $14019fcc7ba24fd5$export$acb1e9cb9ce4ca56)(layerState, viewState) || sourceState != 'ready' && sourceState != 'undefined') {
                 layer.unrender();
                 continue;
             }
@@ -11214,13 +11030,13 @@ function $ba06fcc662408736$export$3cb6f3a6e49cc0ee(context, transform, opacity, 
                 this.children_.push(element);
                 previousElement = element;
             }
-            if ("getDeclutter" in layer) declutterLayers.push(/** @type {import("../layer/BaseVector.js").default} */ layer);
+            if ('getDeclutter' in layer) declutterLayers.push(/** @type {import("../layer/BaseVector.js").default} */ layer);
         }
         this.flushDeclutterItems(frameState);
         (0, $1d92219e1eaa7bd2$export$caeacfe04f52533a)(this.element_, this.children_);
         this.dispatchRenderEvent((0, $4585eb82aab12670$export$2e2bcd8739ae039).POSTCOMPOSE, frameState);
         if (!this.renderedVisible_) {
-            this.element_.style.display = "";
+            this.element_.style.display = '';
             this.renderedVisible_ = true;
         }
         this.scheduleExpireIconCache(frameState);
@@ -11294,7 +11110,7 @@ class $3c2b2bf26c3e3155$export$2f5ff21d758d25a7 extends (0, $f22c10e3757627da$ex
  * @enum {string}
  * @private
  */ const $3c2b2bf26c3e3155$var$Property = {
-    LAYERS: "layers"
+    LAYERS: 'layers'
 };
 /**
  * @classdesc
@@ -11334,7 +11150,7 @@ class $3c2b2bf26c3e3155$export$2f5ff21d758d25a7 extends (0, $f22c10e3757627da$ex
             if (Array.isArray(layers)) layers = new (0, $6ba3969272323605$export$2e2bcd8739ae039)(layers.slice(), {
                 unique: true
             });
-            else (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof /** @type {?} */ layers.getArray === "function", 43); // Expected `layers` to be an array or a `Collection`
+            else (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof /** @type {?} */ layers.getArray === 'function', 43); // Expected `layers` to be an array or a `Collection`
         } else layers = new (0, $6ba3969272323605$export$2e2bcd8739ae039)(undefined, {
             unique: true
         });
@@ -11358,7 +11174,7 @@ class $3c2b2bf26c3e3155$export$2f5ff21d758d25a7 extends (0, $f22c10e3757627da$ex
         for(let i = 0, ii = layersArray.length; i < ii; i++){
             const layer = layersArray[i];
             this.registerLayerListeners_(layer);
-            this.dispatchEvent(new $3c2b2bf26c3e3155$export$2f5ff21d758d25a7("addlayer", layer));
+            this.dispatchEvent(new $3c2b2bf26c3e3155$export$2f5ff21d758d25a7('addlayer', layer));
         }
         this.changed();
     }
@@ -11369,18 +11185,18 @@ class $3c2b2bf26c3e3155$export$2f5ff21d758d25a7 extends (0, $f22c10e3757627da$ex
             (0, $776f68d2a754760b$export$63174c828edd6ff8)(layer, (0, $a6660a6615220f8c$export$2e2bcd8739ae039).PROPERTYCHANGE, this.handleLayerChange_, this),
             (0, $776f68d2a754760b$export$63174c828edd6ff8)(layer, (0, $f13d17e3c190470c$export$2e2bcd8739ae039).CHANGE, this.handleLayerChange_, this)
         ];
-        if (layer instanceof $3c2b2bf26c3e3155$var$LayerGroup) listenerKeys.push((0, $776f68d2a754760b$export$63174c828edd6ff8)(layer, "addlayer", this.handleLayerGroupAdd_, this), (0, $776f68d2a754760b$export$63174c828edd6ff8)(layer, "removelayer", this.handleLayerGroupRemove_, this));
+        if (layer instanceof $3c2b2bf26c3e3155$var$LayerGroup) listenerKeys.push((0, $776f68d2a754760b$export$63174c828edd6ff8)(layer, 'addlayer', this.handleLayerGroupAdd_, this), (0, $776f68d2a754760b$export$63174c828edd6ff8)(layer, 'removelayer', this.handleLayerGroupRemove_, this));
         this.listenerKeys_[(0, $ae7eaaa2c9c1e05d$export$5e82334337e0f204)(layer)] = listenerKeys;
     }
     /**
    * @param {GroupEvent} event The layer group event.
    */ handleLayerGroupAdd_(event) {
-        this.dispatchEvent(new $3c2b2bf26c3e3155$export$2f5ff21d758d25a7("addlayer", event.layer));
+        this.dispatchEvent(new $3c2b2bf26c3e3155$export$2f5ff21d758d25a7('addlayer', event.layer));
     }
     /**
    * @param {GroupEvent} event The layer group event.
    */ handleLayerGroupRemove_(event) {
-        this.dispatchEvent(new $3c2b2bf26c3e3155$export$2f5ff21d758d25a7("removelayer", event.layer));
+        this.dispatchEvent(new $3c2b2bf26c3e3155$export$2f5ff21d758d25a7('removelayer', event.layer));
     }
     /**
    * @param {import("../Collection.js").CollectionEvent<import("./Base.js").default>} collectionEvent CollectionEvent.
@@ -11388,7 +11204,7 @@ class $3c2b2bf26c3e3155$export$2f5ff21d758d25a7 extends (0, $f22c10e3757627da$ex
    */ handleLayersAdd_(collectionEvent) {
         const layer = collectionEvent.element;
         this.registerLayerListeners_(layer);
-        this.dispatchEvent(new $3c2b2bf26c3e3155$export$2f5ff21d758d25a7("addlayer", layer));
+        this.dispatchEvent(new $3c2b2bf26c3e3155$export$2f5ff21d758d25a7('addlayer', layer));
         this.changed();
     }
     /**
@@ -11399,7 +11215,7 @@ class $3c2b2bf26c3e3155$export$2f5ff21d758d25a7 extends (0, $f22c10e3757627da$ex
         const key = (0, $ae7eaaa2c9c1e05d$export$5e82334337e0f204)(layer);
         this.listenerKeys_[key].forEach((0, $776f68d2a754760b$export$b0a21c8b3c1c921));
         delete this.listenerKeys_[key];
-        this.dispatchEvent(new $3c2b2bf26c3e3155$export$2f5ff21d758d25a7("removelayer", layer));
+        this.dispatchEvent(new $3c2b2bf26c3e3155$export$2f5ff21d758d25a7('removelayer', layer));
         this.changed();
     }
     /**
@@ -11423,7 +11239,7 @@ class $3c2b2bf26c3e3155$export$2f5ff21d758d25a7 extends (0, $f22c10e3757627da$ex
         const collection = this.getLayers();
         if (collection) {
             const currentLayers = collection.getArray();
-            for(let i = 0, ii = currentLayers.length; i < ii; ++i)this.dispatchEvent(new $3c2b2bf26c3e3155$export$2f5ff21d758d25a7("removelayer", currentLayers[i]));
+            for(let i = 0, ii = currentLayers.length; i < ii; ++i)this.dispatchEvent(new $3c2b2bf26c3e3155$export$2f5ff21d758d25a7('removelayer', currentLayers[i]));
         }
         this.set($3c2b2bf26c3e3155$var$Property.LAYERS, layers);
     }
@@ -11473,7 +11289,7 @@ class $3c2b2bf26c3e3155$export$2f5ff21d758d25a7 extends (0, $f22c10e3757627da$ex
     /**
    * @return {import("../source/Source.js").State} Source state.
    */ getSourceState() {
-        return "ready";
+        return 'ready';
     }
 }
 var $3c2b2bf26c3e3155$export$2e2bcd8739ae039 = $3c2b2bf26c3e3155$var$LayerGroup;
@@ -11579,7 +11395,7 @@ var $08f6d6b264ecce61$export$2e2bcd8739ae039 = $08f6d6b264ecce61$var$MapEvent;
    * @api
    */ preventDefault() {
         super.preventDefault();
-        if ("preventDefault" in this.originalEvent) /** @type {UIEvent} */ this.originalEvent.preventDefault();
+        if ('preventDefault' in this.originalEvent) /** @type {UIEvent} */ this.originalEvent.preventDefault();
     }
     /**
    * Prevents further propagation of the current event.
@@ -11587,7 +11403,7 @@ var $08f6d6b264ecce61$export$2e2bcd8739ae039 = $08f6d6b264ecce61$var$MapEvent;
    * @api
    */ stopPropagation() {
         super.stopPropagation();
-        if ("stopPropagation" in this.originalEvent) /** @type {UIEvent} */ this.originalEvent.stopPropagation();
+        if ('stopPropagation' in this.originalEvent) /** @type {UIEvent} */ this.originalEvent.stopPropagation();
     }
 }
 var $ea6dbcd957730cf1$export$2e2bcd8739ae039 = $ea6dbcd957730cf1$var$MapBrowserEvent;
@@ -11611,7 +11427,7 @@ var /**
    * event is delayed by 250 ms to ensure that it is not a double click.
    * @event module:ol/MapBrowserEvent~MapBrowserEvent#singleclick
    * @api
-   */ SINGLECLICK: "singleclick",
+   */ SINGLECLICK: 'singleclick',
     /**
    * A click with no dragging. A double click will fire two of this.
    * @event module:ol/MapBrowserEvent~MapBrowserEvent#click
@@ -11626,20 +11442,20 @@ var /**
    * Triggered when a pointer is dragged.
    * @event module:ol/MapBrowserEvent~MapBrowserEvent#pointerdrag
    * @api
-   */ POINTERDRAG: "pointerdrag",
+   */ POINTERDRAG: 'pointerdrag',
     /**
    * Triggered when a pointer is moved. Note that on touch devices this is
    * triggered when the map is panned, so is not the same as mousemove.
    * @event module:ol/MapBrowserEvent~MapBrowserEvent#pointermove
    * @api
-   */ POINTERMOVE: "pointermove",
-    POINTERDOWN: "pointerdown",
-    POINTERUP: "pointerup",
-    POINTEROVER: "pointerover",
-    POINTEROUT: "pointerout",
-    POINTERENTER: "pointerenter",
-    POINTERLEAVE: "pointerleave",
-    POINTERCANCEL: "pointercancel"
+   */ POINTERMOVE: 'pointermove',
+    POINTERDOWN: 'pointerdown',
+    POINTERUP: 'pointerup',
+    POINTEROVER: 'pointerover',
+    POINTEROUT: 'pointerout',
+    POINTERENTER: 'pointerenter',
+    POINTERLEAVE: 'pointerleave',
+    POINTERCANCEL: 'pointercancel'
 };
 
 
@@ -11649,14 +11465,14 @@ var /**
  * Constants for event names.
  * @enum {string}
  */ var $34ee59ecd2aa9258$export$2e2bcd8739ae039 = {
-    POINTERMOVE: "pointermove",
-    POINTERDOWN: "pointerdown",
-    POINTERUP: "pointerup",
-    POINTEROVER: "pointerover",
-    POINTEROUT: "pointerout",
-    POINTERENTER: "pointerenter",
-    POINTERLEAVE: "pointerleave",
-    POINTERCANCEL: "pointercancel"
+    POINTERMOVE: 'pointermove',
+    POINTERDOWN: 'pointerdown',
+    POINTERUP: 'pointerup',
+    POINTEROVER: 'pointerover',
+    POINTEROUT: 'pointerout',
+    POINTERENTER: 'pointerenter',
+    POINTERLEAVE: 'pointerleave',
+    POINTERCANCEL: 'pointercancel'
 };
 
 
@@ -11811,7 +11627,7 @@ class $d81b48bf28c2aa31$var$MapBrowserEventHandler extends (0, $fd4e3201ad7386dc
         const newEvent = new (0, $ea6dbcd957730cf1$export$2e2bcd8739ae039)((0, $ca08bc7d1400c90f$export$2e2bcd8739ae039).POINTERDOWN, this.map_, pointerEvent, undefined, undefined, this.activePointers_);
         this.dispatchEvent(newEvent);
         this.down_ = new PointerEvent(pointerEvent.type, pointerEvent);
-        Object.defineProperty(this.down_, "target", {
+        Object.defineProperty(this.down_, 'target', {
             writable: false,
             value: pointerEvent.target
         });
@@ -11870,7 +11686,7 @@ class $d81b48bf28c2aa31$var$MapBrowserEventHandler extends (0, $fd4e3201ad7386dc
         // may not be initialized yet when we get here on a platform without native pointer events,
         // when elm-pep is used as pointer events polyfill.
         const originalEvent = this.originalPointerMoveEvent_;
-        if ((!originalEvent || originalEvent.defaultPrevented) && (typeof event.cancelable !== "boolean" || event.cancelable === true)) event.preventDefault();
+        if ((!originalEvent || originalEvent.defaultPrevented) && (typeof event.cancelable !== 'boolean' || event.cancelable === true)) event.preventDefault();
     }
     /**
    * @param {PointerEvent} pointerEvent Pointer
@@ -11914,27 +11730,27 @@ var $d81b48bf28c2aa31$export$2e2bcd8739ae039 = $d81b48bf28c2aa31$var$MapBrowserE
    * Triggered after a map frame is rendered.
    * @event module:ol/MapEvent~MapEvent#postrender
    * @api
-   */ POSTRENDER: "postrender",
+   */ POSTRENDER: 'postrender',
     /**
    * Triggered when the map starts moving.
    * @event module:ol/MapEvent~MapEvent#movestart
    * @api
-   */ MOVESTART: "movestart",
+   */ MOVESTART: 'movestart',
     /**
    * Triggered after the map is moved.
    * @event module:ol/MapEvent~MapEvent#moveend
    * @api
-   */ MOVEEND: "moveend",
+   */ MOVEEND: 'moveend',
     /**
    * Triggered when loading of additional map data (tiles, images, features) starts.
    * @event module:ol/MapEvent~MapEvent#loadstart
    * @api
-   */ LOADSTART: "loadstart",
+   */ LOADSTART: 'loadstart',
     /**
    * Triggered when loading of additional map data has completed.
    * @event module:ol/MapEvent~MapEvent#loadend
    * @api
-   */ LOADEND: "loadend"
+   */ LOADEND: 'loadend'
 };
 
 
@@ -11943,10 +11759,10 @@ var $d81b48bf28c2aa31$export$2e2bcd8739ae039 = $d81b48bf28c2aa31$var$MapBrowserE
  */ /**
  * @enum {string}
  */ var $df2cc47d12323995$export$2e2bcd8739ae039 = {
-    LAYERGROUP: "layergroup",
-    SIZE: "size",
-    TARGET: "target",
-    VIEW: "view"
+    LAYERGROUP: 'layergroup',
+    SIZE: 'size',
+    TARGET: 'target',
+    VIEW: 'view'
 };
 
 
@@ -12336,7 +12152,7 @@ function $5b2a708996b8a43e$export$f08ad5eceeff5d45(frameState, tile, tileSourceK
    */ constructor(options){
         super();
         const element = options.element;
-        if (element && !options.target && !element.style.pointerEvents) element.style.pointerEvents = "auto";
+        if (element && !options.target && !element.style.pointerEvents) element.style.pointerEvents = 'auto';
         /**
      * @protected
      * @type {HTMLElement}
@@ -12402,7 +12218,7 @@ function $5b2a708996b8a43e$export$f08ad5eceeff5d45(frameState, tile, tileSourceK
    * @param {HTMLElement|string} target Target.
    * @api
    */ setTarget(target) {
-        this.target_ = typeof target === "string" ? document.getElementById(target) : target;
+        this.target_ = typeof target === 'string' ? document.getElementById(target) : target;
     }
 }
 var $073a42a03e127bc6$export$2e2bcd8739ae039 = $073a42a03e127bc6$var$Control;
@@ -12451,14 +12267,14 @@ var $073a42a03e127bc6$export$2e2bcd8739ae039 = $073a42a03e127bc6$var$Control;
    */ constructor(options){
         options = options ? options : {};
         super({
-            element: document.createElement("div"),
+            element: document.createElement('div'),
             render: options.render,
             target: options.target
         });
         /**
      * @private
      * @type {HTMLElement}
-     */ this.ulElement_ = document.createElement("ul");
+     */ this.ulElement_ = document.createElement('ul');
         /**
      * @private
      * @type {boolean}
@@ -12476,25 +12292,25 @@ var $073a42a03e127bc6$export$2e2bcd8739ae039 = $073a42a03e127bc6$var$Control;
      * @type {boolean}
      */ this.collapsible_ = options.collapsible !== undefined ? options.collapsible : true;
         if (!this.collapsible_) this.collapsed_ = false;
-        const className = options.className !== undefined ? options.className : "ol-attribution";
-        const tipLabel = options.tipLabel !== undefined ? options.tipLabel : "Attributions";
-        const expandClassName = options.expandClassName !== undefined ? options.expandClassName : className + "-expand";
-        const collapseLabel = options.collapseLabel !== undefined ? options.collapseLabel : "\u203A";
-        const collapseClassName = options.collapseClassName !== undefined ? options.collapseClassName : className + "-collapse";
-        if (typeof collapseLabel === "string") {
+        const className = options.className !== undefined ? options.className : 'ol-attribution';
+        const tipLabel = options.tipLabel !== undefined ? options.tipLabel : 'Attributions';
+        const expandClassName = options.expandClassName !== undefined ? options.expandClassName : className + '-expand';
+        const collapseLabel = options.collapseLabel !== undefined ? options.collapseLabel : '\u203A';
+        const collapseClassName = options.collapseClassName !== undefined ? options.collapseClassName : className + '-collapse';
+        if (typeof collapseLabel === 'string') {
             /**
        * @private
        * @type {HTMLElement}
-       */ this.collapseLabel_ = document.createElement("span");
+       */ this.collapseLabel_ = document.createElement('span');
             this.collapseLabel_.textContent = collapseLabel;
             this.collapseLabel_.className = collapseClassName;
         } else this.collapseLabel_ = collapseLabel;
-        const label = options.label !== undefined ? options.label : "i";
-        if (typeof label === "string") {
+        const label = options.label !== undefined ? options.label : 'i';
+        if (typeof label === 'string') {
             /**
        * @private
        * @type {HTMLElement}
-       */ this.label_ = document.createElement("span");
+       */ this.label_ = document.createElement('span');
             this.label_.textContent = label;
             this.label_.className = expandClassName;
         } else this.label_ = label;
@@ -12502,13 +12318,13 @@ var $073a42a03e127bc6$export$2e2bcd8739ae039 = $073a42a03e127bc6$var$Control;
         /**
      * @private
      * @type {HTMLElement}
-     */ this.toggleButton_ = document.createElement("button");
-        this.toggleButton_.setAttribute("type", "button");
-        this.toggleButton_.setAttribute("aria-expanded", String(!this.collapsed_));
+     */ this.toggleButton_ = document.createElement('button');
+        this.toggleButton_.setAttribute('type', 'button');
+        this.toggleButton_.setAttribute('aria-expanded', String(!this.collapsed_));
         this.toggleButton_.title = tipLabel;
         this.toggleButton_.appendChild(activeLabel);
         this.toggleButton_.addEventListener((0, $f13d17e3c190470c$export$2e2bcd8739ae039).CLICK, this.handleClick_.bind(this), false);
-        const cssClasses = className + " " + (0, $7309508e6173a6a6$export$1afde3d6e16a7b29) + " " + (0, $7309508e6173a6a6$export$4d4f8be70b656192) + (this.collapsed_ && this.collapsible_ ? " " + (0, $7309508e6173a6a6$export$e16017ac68d14492) : "") + (this.collapsible_ ? "" : " ol-uncollapsible");
+        const cssClasses = className + ' ' + (0, $7309508e6173a6a6$export$1afde3d6e16a7b29) + ' ' + (0, $7309508e6173a6a6$export$4d4f8be70b656192) + (this.collapsed_ && this.collapsible_ ? ' ' + (0, $7309508e6173a6a6$export$e16017ac68d14492) : '') + (this.collapsible_ ? '' : ' ol-uncollapsible');
         const element = this.element;
         element.className = cssClasses;
         element.appendChild(this.toggleButton_);
@@ -12540,7 +12356,7 @@ var $073a42a03e127bc6$export$2e2bcd8739ae039 = $073a42a03e127bc6$var$Control;
    */ updateElement_(frameState) {
         if (!frameState) {
             if (this.renderedVisible_) {
-                this.element.style.display = "none";
+                this.element.style.display = 'none';
                 this.renderedVisible_ = false;
             }
             return;
@@ -12548,14 +12364,14 @@ var $073a42a03e127bc6$export$2e2bcd8739ae039 = $073a42a03e127bc6$var$Control;
         const attributions = this.collectSourceAttributions_(frameState);
         const visible = attributions.length > 0;
         if (this.renderedVisible_ != visible) {
-            this.element.style.display = visible ? "" : "none";
+            this.element.style.display = visible ? '' : 'none';
             this.renderedVisible_ = visible;
         }
         if ((0, $69c1cc8ae30f997f$export$e9bab7fafb253603)(attributions, this.renderedAttributions_)) return;
         (0, $1d92219e1eaa7bd2$export$1e1c9bf5a4ffe0d1)(this.ulElement_);
         // append the attributions
         for(let i = 0, ii = attributions.length; i < ii; ++i){
-            const element = document.createElement("li");
+            const element = document.createElement('li');
             element.innerHTML = attributions[i];
             this.ulElement_.appendChild(element);
         }
@@ -12576,7 +12392,7 @@ var $073a42a03e127bc6$export$2e2bcd8739ae039 = $073a42a03e127bc6$var$Control;
         if (this.collapsed_) (0, $1d92219e1eaa7bd2$export$5542201de9311ab2)(this.collapseLabel_, this.label_);
         else (0, $1d92219e1eaa7bd2$export$5542201de9311ab2)(this.label_, this.collapseLabel_);
         this.collapsed_ = !this.collapsed_;
-        this.toggleButton_.setAttribute("aria-expanded", String(!this.collapsed_));
+        this.toggleButton_.setAttribute('aria-expanded', String(!this.collapsed_));
     }
     /**
    * Return `true` if the attribution is collapsible, `false` otherwise.
@@ -12592,7 +12408,7 @@ var $073a42a03e127bc6$export$2e2bcd8739ae039 = $073a42a03e127bc6$var$Control;
    */ setCollapsible(collapsible) {
         if (this.collapsible_ === collapsible) return;
         this.collapsible_ = collapsible;
-        this.element.classList.toggle("ol-uncollapsible");
+        this.element.classList.toggle('ol-uncollapsible');
         if (this.userCollapsed_) this.handleToggle_();
     }
     /**
@@ -12660,33 +12476,33 @@ var $bef57c1dead28470$export$2e2bcd8739ae039 = $bef57c1dead28470$var$Attribution
    */ constructor(options){
         options = options ? options : {};
         super({
-            element: document.createElement("div"),
+            element: document.createElement('div'),
             render: options.render,
             target: options.target
         });
-        const className = options.className !== undefined ? options.className : "ol-rotate";
-        const label = options.label !== undefined ? options.label : "\u21E7";
-        const compassClassName = options.compassClassName !== undefined ? options.compassClassName : "ol-compass";
+        const className = options.className !== undefined ? options.className : 'ol-rotate';
+        const label = options.label !== undefined ? options.label : '\u21E7';
+        const compassClassName = options.compassClassName !== undefined ? options.compassClassName : 'ol-compass';
         /**
      * @type {HTMLElement}
      * @private
      */ this.label_ = null;
-        if (typeof label === "string") {
-            this.label_ = document.createElement("span");
+        if (typeof label === 'string') {
+            this.label_ = document.createElement('span');
             this.label_.className = compassClassName;
             this.label_.textContent = label;
         } else {
             this.label_ = label;
             this.label_.classList.add(compassClassName);
         }
-        const tipLabel = options.tipLabel ? options.tipLabel : "Reset rotation";
-        const button = document.createElement("button");
-        button.className = className + "-reset";
-        button.setAttribute("type", "button");
+        const tipLabel = options.tipLabel ? options.tipLabel : 'Reset rotation';
+        const button = document.createElement('button');
+        button.className = className + '-reset';
+        button.setAttribute('type', 'button');
         button.title = tipLabel;
         button.appendChild(this.label_);
         button.addEventListener((0, $f13d17e3c190470c$export$2e2bcd8739ae039).CLICK, this.handleClick_.bind(this), false);
-        const cssClasses = className + " " + (0, $7309508e6173a6a6$export$1afde3d6e16a7b29) + " " + (0, $7309508e6173a6a6$export$4d4f8be70b656192);
+        const cssClasses = className + ' ' + (0, $7309508e6173a6a6$export$1afde3d6e16a7b29) + ' ' + (0, $7309508e6173a6a6$export$4d4f8be70b656192);
         const element = this.element;
         element.className = cssClasses;
         element.appendChild(button);
@@ -12740,7 +12556,7 @@ var $bef57c1dead28470$export$2e2bcd8739ae039 = $bef57c1dead28470$var$Attribution
         if (!frameState) return;
         const rotation = frameState.viewState.rotation;
         if (rotation != this.rotation_) {
-            const transform = "rotate(" + rotation + "rad)";
+            const transform = 'rotate(' + rotation + 'rad)';
             if (this.autoHide_) {
                 const contains = this.element.classList.contains((0, $7309508e6173a6a6$export$981241db82723ce2));
                 if (!contains && rotation === 0) this.element.classList.add((0, $7309508e6173a6a6$export$981241db82723ce2));
@@ -12788,30 +12604,30 @@ var $43edba91db0aca14$export$2e2bcd8739ae039 = $43edba91db0aca14$var$Rotate;
    */ constructor(options){
         options = options ? options : {};
         super({
-            element: document.createElement("div"),
+            element: document.createElement('div'),
             target: options.target
         });
-        const className = options.className !== undefined ? options.className : "ol-zoom";
+        const className = options.className !== undefined ? options.className : 'ol-zoom';
         const delta = options.delta !== undefined ? options.delta : 1;
-        const zoomInClassName = options.zoomInClassName !== undefined ? options.zoomInClassName : className + "-in";
-        const zoomOutClassName = options.zoomOutClassName !== undefined ? options.zoomOutClassName : className + "-out";
-        const zoomInLabel = options.zoomInLabel !== undefined ? options.zoomInLabel : "+";
-        const zoomOutLabel = options.zoomOutLabel !== undefined ? options.zoomOutLabel : "\u2013";
-        const zoomInTipLabel = options.zoomInTipLabel !== undefined ? options.zoomInTipLabel : "Zoom in";
-        const zoomOutTipLabel = options.zoomOutTipLabel !== undefined ? options.zoomOutTipLabel : "Zoom out";
-        const inElement = document.createElement("button");
+        const zoomInClassName = options.zoomInClassName !== undefined ? options.zoomInClassName : className + '-in';
+        const zoomOutClassName = options.zoomOutClassName !== undefined ? options.zoomOutClassName : className + '-out';
+        const zoomInLabel = options.zoomInLabel !== undefined ? options.zoomInLabel : '+';
+        const zoomOutLabel = options.zoomOutLabel !== undefined ? options.zoomOutLabel : '\u2013';
+        const zoomInTipLabel = options.zoomInTipLabel !== undefined ? options.zoomInTipLabel : 'Zoom in';
+        const zoomOutTipLabel = options.zoomOutTipLabel !== undefined ? options.zoomOutTipLabel : 'Zoom out';
+        const inElement = document.createElement('button');
         inElement.className = zoomInClassName;
-        inElement.setAttribute("type", "button");
+        inElement.setAttribute('type', 'button');
         inElement.title = zoomInTipLabel;
-        inElement.appendChild(typeof zoomInLabel === "string" ? document.createTextNode(zoomInLabel) : zoomInLabel);
+        inElement.appendChild(typeof zoomInLabel === 'string' ? document.createTextNode(zoomInLabel) : zoomInLabel);
         inElement.addEventListener((0, $f13d17e3c190470c$export$2e2bcd8739ae039).CLICK, this.handleClick_.bind(this, delta), false);
-        const outElement = document.createElement("button");
+        const outElement = document.createElement('button');
         outElement.className = zoomOutClassName;
-        outElement.setAttribute("type", "button");
+        outElement.setAttribute('type', 'button');
         outElement.title = zoomOutTipLabel;
-        outElement.appendChild(typeof zoomOutLabel === "string" ? document.createTextNode(zoomOutLabel) : zoomOutLabel);
+        outElement.appendChild(typeof zoomOutLabel === 'string' ? document.createTextNode(zoomOutLabel) : zoomOutLabel);
         outElement.addEventListener((0, $f13d17e3c190470c$export$2e2bcd8739ae039).CLICK, this.handleClick_.bind(this, -delta), false);
-        const cssClasses = className + " " + (0, $7309508e6173a6a6$export$1afde3d6e16a7b29) + " " + (0, $7309508e6173a6a6$export$4d4f8be70b656192);
+        const cssClasses = className + ' ' + (0, $7309508e6173a6a6$export$1afde3d6e16a7b29) + ' ' + (0, $7309508e6173a6a6$export$4d4f8be70b656192);
         const element = this.element;
         element.className = cssClasses;
         element.appendChild(inElement);
@@ -12881,7 +12697,7 @@ function $ca89b5468da2f709$export$ebe90cb607ad99e(options) {
  */ /**
  * @enum {string}
  */ var $a72857960391f690$export$2e2bcd8739ae039 = {
-    ACTIVE: "active"
+    ACTIVE: 'active'
 };
 
 
@@ -13242,7 +13058,7 @@ const $e01cfcd29f192019$export$d7ddd398f22d79ef = function(event) {
     return targetElement.contains(activeElement);
 };
 const $e01cfcd29f192019$export$ae2cdf064e3b0c55 = function(event) {
-    return event.map.getTargetElement().hasAttribute("tabindex") ? $e01cfcd29f192019$export$d7ddd398f22d79ef(event) : true;
+    return event.map.getTargetElement().hasAttribute('tabindex') ? $e01cfcd29f192019$export$d7ddd398f22d79ef(event) : true;
 };
 const $e01cfcd29f192019$export$ba9e5d519bc326ca = (0, $2c3aa3ce33eccc0f$export$22e23a2304399231);
 const $e01cfcd29f192019$export$64ef1bee2b9504c1 = function(mapBrowserEvent) {
@@ -13254,7 +13070,7 @@ const $e01cfcd29f192019$export$1238ad6b5e7fff70 = function(mapBrowserEvent) {
 };
 const $e01cfcd29f192019$export$b3e22bcfd64c1022 = (0, $2c3aa3ce33eccc0f$export$8f11cee4bdc7e668);
 const $e01cfcd29f192019$export$71eac0963f2c2f01 = function(mapBrowserEvent) {
-    return mapBrowserEvent.type == "pointermove";
+    return mapBrowserEvent.type == 'pointermove';
 };
 const $e01cfcd29f192019$export$194df8bad091b401 = function(mapBrowserEvent) {
     return mapBrowserEvent.type == (0, $ca08bc7d1400c90f$export$2e2bcd8739ae039).SINGLECLICK;
@@ -13281,7 +13097,7 @@ const $e01cfcd29f192019$export$5d31fe68a477cfbb = function(mapBrowserEvent) {
 const $e01cfcd29f192019$export$e5570ca80cd8fd54 = function(mapBrowserEvent) {
     const originalEvent = /** @type {KeyboardEvent|MouseEvent|TouchEvent} */ mapBrowserEvent.originalEvent;
     const tagName = /** @type {Element} */ originalEvent.target.tagName;
-    return tagName !== "INPUT" && tagName !== "SELECT" && tagName !== "TEXTAREA" && // `isContentEditable` is only available on `HTMLElement`, but it may also be a
+    return tagName !== 'INPUT' && tagName !== 'SELECT' && tagName !== 'TEXTAREA' && // `isContentEditable` is only available on `HTMLElement`, but it may also be a
     // different type like `SVGElement`.
     // @ts-ignore
     !originalEvent.target.isContentEditable;
@@ -13290,19 +13106,19 @@ const $e01cfcd29f192019$export$abb7acbfa76bf3c4 = function(mapBrowserEvent) {
     const pointerEvent = /** @type {import("../MapBrowserEvent").default} */ mapBrowserEvent.originalEvent;
     (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(pointerEvent !== undefined, 56); // mapBrowserEvent must originate from a pointer event
     // see https://www.w3.org/TR/pointerevents/#widl-PointerEvent-pointerType
-    return pointerEvent.pointerType == "mouse";
+    return pointerEvent.pointerType == 'mouse';
 };
 const $e01cfcd29f192019$export$e74de664a571d084 = function(mapBrowserEvent) {
     const pointerEvt = /** @type {import("../MapBrowserEvent").default} */ mapBrowserEvent.originalEvent;
     (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(pointerEvt !== undefined, 56); // mapBrowserEvent must originate from a pointer event
     // see https://www.w3.org/TR/pointerevents/#widl-PointerEvent-pointerType
-    return pointerEvt.pointerType === "touch";
+    return pointerEvt.pointerType === 'touch';
 };
 const $e01cfcd29f192019$export$cd1707283a23f059 = function(mapBrowserEvent) {
     const pointerEvt = /** @type {import("../MapBrowserEvent").default} */ mapBrowserEvent.originalEvent;
     (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(pointerEvt !== undefined, 56); // mapBrowserEvent must originate from a pointer event
     // see https://www.w3.org/TR/pointerevents/#widl-PointerEvent-pointerType
-    return pointerEvt.pointerType === "pen";
+    return pointerEvt.pointerType === 'pen';
 };
 const $e01cfcd29f192019$export$189f0d593022b199 = function(mapBrowserEvent) {
     const pointerEvent = /** @type {import("../MapBrowserEvent").default} */ mapBrowserEvent.originalEvent;
@@ -13556,10 +13372,10 @@ class $daf908317c35d64c$var$RenderBox extends (0, $2323388472940bb7$export$2e2bc
         /**
      * @type {HTMLDivElement}
      * @private
-     */ this.element_ = document.createElement("div");
-        this.element_.style.position = "absolute";
-        this.element_.style.pointerEvents = "auto";
-        this.element_.className = "ol-box " + className;
+     */ this.element_ = document.createElement('div');
+        this.element_.style.position = 'absolute';
+        this.element_.style.pointerEvents = 'auto';
+        this.element_.className = 'ol-box ' + className;
         /**
      * @private
      * @type {import("../Map.js").default|null}
@@ -13583,7 +13399,7 @@ class $daf908317c35d64c$var$RenderBox extends (0, $2323388472940bb7$export$2e2bc
    */ render_() {
         const startPixel = this.startPixel_;
         const endPixel = this.endPixel_;
-        const px = "px";
+        const px = 'px';
         const style = this.element_.style;
         style.left = Math.min(startPixel[0], endPixel[0]) + px;
         style.top = Math.min(startPixel[1], endPixel[1]) + px;
@@ -13596,10 +13412,10 @@ class $daf908317c35d64c$var$RenderBox extends (0, $2323388472940bb7$export$2e2bc
         if (this.map_) {
             this.map_.getOverlayContainer().removeChild(this.element_);
             const style = this.element_.style;
-            style.left = "inherit";
-            style.top = "inherit";
-            style.width = "inherit";
-            style.height = "inherit";
+            style.left = 'inherit';
+            style.top = 'inherit';
+            style.width = 'inherit';
+            style.height = 'inherit';
         }
         this.map_ = map;
         if (this.map_) this.map_.getOverlayContainer().appendChild(this.element_);
@@ -13675,22 +13491,22 @@ var $daf908317c35d64c$export$2e2bcd8739ae039 = $daf908317c35d64c$var$RenderBox;
    * Triggered upon drag box start.
    * @event DragBoxEvent#boxstart
    * @api
-   */ BOXSTART: "boxstart",
+   */ BOXSTART: 'boxstart',
     /**
    * Triggered on drag when box is active.
    * @event DragBoxEvent#boxdrag
    * @api
-   */ BOXDRAG: "boxdrag",
+   */ BOXDRAG: 'boxdrag',
     /**
    * Triggered upon drag box end.
    * @event DragBoxEvent#boxend
    * @api
-   */ BOXEND: "boxend",
+   */ BOXEND: 'boxend',
     /**
    * Triggered upon drag box canceled.
    * @event DragBoxEvent#boxcancel
    * @api
-   */ BOXCANCEL: "boxcancel"
+   */ BOXCANCEL: 'boxcancel'
 };
 class $548e1244a8ec2303$export$7053c33c051365ea extends (0, $f22c10e3757627da$export$2e2bcd8739ae039) {
     /**
@@ -13749,7 +13565,7 @@ class $548e1244a8ec2303$export$7053c33c051365ea extends (0, $f22c10e3757627da$ex
         /**
      * @type {import("../render/Box.js").default}
      * @private
-     */ this.box_ = new (0, $daf908317c35d64c$export$2e2bcd8739ae039)(options.className || "ol-dragbox");
+     */ this.box_ = new (0, $daf908317c35d64c$export$2e2bcd8739ae039)(options.className || 'ol-dragbox');
         /**
      * @type {number}
      * @private
@@ -13859,7 +13675,7 @@ var $548e1244a8ec2303$export$2e2bcd8739ae039 = $548e1244a8ec2303$var$DragBox;
         const condition = options.condition ? options.condition : (0, $e01cfcd29f192019$export$5d31fe68a477cfbb);
         super({
             condition: condition,
-            className: options.className || "ol-dragzoom",
+            className: options.className || 'ol-dragzoom',
             minArea: options.minArea
         });
         /**
@@ -13904,10 +13720,10 @@ var $32526dee12955441$export$2e2bcd8739ae039 = $32526dee12955441$var$DragZoom;
  * @enum {string}
  * @const
  */ var $0184dbb1548f43d4$export$2e2bcd8739ae039 = {
-    LEFT: "ArrowLeft",
-    UP: "ArrowUp",
-    RIGHT: "ArrowRight",
-    DOWN: "ArrowDown"
+    LEFT: 'ArrowLeft',
+    UP: 'ArrowUp',
+    RIGHT: 'ArrowRight',
+    DOWN: 'ArrowDown'
 };
 
 
@@ -14056,9 +13872,9 @@ var $f630575772c1cb37$export$2e2bcd8739ae039 = $f630575772c1cb37$var$KeyboardPan
         if (mapBrowserEvent.type == (0, $f13d17e3c190470c$export$2e2bcd8739ae039).KEYDOWN || mapBrowserEvent.type == (0, $f13d17e3c190470c$export$2e2bcd8739ae039).KEYPRESS) {
             const keyEvent = /** @type {KeyboardEvent} */ mapBrowserEvent.originalEvent;
             const key = keyEvent.key;
-            if (this.condition_(mapBrowserEvent) && (key === "+" || key === "-")) {
+            if (this.condition_(mapBrowserEvent) && (key === '+' || key === '-')) {
                 const map = mapBrowserEvent.map;
-                const delta = key === "+" ? this.delta_ : -this.delta_;
+                const delta = key === '+' ? this.delta_ : -this.delta_;
                 const view = map.getView();
                 (0, $c02a1e27548fb802$export$ace321ff2a8016ef)(view, delta, undefined, this.duration_);
                 keyEvent.preventDefault();
@@ -14297,9 +14113,9 @@ var $1cf11cfceb5e1609$export$2e2bcd8739ae039 = $1cf11cfceb5e1609$var$Kinetic;
         this.lastDelta_ = delta;
         const now = Date.now();
         if (this.startTime_ === undefined) this.startTime_ = now;
-        if (!this.mode_ || now - this.startTime_ > this.trackpadEventGap_) this.mode_ = Math.abs(delta) < 4 ? "trackpad" : "wheel";
+        if (!this.mode_ || now - this.startTime_ > this.trackpadEventGap_) this.mode_ = Math.abs(delta) < 4 ? 'trackpad' : 'wheel';
         const view = map.getView();
-        if (this.mode_ === "trackpad" && !(view.getConstrainResolution() || this.constrainResolution_)) {
+        if (this.mode_ === 'trackpad' && !(view.getConstrainResolution() || this.constrainResolution_)) {
             if (this.trackpadTimeoutId_) clearTimeout(this.trackpadTimeoutId_);
             else {
                 if (view.getAnimating()) view.cancelAnimations();
@@ -14891,33 +14707,33 @@ function $3db00eb0a4716cab$export$a71a825ff42fb8e1(size, dest) {
         /**
      * @private
      * @type {!HTMLElement}
-     */ this.viewport_ = document.createElement("div");
-        this.viewport_.className = "ol-viewport" + ("ontouchstart" in window ? " ol-touch" : "");
-        this.viewport_.style.position = "relative";
-        this.viewport_.style.overflow = "hidden";
-        this.viewport_.style.width = "100%";
-        this.viewport_.style.height = "100%";
+     */ this.viewport_ = document.createElement('div');
+        this.viewport_.className = 'ol-viewport' + ('ontouchstart' in window ? ' ol-touch' : '');
+        this.viewport_.style.position = 'relative';
+        this.viewport_.style.overflow = 'hidden';
+        this.viewport_.style.width = '100%';
+        this.viewport_.style.height = '100%';
         /**
      * @private
      * @type {!HTMLElement}
-     */ this.overlayContainer_ = document.createElement("div");
-        this.overlayContainer_.style.position = "absolute";
-        this.overlayContainer_.style.zIndex = "0";
-        this.overlayContainer_.style.width = "100%";
-        this.overlayContainer_.style.height = "100%";
-        this.overlayContainer_.style.pointerEvents = "none";
-        this.overlayContainer_.className = "ol-overlaycontainer";
+     */ this.overlayContainer_ = document.createElement('div');
+        this.overlayContainer_.style.position = 'absolute';
+        this.overlayContainer_.style.zIndex = '0';
+        this.overlayContainer_.style.width = '100%';
+        this.overlayContainer_.style.height = '100%';
+        this.overlayContainer_.style.pointerEvents = 'none';
+        this.overlayContainer_.className = 'ol-overlaycontainer';
         this.viewport_.appendChild(this.overlayContainer_);
         /**
      * @private
      * @type {!HTMLElement}
-     */ this.overlayContainerStopEvent_ = document.createElement("div");
-        this.overlayContainerStopEvent_.style.position = "absolute";
-        this.overlayContainerStopEvent_.style.zIndex = "0";
-        this.overlayContainerStopEvent_.style.width = "100%";
-        this.overlayContainerStopEvent_.style.height = "100%";
-        this.overlayContainerStopEvent_.style.pointerEvents = "none";
-        this.overlayContainerStopEvent_.className = "ol-overlaycontainer-stopevent";
+     */ this.overlayContainerStopEvent_ = document.createElement('div');
+        this.overlayContainerStopEvent_.style.position = 'absolute';
+        this.overlayContainerStopEvent_.style.zIndex = '0';
+        this.overlayContainerStopEvent_.style.width = '100%';
+        this.overlayContainerStopEvent_.style.height = '100%';
+        this.overlayContainerStopEvent_.style.pointerEvents = 'none';
+        this.overlayContainerStopEvent_.className = 'ol-overlaycontainer-stopevent';
         this.viewport_.appendChild(this.overlayContainerStopEvent_);
         /**
      * @private
@@ -15187,7 +15003,7 @@ function $3db00eb0a4716cab$export$a71a825ff42fb8e1(size, dest) {
         const scaleX = viewportPosition.width / viewportSize[0];
         const scaleY = viewportPosition.height / viewportSize[1];
         const eventPosition = //FIXME Are we really calling this with a TouchEvent anywhere?
-        "changedTouches" in event ? /** @type {TouchEvent} */ event.changedTouches[0] : /** @type {MouseEvent} */ event;
+        'changedTouches' in event ? /** @type {TouchEvent} */ event.changedTouches[0] : /** @type {MouseEvent} */ event;
         return [
             (eventPosition.clientX - viewportPosition.left) / scaleX,
             (eventPosition.clientY - viewportPosition.top) / scaleY
@@ -15510,7 +15326,7 @@ function $3db00eb0a4716cab$export$a71a825ff42fb8e1(size, dest) {
         // If it's not now an Element we remove the viewport from the DOM.
         // If it's an Element we append the viewport element to it.
         const target = this.getTarget();
-        const targetElement = typeof target === "string" ? document.getElementById(target) : target;
+        const targetElement = typeof target === 'string' ? document.getElementById(target) : target;
         this.targetElement_ = targetElement;
         if (!targetElement) {
             if (this.renderer_) {
@@ -15585,12 +15401,12 @@ function $3db00eb0a4716cab$export$a71a825ff42fb8e1(size, dest) {
         }
         const layerGroup = this.getLayerGroup();
         if (layerGroup) {
-            this.handleLayerAdd_(new (0, $3c2b2bf26c3e3155$export$2f5ff21d758d25a7)("addlayer", layerGroup));
+            this.handleLayerAdd_(new (0, $3c2b2bf26c3e3155$export$2f5ff21d758d25a7)('addlayer', layerGroup));
             this.layerGroupPropertyListenerKeys_ = [
                 (0, $776f68d2a754760b$export$63174c828edd6ff8)(layerGroup, (0, $a6660a6615220f8c$export$2e2bcd8739ae039).PROPERTYCHANGE, this.render, this),
                 (0, $776f68d2a754760b$export$63174c828edd6ff8)(layerGroup, (0, $f13d17e3c190470c$export$2e2bcd8739ae039).CHANGE, this.render, this),
-                (0, $776f68d2a754760b$export$63174c828edd6ff8)(layerGroup, "addlayer", this.handleLayerAdd_, this),
-                (0, $776f68d2a754760b$export$63174c828edd6ff8)(layerGroup, "removelayer", this.handleLayerRemove_, this)
+                (0, $776f68d2a754760b$export$63174c828edd6ff8)(layerGroup, 'addlayer', this.handleLayerAdd_, this),
+                (0, $776f68d2a754760b$export$63174c828edd6ff8)(layerGroup, 'removelayer', this.handleLayerRemove_, this)
             ];
         }
         this.render();
@@ -15751,7 +15567,7 @@ function $3db00eb0a4716cab$export$a71a825ff42fb8e1(size, dest) {
    * @api
    */ setLayerGroup(layerGroup) {
         const oldLayerGroup = this.getLayerGroup();
-        if (oldLayerGroup) this.handleLayerRemove_(new (0, $3c2b2bf26c3e3155$export$2f5ff21d758d25a7)("removelayer", oldLayerGroup));
+        if (oldLayerGroup) this.handleLayerRemove_(new (0, $3c2b2bf26c3e3155$export$2f5ff21d758d25a7)('removelayer', oldLayerGroup));
         this.set((0, $df2cc47d12323995$export$2e2bcd8739ae039).LAYERGROUP, layerGroup);
     }
     /**
@@ -15799,8 +15615,8 @@ function $3db00eb0a4716cab$export$a71a825ff42fb8e1(size, dest) {
         let size = undefined;
         if (targetElement) {
             const computedStyle = getComputedStyle(targetElement);
-            const width = targetElement.offsetWidth - parseFloat(computedStyle["borderLeftWidth"]) - parseFloat(computedStyle["paddingLeft"]) - parseFloat(computedStyle["paddingRight"]) - parseFloat(computedStyle["borderRightWidth"]);
-            const height = targetElement.offsetHeight - parseFloat(computedStyle["borderTopWidth"]) - parseFloat(computedStyle["paddingTop"]) - parseFloat(computedStyle["paddingBottom"]) - parseFloat(computedStyle["borderBottomWidth"]);
+            const width = targetElement.offsetWidth - parseFloat(computedStyle['borderLeftWidth']) - parseFloat(computedStyle['paddingLeft']) - parseFloat(computedStyle['paddingRight']) - parseFloat(computedStyle['borderRightWidth']);
+            const height = targetElement.offsetHeight - parseFloat(computedStyle['borderTopWidth']) - parseFloat(computedStyle['paddingTop']) - parseFloat(computedStyle['paddingBottom']) - parseFloat(computedStyle['borderBottomWidth']);
             if (!isNaN(width) && !isNaN(height)) {
                 size = [
                     width,
@@ -15838,11 +15654,11 @@ function $3db00eb0a4716cab$export$a71a825ff42fb8e1(size, dest) {
     /**
    * @type {HTMLElement|Document}
    */ let keyboardEventTarget = null;
-    if (options.keyboardEventTarget !== undefined) keyboardEventTarget = typeof options.keyboardEventTarget === "string" ? document.getElementById(options.keyboardEventTarget) : options.keyboardEventTarget;
+    if (options.keyboardEventTarget !== undefined) keyboardEventTarget = typeof options.keyboardEventTarget === 'string' ? document.getElementById(options.keyboardEventTarget) : options.keyboardEventTarget;
     /**
    * @type {Object<string, *>}
    */ const values = {};
-    const layerGroup = options.layers && typeof /** @type {?} */ options.layers.getLayers === "function" ? /** @type {LayerGroup} */ options.layers : new (0, $3c2b2bf26c3e3155$export$2e2bcd8739ae039)({
+    const layerGroup = options.layers && typeof /** @type {?} */ options.layers.getLayers === 'function' ? /** @type {LayerGroup} */ options.layers : new (0, $3c2b2bf26c3e3155$export$2e2bcd8739ae039)({
         layers: /** @type {Collection<import("./layer/Base.js").default>|Array<import("./layer/Base.js").default>} */ options.layers
     });
     values[(0, $df2cc47d12323995$export$2e2bcd8739ae039).LAYERGROUP] = layerGroup;
@@ -15852,7 +15668,7 @@ function $3db00eb0a4716cab$export$a71a825ff42fb8e1(size, dest) {
     if (options.controls !== undefined) {
         if (Array.isArray(options.controls)) controls = new (0, $6ba3969272323605$export$2e2bcd8739ae039)(options.controls.slice());
         else {
-            (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof /** @type {?} */ options.controls.getArray === "function", 47); // Expected `controls` to be an array or an `import("./Collection.js").Collection`
+            (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof /** @type {?} */ options.controls.getArray === 'function', 47); // Expected `controls` to be an array or an `import("./Collection.js").Collection`
             controls = options.controls;
         }
     }
@@ -15860,7 +15676,7 @@ function $3db00eb0a4716cab$export$a71a825ff42fb8e1(size, dest) {
     if (options.interactions !== undefined) {
         if (Array.isArray(options.interactions)) interactions = new (0, $6ba3969272323605$export$2e2bcd8739ae039)(options.interactions.slice());
         else {
-            (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof /** @type {?} */ options.interactions.getArray === "function", 48); // Expected `interactions` to be an array or an `import("./Collection.js").Collection`
+            (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof /** @type {?} */ options.interactions.getArray === 'function', 48); // Expected `interactions` to be an array or an `import("./Collection.js").Collection`
             interactions = options.interactions;
         }
     }
@@ -15868,7 +15684,7 @@ function $3db00eb0a4716cab$export$a71a825ff42fb8e1(size, dest) {
     if (options.overlays !== undefined) {
         if (Array.isArray(options.overlays)) overlays = new (0, $6ba3969272323605$export$2e2bcd8739ae039)(options.overlays.slice());
         else {
-            (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof /** @type {?} */ options.overlays.getArray === "function", 49); // Expected `overlays` to be an array or an `import("./Collection.js").Collection`
+            (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof /** @type {?} */ options.overlays.getArray === 'function', 49); // Expected `overlays` to be an array or an `import("./Collection.js").Collection`
             overlays = options.overlays;
         }
     } else overlays = new (0, $6ba3969272323605$export$2e2bcd8739ae039)();
@@ -15884,7 +15700,7 @@ var $905d64a7b91bb632$export$2e2bcd8739ae039 = $905d64a7b91bb632$var$Map;
 
 
 var $cf6a3c38f3310fd7$exports = {};
-$cf6a3c38f3310fd7$exports = ":root, :host {\n  --ol-background-color: white;\n  --ol-accent-background-color: #f5f5f5;\n  --ol-subtle-background-color: #80808040;\n  --ol-partial-background-color: #ffffffbf;\n  --ol-foreground-color: #333;\n  --ol-subtle-foreground-color: #666;\n  --ol-brand-color: #0af;\n}\n\n.ol-box {\n  box-sizing: border-box;\n  border: 1.5px solid var(--ol-background-color);\n  background-color: var(--ol-partial-background-color);\n  border-radius: 2px;\n}\n\n.ol-mouse-position {\n  position: absolute;\n  top: 8px;\n  right: 8px;\n}\n\n.ol-scale-line {\n  background: var(--ol-partial-background-color);\n  border-radius: 4px;\n  padding: 2px;\n  position: absolute;\n  bottom: 8px;\n  left: 8px;\n}\n\n.ol-scale-line-inner {\n  border: 1px solid var(--ol-subtle-foreground-color);\n  color: var(--ol-foreground-color);\n  text-align: center;\n  will-change: contents, width;\n  border-top: none;\n  margin: 1px;\n  font-size: 10px;\n  transition: all .25s;\n}\n\n.ol-scale-bar {\n  position: absolute;\n  bottom: 8px;\n  left: 8px;\n}\n\n.ol-scale-bar-inner {\n  display: flex;\n}\n\n.ol-scale-step-marker {\n  background-color: var(--ol-foreground-color);\n  float: right;\n  z-index: 10;\n  width: 1px;\n  height: 15px;\n}\n\n.ol-scale-step-text {\n  z-index: 11;\n  color: var(--ol-foreground-color);\n  text-shadow: -1.5px 0 var(--ol-partial-background-color), 0 1.5px var(--ol-partial-background-color), 1.5px 0 var(--ol-partial-background-color), 0 -1.5px var(--ol-partial-background-color);\n  font-size: 10px;\n  position: absolute;\n  bottom: -5px;\n}\n\n.ol-scale-text {\n  text-align: center;\n  color: var(--ol-foreground-color);\n  text-shadow: -1.5px 0 var(--ol-partial-background-color), 0 1.5px var(--ol-partial-background-color), 1.5px 0 var(--ol-partial-background-color), 0 -1.5px var(--ol-partial-background-color);\n  font-size: 12px;\n  position: absolute;\n  bottom: 25px;\n}\n\n.ol-scale-singlebar {\n  z-index: 9;\n  box-sizing: border-box;\n  border: 1px solid var(--ol-foreground-color);\n  height: 10px;\n  position: relative;\n}\n\n.ol-scale-singlebar-even {\n  background-color: var(--ol-subtle-foreground-color);\n}\n\n.ol-scale-singlebar-odd {\n  background-color: var(--ol-background-color);\n}\n\n.ol-unsupported {\n  display: none;\n}\n\n.ol-viewport, .ol-unselectable {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n\n.ol-viewport canvas {\n  all: unset;\n}\n\n.ol-viewport {\n  touch-action: none;\n}\n\n.ol-selectable {\n  -webkit-touch-callout: default;\n  -webkit-user-select: text;\n  user-select: text;\n}\n\n.ol-grabbing {\n  cursor: -webkit-grabbing;\n  cursor: -moz-grabbing;\n  cursor: grabbing;\n}\n\n.ol-grab {\n  cursor: move;\n  cursor: -webkit-grab;\n  cursor: -moz-grab;\n  cursor: grab;\n}\n\n.ol-control {\n  background-color: var(--ol-subtle-background-color);\n  border-radius: 4px;\n  position: absolute;\n}\n\n.ol-zoom {\n  top: .5em;\n  left: .5em;\n}\n\n.ol-rotate {\n  transition: opacity .25s linear, visibility linear;\n  top: .5em;\n  right: .5em;\n}\n\n.ol-rotate.ol-hidden {\n  opacity: 0;\n  visibility: hidden;\n  transition: opacity .25s linear, visibility 0s linear .25s;\n}\n\n.ol-zoom-extent {\n  top: 4.643em;\n  left: .5em;\n}\n\n.ol-full-screen {\n  top: .5em;\n  right: .5em;\n}\n\n.ol-control button {\n  color: var(--ol-subtle-foreground-color);\n  font-weight: bold;\n  font-size: inherit;\n  text-align: center;\n  background-color: var(--ol-background-color);\n  border: none;\n  border-radius: 2px;\n  width: 1.375em;\n  height: 1.375em;\n  margin: 1px;\n  padding: 0;\n  line-height: .4em;\n  text-decoration: none;\n  display: block;\n}\n\n.ol-control button::-moz-focus-inner {\n  border: none;\n  padding: 0;\n}\n\n.ol-zoom-extent button {\n  line-height: 1.4em;\n}\n\n.ol-compass {\n  will-change: transform;\n  font-weight: normal;\n  display: block;\n}\n\n.ol-touch .ol-control button {\n  font-size: 1.5em;\n}\n\n.ol-touch .ol-zoom-extent {\n  top: 5.5em;\n}\n\n.ol-control button:hover, .ol-control button:focus {\n  outline: 1px solid var(--ol-subtle-foreground-color);\n  color: var(--ol-foreground-color);\n  text-decoration: none;\n}\n\n.ol-zoom .ol-zoom-in {\n  border-radius: 2px 2px 0 0;\n}\n\n.ol-zoom .ol-zoom-out {\n  border-radius: 0 0 2px 2px;\n}\n\n.ol-attribution {\n  text-align: right;\n  flex-flow: row-reverse;\n  align-items: center;\n  max-width: calc(100% - 1.3em);\n  display: flex;\n  bottom: .5em;\n  right: .5em;\n}\n\n.ol-attribution a {\n  color: var(--ol-subtle-foreground-color);\n  text-decoration: none;\n}\n\n.ol-attribution ul {\n  color: var(--ol-foreground-color);\n  text-shadow: 0 0 2px var(--ol-background-color);\n  margin: 0;\n  padding: 1px .5em;\n  font-size: 12px;\n}\n\n.ol-attribution li {\n  list-style: none;\n  display: inline;\n}\n\n.ol-attribution li:not(:last-child):after {\n  content: \" \";\n}\n\n.ol-attribution img {\n  max-width: inherit;\n  vertical-align: middle;\n  max-height: 2em;\n}\n\n.ol-attribution button {\n  flex-shrink: 0;\n}\n\n.ol-attribution.ol-collapsed ul {\n  display: none;\n}\n\n.ol-attribution:not(.ol-collapsed) {\n  background: var(--ol-partial-background-color);\n}\n\n.ol-attribution.ol-uncollapsible {\n  border-radius: 4px 0 0;\n  bottom: 0;\n  right: 0;\n}\n\n.ol-attribution.ol-uncollapsible img {\n  max-height: 1.6em;\n  margin-top: -.2em;\n}\n\n.ol-attribution.ol-uncollapsible button {\n  display: none;\n}\n\n.ol-zoomslider {\n  height: 200px;\n  top: 4.5em;\n  left: .5em;\n}\n\n.ol-zoomslider button {\n  height: 10px;\n  position: relative;\n}\n\n.ol-touch .ol-zoomslider {\n  top: 5.5em;\n}\n\n.ol-overviewmap {\n  bottom: .5em;\n  left: .5em;\n}\n\n.ol-overviewmap.ol-uncollapsible {\n  border-radius: 0 4px 0 0;\n  bottom: 0;\n  left: 0;\n}\n\n.ol-overviewmap .ol-overviewmap-map, .ol-overviewmap button {\n  display: block;\n}\n\n.ol-overviewmap .ol-overviewmap-map {\n  border: 1px solid var(--ol-subtle-foreground-color);\n  width: 150px;\n  height: 150px;\n}\n\n.ol-overviewmap:not(.ol-collapsed) button {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n}\n\n.ol-overviewmap.ol-collapsed .ol-overviewmap-map, .ol-overviewmap.ol-uncollapsible button {\n  display: none;\n}\n\n.ol-overviewmap:not(.ol-collapsed) {\n  background: var(--ol-subtle-background-color);\n}\n\n.ol-overviewmap-box {\n  border: 1.5px dotted var(--ol-subtle-foreground-color);\n}\n\n.ol-overviewmap .ol-overviewmap-box:hover {\n  cursor: move;\n}\n";
+$cf6a3c38f3310fd7$exports = ":root, :host {\n  --ol-background-color: white;\n  --ol-accent-background-color: #f5f5f5;\n  --ol-subtle-background-color: #80808040;\n  --ol-partial-background-color: #ffffffbf;\n  --ol-foreground-color: #333;\n  --ol-subtle-foreground-color: #666;\n  --ol-brand-color: #0af;\n}\n\n.ol-box {\n  box-sizing: border-box;\n  border: 1.5px solid var(--ol-background-color);\n  background-color: var(--ol-partial-background-color);\n  border-radius: 2px;\n}\n\n.ol-mouse-position {\n  position: absolute;\n  top: 8px;\n  right: 8px;\n}\n\n.ol-scale-line {\n  background: var(--ol-partial-background-color);\n  border-radius: 4px;\n  padding: 2px;\n  position: absolute;\n  bottom: 8px;\n  left: 8px;\n}\n\n.ol-scale-line-inner {\n  border: 1px solid var(--ol-subtle-foreground-color);\n  color: var(--ol-foreground-color);\n  text-align: center;\n  will-change: contents, width;\n  border-top: none;\n  margin: 1px;\n  font-size: 10px;\n  transition: all .25s;\n}\n\n.ol-scale-bar {\n  position: absolute;\n  bottom: 8px;\n  left: 8px;\n}\n\n.ol-scale-bar-inner {\n  display: flex;\n}\n\n.ol-scale-step-marker {\n  background-color: var(--ol-foreground-color);\n  float: right;\n  z-index: 10;\n  width: 1px;\n  height: 15px;\n}\n\n.ol-scale-step-text {\n  z-index: 11;\n  color: var(--ol-foreground-color);\n  text-shadow: -1.5px 0 var(--ol-partial-background-color), 0 1.5px var(--ol-partial-background-color), 1.5px 0 var(--ol-partial-background-color), 0 -1.5px var(--ol-partial-background-color);\n  font-size: 10px;\n  position: absolute;\n  bottom: -5px;\n}\n\n.ol-scale-text {\n  text-align: center;\n  color: var(--ol-foreground-color);\n  text-shadow: -1.5px 0 var(--ol-partial-background-color), 0 1.5px var(--ol-partial-background-color), 1.5px 0 var(--ol-partial-background-color), 0 -1.5px var(--ol-partial-background-color);\n  font-size: 12px;\n  position: absolute;\n  bottom: 25px;\n}\n\n.ol-scale-singlebar {\n  z-index: 9;\n  box-sizing: border-box;\n  border: 1px solid var(--ol-foreground-color);\n  height: 10px;\n  position: relative;\n}\n\n.ol-scale-singlebar-even {\n  background-color: var(--ol-subtle-foreground-color);\n}\n\n.ol-scale-singlebar-odd {\n  background-color: var(--ol-background-color);\n}\n\n.ol-unsupported {\n  display: none;\n}\n\n.ol-viewport, .ol-unselectable {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n\n.ol-viewport canvas {\n  all: unset;\n}\n\n.ol-viewport {\n  touch-action: none;\n}\n\n.ol-selectable {\n  -webkit-touch-callout: default;\n  -webkit-user-select: text;\n  user-select: text;\n}\n\n.ol-grabbing {\n  cursor: -webkit-grabbing;\n  cursor: -moz-grabbing;\n  cursor: grabbing;\n}\n\n.ol-grab {\n  cursor: move;\n  cursor: -webkit-grab;\n  cursor: -moz-grab;\n  cursor: grab;\n}\n\n.ol-control {\n  background-color: var(--ol-subtle-background-color);\n  border-radius: 4px;\n  position: absolute;\n}\n\n.ol-zoom {\n  top: .5em;\n  left: .5em;\n}\n\n.ol-rotate {\n  transition: opacity .25s linear, visibility linear;\n  top: .5em;\n  right: .5em;\n}\n\n.ol-rotate.ol-hidden {\n  opacity: 0;\n  visibility: hidden;\n  transition: opacity .25s linear, visibility 0s linear .25s;\n}\n\n.ol-zoom-extent {\n  top: 4.643em;\n  left: .5em;\n}\n\n.ol-full-screen {\n  top: .5em;\n  right: .5em;\n}\n\n.ol-control button {\n  color: var(--ol-subtle-foreground-color);\n  font-weight: bold;\n  font-size: inherit;\n  text-align: center;\n  background-color: var(--ol-background-color);\n  border: none;\n  border-radius: 2px;\n  width: 1.375em;\n  height: 1.375em;\n  margin: 1px;\n  padding: 0;\n  line-height: .4em;\n  text-decoration: none;\n  display: block;\n}\n\n.ol-control button::-moz-focus-inner {\n  border: none;\n  padding: 0;\n}\n\n.ol-zoom-extent button {\n  line-height: 1.4em;\n}\n\n.ol-compass {\n  will-change: transform;\n  font-weight: normal;\n  display: block;\n}\n\n.ol-touch .ol-control button {\n  font-size: 1.5em;\n}\n\n.ol-touch .ol-zoom-extent {\n  top: 5.5em;\n}\n\n.ol-control button:hover, .ol-control button:focus {\n  outline: 1px solid var(--ol-subtle-foreground-color);\n  color: var(--ol-foreground-color);\n  text-decoration: none;\n}\n\n.ol-zoom .ol-zoom-in {\n  border-radius: 2px 2px 0 0;\n}\n\n.ol-zoom .ol-zoom-out {\n  border-radius: 0 0 2px 2px;\n}\n\n.ol-attribution {\n  text-align: right;\n  flex-flow: row-reverse;\n  align-items: center;\n  max-width: calc(100% - 1.3em);\n  display: flex;\n  bottom: .5em;\n  right: .5em;\n}\n\n.ol-attribution a {\n  color: var(--ol-subtle-foreground-color);\n  text-decoration: none;\n}\n\n.ol-attribution ul {\n  color: var(--ol-foreground-color);\n  text-shadow: 0 0 2px var(--ol-background-color);\n  margin: 0;\n  padding: 1px .5em;\n  font-size: 12px;\n}\n\n.ol-attribution li {\n  list-style: none;\n  display: inline;\n}\n\n.ol-attribution li:not(:last-child):after {\n  content: \" \";\n}\n\n.ol-attribution img {\n  max-height: 2em;\n  max-width: inherit;\n  vertical-align: middle;\n}\n\n.ol-attribution button {\n  flex-shrink: 0;\n}\n\n.ol-attribution.ol-collapsed ul {\n  display: none;\n}\n\n.ol-attribution:not(.ol-collapsed) {\n  background: var(--ol-partial-background-color);\n}\n\n.ol-attribution.ol-uncollapsible {\n  border-radius: 4px 0 0;\n  bottom: 0;\n  right: 0;\n}\n\n.ol-attribution.ol-uncollapsible img {\n  max-height: 1.6em;\n  margin-top: -.2em;\n}\n\n.ol-attribution.ol-uncollapsible button {\n  display: none;\n}\n\n.ol-zoomslider {\n  height: 200px;\n  top: 4.5em;\n  left: .5em;\n}\n\n.ol-zoomslider button {\n  height: 10px;\n  position: relative;\n}\n\n.ol-touch .ol-zoomslider {\n  top: 5.5em;\n}\n\n.ol-overviewmap {\n  bottom: .5em;\n  left: .5em;\n}\n\n.ol-overviewmap.ol-uncollapsible {\n  border-radius: 0 4px 0 0;\n  bottom: 0;\n  left: 0;\n}\n\n.ol-overviewmap .ol-overviewmap-map, .ol-overviewmap button {\n  display: block;\n}\n\n.ol-overviewmap .ol-overviewmap-map {\n  border: 1px solid var(--ol-subtle-foreground-color);\n  width: 150px;\n  height: 150px;\n}\n\n.ol-overviewmap:not(.ol-collapsed) button {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n}\n\n.ol-overviewmap.ol-collapsed .ol-overviewmap-map, .ol-overviewmap.ol-uncollapsible button {\n  display: none;\n}\n\n.ol-overviewmap:not(.ol-collapsed) {\n  background: var(--ol-subtle-background-color);\n}\n\n.ol-overviewmap-box {\n  border: 1.5px dotted var(--ol-subtle-foreground-color);\n}\n\n.ol-overviewmap .ol-overviewmap-box:hover {\n  cursor: move;\n}\n";
 
 
 
@@ -16092,7 +15908,7 @@ var $436dc64db207ef62$export$2e2bcd8739ae039 = $436dc64db207ef62$var$BaseImageLa
    * @protected
    */ renderIfReadyAndVisible() {
         const layer = this.getLayer();
-        if (layer && layer.getVisible() && layer.getSourceState() === "ready") layer.changed();
+        if (layer && layer.getVisible() && layer.getSourceState() === 'ready') layer.changed();
     }
     /**
    * Clean up.
@@ -16194,7 +16010,7 @@ function $df04b1ef9f892809$var$createPixelContext() {
    */ getBackground(frameState) {
         const layer = this.getLayer();
         let background = layer.getBackground();
-        if (typeof background === "function") background = background(frameState.viewState.resolution);
+        if (typeof background === 'function') background = background(frameState.viewState.resolution);
         return background || undefined;
     }
     /**
@@ -16207,7 +16023,7 @@ function $df04b1ef9f892809$var$createPixelContext() {
         let container, context;
         if (target && target.className === layerClassName && (!backgroundColor || target && target.style.backgroundColor && (0, $69c1cc8ae30f997f$export$e9bab7fafb253603)((0, $d32b89243a698e8b$export$75093a47a9fa838d)(target.style.backgroundColor), (0, $d32b89243a698e8b$export$75093a47a9fa838d)(backgroundColor)))) {
             const canvas = target.firstElementChild;
-            if (canvas instanceof HTMLCanvasElement) context = canvas.getContext("2d");
+            if (canvas instanceof HTMLCanvasElement) context = canvas.getContext('2d');
         }
         if (context && context.canvas.style.transform === transform) {
             // Container of the previous layer renderer can be used.
@@ -16221,19 +16037,19 @@ function $df04b1ef9f892809$var$createPixelContext() {
             this.containerReused = false;
         } else if (this.container) this.container.style.backgroundColor = null;
         if (!this.container) {
-            container = document.createElement("div");
+            container = document.createElement('div');
             container.className = layerClassName;
             let style = container.style;
-            style.position = "absolute";
-            style.width = "100%";
-            style.height = "100%";
+            style.position = 'absolute';
+            style.width = '100%';
+            style.height = '100%';
             context = (0, $1d92219e1eaa7bd2$export$9e05d10eae75c464)();
             const canvas = context.canvas;
             container.appendChild(canvas);
             style = canvas.style;
-            style.position = "absolute";
-            style.left = "0";
-            style.transformOrigin = "top left";
+            style.position = 'absolute';
+            style.left = '0';
+            style.transformOrigin = 'top left';
             this.container = container;
             this.context = context;
         }
@@ -16515,8 +16331,8 @@ var $793e8314e637c0a8$export$2e2bcd8739ae039 = $793e8314e637c0a8$var$ImageLayer;
  */ /**
  * @enum {string}
  */ var $9b3522b39d029326$export$2e2bcd8739ae039 = {
-    PRELOAD: "preload",
-    USE_INTERIM_TILES_ON_ERROR: "useInterimTilesOnError"
+    PRELOAD: 'preload',
+    USE_INTERIM_TILES_ON_ERROR: 'useInterimTilesOnError'
 };
 
 
@@ -16742,7 +16558,7 @@ var $21d7e6e4bcfe81eb$export$2e2bcd8739ae039 = $21d7e6e4bcfe81eb$var$BaseTileLay
      * if this tile can effectively be used, or if a new tile should be created
      * and this one be used as an interim tile for this new tile.
      * @type {string}
-     */ this.key = "";
+     */ this.key = '';
         /**
      * The duration for the opacity transition.
      * @type {number}
@@ -16770,7 +16586,7 @@ var $21d7e6e4bcfe81eb$export$2e2bcd8739ae039 = $21d7e6e4bcfe81eb$var$BaseTileLay
     /**
    * @return {string} Key.
    */ getKey() {
-        return this.key + "/" + this.tileCoord;
+        return this.key + '/' + this.tileCoord;
     }
     /**
    * Get the interim tile most suitable for rendering using the chain of interim
@@ -16843,7 +16659,7 @@ var $21d7e6e4bcfe81eb$export$2e2bcd8739ae039 = $21d7e6e4bcfe81eb$var$BaseTileLay
    * @param {import("./TileState.js").default} state State.
    * @api
    */ setState(state) {
-        if (this.state !== (0, $713feb195c3fd859$export$2e2bcd8739ae039).ERROR && this.state > state) throw new Error("Tile load sequence violation");
+        if (this.state !== (0, $713feb195c3fd859$export$2e2bcd8739ae039).ERROR && this.state > state) throw new Error('Tile load sequence violation');
         this.state = state;
         this.changed();
     }
@@ -17258,7 +17074,7 @@ class $0abdbb86e416a014$var$ImageTile extends (0, $776b6e4ea38ddf87$export$2e2bc
  * @return {HTMLCanvasElement} Blank image.
  */ function $0abdbb86e416a014$var$getBlankImage() {
     const ctx = (0, $1d92219e1eaa7bd2$export$9e05d10eae75c464)(1, 1);
-    ctx.fillStyle = "rgba(0,0,0,0)";
+    ctx.fillStyle = 'rgba(0,0,0,0)';
     ctx.fillRect(0, 0, 1, 1);
     return ctx.canvas;
 }
@@ -17332,7 +17148,7 @@ var $0abdbb86e416a014$export$2e2bcd8739ae039 = $0abdbb86e416a014$var$ImageTile;
      * @return {import("../coordinate.js").Coordinate} Transformed coordinate.
      * @private
      */ this.transformInv_ = function(c) {
-            const key = c[0] + "/" + c[1];
+            const key = c[0] + '/' + c[1];
             if (!transformInvCache[key]) transformInvCache[key] = transformInv(c);
             return transformInvCache[key];
         };
@@ -17642,8 +17458,8 @@ const $6f210e8a8cb248a3$export$a166f0857c555517 = [];
  */ function $6f210e8a8cb248a3$var$isBrokenDiagonalRendering() {
     if ($6f210e8a8cb248a3$var$brokenDiagonalRendering_ === undefined) {
         const ctx = (0, $1d92219e1eaa7bd2$export$9e05d10eae75c464)(6, 6, $6f210e8a8cb248a3$export$a166f0857c555517);
-        ctx.globalCompositeOperation = "lighter";
-        ctx.fillStyle = "rgba(210, 0, 0, 0.75)";
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.fillStyle = 'rgba(210, 0, 0, 0.75)';
         $6f210e8a8cb248a3$var$drawTestTriangle(ctx, 4, 5, 4, 0);
         $6f210e8a8cb248a3$var$drawTestTriangle(ctx, 4, 5, 0, 5);
         const data = ctx.getImageData(0, 0, 3, 3).data;
@@ -17688,7 +17504,7 @@ function $6f210e8a8cb248a3$export$b3890eb0ae9dca99(width, height, pixelRatio, so
     function pixelRound(value) {
         return Math.round(value * pixelRatio) / pixelRatio;
     }
-    context.globalCompositeOperation = "lighter";
+    context.globalCompositeOperation = 'lighter';
     const sourceDataExtent = (0, $84be800ca44e672c$export$fe201bb3bbe031e9)();
     sources.forEach(function(src, i, arr) {
         (0, $84be800ca44e672c$export$8b58be045bf06082)(sourceDataExtent, src.extent);
@@ -17815,8 +17631,8 @@ function $6f210e8a8cb248a3$export$b3890eb0ae9dca99(width, height, pixelRatio, so
     $6f210e8a8cb248a3$export$a166f0857c555517.push(stitchContext.canvas);
     if (renderEdges) {
         context.save();
-        context.globalCompositeOperation = "source-over";
-        context.strokeStyle = "black";
+        context.globalCompositeOperation = 'source-over';
+        context.strokeStyle = 'black';
         context.lineWidth = 1;
         triangulation.getTriangles().forEach(function(triangle, i, arr) {
             const target = triangle.target;
@@ -17981,8 +17797,8 @@ function $6f210e8a8cb248a3$export$b3890eb0ae9dca99(width, height, pixelRatio, so
         else {
             const z = this.wrappedTileCoord_[0];
             const size = this.targetTileGrid_.getTileSize(z);
-            const width = typeof size === "number" ? size : size[0];
-            const height = typeof size === "number" ? size : size[1];
+            const width = typeof size === 'number' ? size : size[0];
+            const height = typeof size === 'number' ? size : size[1];
             const targetResolution = this.targetTileGrid_.getResolution(z);
             const sourceResolution = this.sourceTileGrid_.getResolution(this.sourceZ_);
             const targetExtent = this.targetTileGrid_.getTileCoordExtent(this.wrappedTileCoord_);
@@ -18034,7 +17850,7 @@ function $6f210e8a8cb248a3$export$b3890eb0ae9dca99(width, height, pixelRatio, so
    * Remove from the cache due to expiry
    */ release() {
         if (this.canvas_) {
-            (0, $1d92219e1eaa7bd2$export$e918ac6a1026a12a)(this.canvas_.getContext("2d"));
+            (0, $1d92219e1eaa7bd2$export$e918ac6a1026a12a)(this.canvas_.getContext('2d'));
             (0, $6f210e8a8cb248a3$export$a166f0857c555517).push(this.canvas_);
             this.canvas_ = null;
         }
@@ -19368,7 +19184,7 @@ function $172307d3521121a6$export$dc5b1400ac3a10a8(color) {
    * @return {number} Additional canvas size needed
    * @private
    */ calculateLineJoinSize_(lineJoin, strokeWidth, miterLimit) {
-        if (strokeWidth === 0 || this.points_ === Infinity || lineJoin !== "bevel" && lineJoin !== "miter") return strokeWidth;
+        if (strokeWidth === 0 || this.points_ === Infinity || lineJoin !== 'bevel' && lineJoin !== 'miter') return strokeWidth;
         // m  | ^
         // i  | |\                  .
         // t >|  #\
@@ -19405,7 +19221,7 @@ function $172307d3521121a6$export$dc5b1400ac3a10a8(color) {
         const d = r1 - b;
         const e = Math.sqrt(a * a + d * d);
         const miterRatio = e / a;
-        if (lineJoin === "miter" && miterRatio <= miterLimit) return miterRatio * strokeWidth;
+        if (lineJoin === 'miter' && miterRatio <= miterLimit) return miterRatio * strokeWidth;
         // Calculate the distance from center to the stroke corner where
         // it was cut short because of the miter limit.
         //              l
@@ -19423,7 +19239,7 @@ function $172307d3521121a6$export$dc5b1400ac3a10a8(color) {
         const l = strokeWidth / 2 * (d / e);
         const maxr = Math.sqrt((r1 + k) * (r1 + k) + l * l);
         const bevelAdd = maxr - r1;
-        if (this.radius2_ === undefined || lineJoin === "bevel") return bevelAdd * 2;
+        if (this.radius2_ === undefined || lineJoin === 'bevel') return bevelAdd * 2;
         // If outer miter is over the miter limit the inner miter may reach through the
         // center and be longer than the bevel, same calculation as above but swap r1 / r2.
         const aa = r1 * Math.sin(alpha);
@@ -19520,7 +19336,7 @@ function $172307d3521121a6$export$dc5b1400ac3a10a8(color) {
             let color = this.fill_.getColor();
             // determine if fill is transparent (or pattern or gradient)
             let opacity = 0;
-            if (typeof color === "string") color = (0, $d32b89243a698e8b$export$75093a47a9fa838d)(color);
+            if (typeof color === 'string') color = (0, $d32b89243a698e8b$export$75093a47a9fa838d)(color);
             if (color === null) opacity = 1;
             else if (Array.isArray(color)) opacity = color.length === 4 ? color[3] : 1;
             if (opacity === 0) {
@@ -20060,7 +19876,7 @@ var $5bb5a6da769d8762$export$2e2bcd8739ae039 = $5bb5a6da769d8762$var$Stroke;
    * @api
    */ clone() {
         let geometry = this.getGeometry();
-        if (geometry && typeof geometry === "object") geometry = /** @type {import("../geom/Geometry.js").default} */ geometry.clone();
+        if (geometry && typeof geometry === 'object') geometry = /** @type {import("../geom/Geometry.js").default} */ geometry.clone();
         return new $0e8e066c6965c811$var$Style({
             geometry: geometry,
             fill: this.getFill() ? this.getFill().clone() : undefined,
@@ -20191,8 +20007,8 @@ var $5bb5a6da769d8762$export$2e2bcd8739ae039 = $5bb5a6da769d8762$var$Stroke;
    *     for this style.
    * @api
    */ setGeometry(geometry) {
-        if (typeof geometry === "function") this.geometryFunction_ = geometry;
-        else if (typeof geometry === "string") this.geometryFunction_ = function(feature) {
+        if (typeof geometry === 'function') this.geometryFunction_ = geometry;
+        else if (typeof geometry === 'string') this.geometryFunction_ = function(feature) {
             return /** @type {import("../geom/Geometry.js").default} */ feature.get(geometry);
         };
         else if (!geometry) this.geometryFunction_ = $0e8e066c6965c811$var$defaultGeometryFunction;
@@ -20212,14 +20028,14 @@ var $5bb5a6da769d8762$export$2e2bcd8739ae039 = $5bb5a6da769d8762$var$Stroke;
 }
 function $0e8e066c6965c811$export$c314ea3f6b164147(obj) {
     let styleFunction;
-    if (typeof obj === "function") styleFunction = obj;
+    if (typeof obj === 'function') styleFunction = obj;
     else {
         /**
      * @type {Array<Style>}
      */ let styles;
         if (Array.isArray(obj)) styles = obj;
         else {
-            (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof /** @type {?} */ obj.getZIndex === "function", 41); // Expected an `Style` or an array of `Style`
+            (0, $1e19c69d18d8b77c$export$a7a9523472993e97)(typeof /** @type {?} */ obj.getZIndex === 'function', 41); // Expected an `Style` or an array of `Style`
             const style = /** @type {Style} */ obj;
             styles = [
                 style
@@ -20242,10 +20058,10 @@ function $0e8e066c6965c811$export$6865c5ac2f5ce8b6(feature, resolution) {
     // in such browsers.)
     if (!$0e8e066c6965c811$var$defaultStyles) {
         const fill = new (0, $1646510b52ef7eda$export$2e2bcd8739ae039)({
-            color: "rgba(255,255,255,0.4)"
+            color: 'rgba(255,255,255,0.4)'
         });
         const stroke = new (0, $5bb5a6da769d8762$export$2e2bcd8739ae039)({
-            color: "#3399CC",
+            color: '#3399CC',
             width: 1.25
         });
         $0e8e066c6965c811$var$defaultStyles = [
@@ -20277,7 +20093,7 @@ function $0e8e066c6965c811$export$ed1eaede5d0e77ac() {
         1
     ];
     const width = 3;
-    styles["Polygon"] = [
+    styles['Polygon'] = [
         new $0e8e066c6965c811$var$Style({
             fill: new (0, $1646510b52ef7eda$export$2e2bcd8739ae039)({
                 color: [
@@ -20289,8 +20105,8 @@ function $0e8e066c6965c811$export$ed1eaede5d0e77ac() {
             })
         })
     ];
-    styles["MultiPolygon"] = styles["Polygon"];
-    styles["LineString"] = [
+    styles['MultiPolygon'] = styles['Polygon'];
+    styles['LineString'] = [
         new $0e8e066c6965c811$var$Style({
             stroke: new (0, $5bb5a6da769d8762$export$2e2bcd8739ae039)({
                 color: white,
@@ -20304,9 +20120,9 @@ function $0e8e066c6965c811$export$ed1eaede5d0e77ac() {
             })
         })
     ];
-    styles["MultiLineString"] = styles["LineString"];
-    styles["Circle"] = styles["Polygon"].concat(styles["LineString"]);
-    styles["Point"] = [
+    styles['MultiLineString'] = styles['LineString'];
+    styles['Circle'] = styles['Polygon'].concat(styles['LineString']);
+    styles['Point'] = [
         new $0e8e066c6965c811$var$Style({
             image: new (0, $4702fef2bdf52596$export$2e2bcd8739ae039)({
                 radius: width * 2,
@@ -20321,8 +20137,8 @@ function $0e8e066c6965c811$export$ed1eaede5d0e77ac() {
             zIndex: Infinity
         })
     ];
-    styles["MultiPoint"] = styles["Point"];
-    styles["GeometryCollection"] = styles["Polygon"].concat(styles["LineString"], styles["Point"]);
+    styles['MultiPoint'] = styles['Point'];
+    styles['GeometryCollection'] = styles['Polygon'].concat(styles['LineString'], styles['Point']);
     return styles;
 }
 /**
@@ -20524,16 +20340,16 @@ class $064229adb158691e$var$IconImage extends (0, $fd4e3201ad7386dc$export$2e2bc
    */ replaceColor_(pixelRatio) {
         if (!this.color_ || this.canvas_[pixelRatio] || this.imageState_ !== (0, $d5d27ccbbbef5bf5$export$2e2bcd8739ae039).LOADED) return;
         const image = this.image_;
-        const canvas = document.createElement("canvas");
+        const canvas = document.createElement('canvas');
         canvas.width = Math.ceil(image.width * pixelRatio);
         canvas.height = Math.ceil(image.height * pixelRatio);
-        const ctx = canvas.getContext("2d");
+        const ctx = canvas.getContext('2d');
         ctx.scale(pixelRatio, pixelRatio);
         ctx.drawImage(image, 0, 0);
-        ctx.globalCompositeOperation = "multiply";
+        ctx.globalCompositeOperation = 'multiply';
         ctx.fillStyle = (0, $d32b89243a698e8b$export$590567be997858b6)(this.color_);
         ctx.fillRect(0, 0, canvas.width / pixelRatio, canvas.height / pixelRatio);
-        ctx.globalCompositeOperation = "destination-in";
+        ctx.globalCompositeOperation = 'destination-in';
         ctx.drawImage(image, 0, 0);
         this.canvas_[pixelRatio] = canvas;
     }
@@ -20664,15 +20480,15 @@ var $064229adb158691e$export$2e2bcd8739ae039 = $064229adb158691e$var$IconImage;
         /**
      * @private
      * @type {IconOrigin}
-     */ this.anchorOrigin_ = options.anchorOrigin !== undefined ? options.anchorOrigin : "top-left";
+     */ this.anchorOrigin_ = options.anchorOrigin !== undefined ? options.anchorOrigin : 'top-left';
         /**
      * @private
      * @type {IconAnchorUnits}
-     */ this.anchorXUnits_ = options.anchorXUnits !== undefined ? options.anchorXUnits : "fraction";
+     */ this.anchorXUnits_ = options.anchorXUnits !== undefined ? options.anchorXUnits : 'fraction';
         /**
      * @private
      * @type {IconAnchorUnits}
-     */ this.anchorYUnits_ = options.anchorYUnits !== undefined ? options.anchorYUnits : "fraction";
+     */ this.anchorYUnits_ = options.anchorYUnits !== undefined ? options.anchorYUnits : 'fraction';
         /**
      * @private
      * @type {?string}
@@ -20714,7 +20530,7 @@ var $064229adb158691e$export$2e2bcd8739ae039 = $064229adb158691e$var$IconImage;
         /**
      * @private
      * @type {IconOrigin}
-     */ this.offsetOrigin_ = options.offsetOrigin !== undefined ? options.offsetOrigin : "top-left";
+     */ this.offsetOrigin_ = options.offsetOrigin !== undefined ? options.offsetOrigin : 'top-left';
         /**
      * @private
      * @type {Array<number>}
@@ -20794,17 +20610,17 @@ var $064229adb158691e$export$2e2bcd8739ae039 = $064229adb158691e$var$IconImage;
         if (!anchor) {
             anchor = this.anchor_;
             const size = this.getSize();
-            if (this.anchorXUnits_ == "fraction" || this.anchorYUnits_ == "fraction") {
+            if (this.anchorXUnits_ == 'fraction' || this.anchorYUnits_ == 'fraction') {
                 if (!size) return null;
                 anchor = this.anchor_.slice();
-                if (this.anchorXUnits_ == "fraction") anchor[0] *= size[0];
-                if (this.anchorYUnits_ == "fraction") anchor[1] *= size[1];
+                if (this.anchorXUnits_ == 'fraction') anchor[0] *= size[0];
+                if (this.anchorYUnits_ == 'fraction') anchor[1] *= size[1];
             }
-            if (this.anchorOrigin_ != "top-left") {
+            if (this.anchorOrigin_ != 'top-left') {
                 if (!size) return null;
                 if (anchor === this.anchor_) anchor = this.anchor_.slice();
-                if (this.anchorOrigin_ == "top-right" || this.anchorOrigin_ == "bottom-right") anchor[0] = -anchor[0] + size[0];
-                if (this.anchorOrigin_ == "bottom-left" || this.anchorOrigin_ == "bottom-right") anchor[1] = -anchor[1] + size[1];
+                if (this.anchorOrigin_ == 'top-right' || this.anchorOrigin_ == 'bottom-right') anchor[0] = -anchor[0] + size[0];
+                if (this.anchorOrigin_ == 'bottom-left' || this.anchorOrigin_ == 'bottom-right') anchor[1] = -anchor[1] + size[1];
             }
             this.normalizedAnchor_ = anchor;
         }
@@ -20872,13 +20688,13 @@ var $064229adb158691e$export$2e2bcd8739ae039 = $064229adb158691e$var$IconImage;
    */ getOrigin() {
         if (this.origin_) return this.origin_;
         let offset = this.offset_;
-        if (this.offsetOrigin_ != "top-left") {
+        if (this.offsetOrigin_ != 'top-left') {
             const size = this.getSize();
             const iconImageSize = this.iconImage_.getSize();
             if (!size || !iconImageSize) return null;
             offset = offset.slice();
-            if (this.offsetOrigin_ == "top-right" || this.offsetOrigin_ == "bottom-right") offset[0] = iconImageSize[0] - size[0] - offset[0];
-            if (this.offsetOrigin_ == "bottom-left" || this.offsetOrigin_ == "bottom-right") offset[1] = iconImageSize[1] - size[1] - offset[1];
+            if (this.offsetOrigin_ == 'top-right' || this.offsetOrigin_ == 'bottom-right') offset[0] = iconImageSize[0] - size[0] - offset[0];
+            if (this.offsetOrigin_ == 'bottom-left' || this.offsetOrigin_ == 'bottom-right') offset[1] = iconImageSize[1] - size[1] - offset[1];
         }
         this.origin_ = offset;
         return this.origin_;
@@ -20969,7 +20785,7 @@ var $4dd3b6f7e2acb5b2$export$2e2bcd8739ae039 = $4dd3b6f7e2acb5b2$var$Icon;
  * blackish `#333`.
  *
  * @const {string}
- */ const $546674d0724a0df5$var$DEFAULT_FILL_COLOR = "#333";
+ */ const $546674d0724a0df5$var$DEFAULT_FILL_COLOR = '#333';
 /**
  * @typedef {Object} Options
  * @property {string} [font] Font style as CSS `font` value, see:
@@ -21070,7 +20886,7 @@ var $4dd3b6f7e2acb5b2$export$2e2bcd8739ae039 = $4dd3b6f7e2acb5b2$var$Icon;
         /**
      * @private
      * @type {TextPlacement}
-     */ this.placement_ = options.placement !== undefined ? options.placement : "point";
+     */ this.placement_ = options.placement !== undefined ? options.placement : 'point';
         /**
      * @private
      * @type {boolean}
@@ -21425,8 +21241,8 @@ var $546674d0724a0df5$export$2e2bcd8739ae039 = $546674d0724a0df5$var$Text;
 
 function $b0dc507c91f0d524$export$b7b312ddf6b38c9f(flatStyle) {
     const style = new (0, $0e8e066c6965c811$export$2e2bcd8739ae039)({
-        fill: $b0dc507c91f0d524$var$getFill(flatStyle, ""),
-        stroke: $b0dc507c91f0d524$var$getStroke(flatStyle, ""),
+        fill: $b0dc507c91f0d524$var$getFill(flatStyle, ''),
+        stroke: $b0dc507c91f0d524$var$getStroke(flatStyle, ''),
         text: $b0dc507c91f0d524$var$getText(flatStyle),
         image: $b0dc507c91f0d524$var$getImage(flatStyle)
     });
@@ -21437,9 +21253,9 @@ function $b0dc507c91f0d524$export$b7b312ddf6b38c9f(flatStyle) {
  * @param {string} prefix The property prefix.
  * @return {Fill|null|undefined} The fill (if any).
  */ function $b0dc507c91f0d524$var$getFill(flatStyle, prefix) {
-    const color = flatStyle[prefix + "fill-color"];
+    const color = flatStyle[prefix + 'fill-color'];
     if (!color) return;
-    if (color === "none") return null;
+    if (color === 'none') return null;
     return new (0, $1646510b52ef7eda$export$2e2bcd8739ae039)({
         color: color
     });
@@ -21449,45 +21265,45 @@ function $b0dc507c91f0d524$export$b7b312ddf6b38c9f(flatStyle) {
  * @param {string} prefix The property prefix.
  * @return {Stroke|undefined} The stroke (if any).
  */ function $b0dc507c91f0d524$var$getStroke(flatStyle, prefix) {
-    const width = flatStyle[prefix + "stroke-width"];
-    const color = flatStyle[prefix + "stroke-color"];
+    const width = flatStyle[prefix + 'stroke-width'];
+    const color = flatStyle[prefix + 'stroke-color'];
     if (!width && !color) return;
     return new (0, $5bb5a6da769d8762$export$2e2bcd8739ae039)({
         width: width,
         color: color,
-        lineCap: flatStyle[prefix + "stroke-line-cap"],
-        lineJoin: flatStyle[prefix + "stroke-line-join"],
-        lineDash: flatStyle[prefix + "stroke-line-dash"],
-        lineDashOffset: flatStyle[prefix + "stroke-line-dash-offset"],
-        miterLimit: flatStyle[prefix + "stroke-miter-limit"]
+        lineCap: flatStyle[prefix + 'stroke-line-cap'],
+        lineJoin: flatStyle[prefix + 'stroke-line-join'],
+        lineDash: flatStyle[prefix + 'stroke-line-dash'],
+        lineDashOffset: flatStyle[prefix + 'stroke-line-dash-offset'],
+        miterLimit: flatStyle[prefix + 'stroke-miter-limit']
     });
 }
 /**
  * @param {FlatStyle} flatStyle The flat style.
  * @return {Text|undefined} The text (if any).
  */ function $b0dc507c91f0d524$var$getText(flatStyle) {
-    const value = flatStyle["text-value"];
+    const value = flatStyle['text-value'];
     if (!value) return;
     const text = new (0, $546674d0724a0df5$export$2e2bcd8739ae039)({
         text: value,
-        font: flatStyle["text-font"],
-        maxAngle: flatStyle["text-max-angle"],
-        offsetX: flatStyle["text-offset-x"],
-        offsetY: flatStyle["text-offset-y"],
-        overflow: flatStyle["text-overflow"],
-        placement: flatStyle["text-placement"],
-        repeat: flatStyle["text-repeat"],
-        scale: flatStyle["text-scale"],
-        rotateWithView: flatStyle["text-rotate-with-view"],
-        rotation: flatStyle["text-rotation"],
-        textAlign: flatStyle["text-align"],
-        justify: flatStyle["text-justify"],
-        textBaseline: flatStyle["text-baseline"],
-        padding: flatStyle["text-padding"],
-        fill: $b0dc507c91f0d524$var$getFill(flatStyle, "text-"),
-        backgroundFill: $b0dc507c91f0d524$var$getFill(flatStyle, "text-background-"),
-        stroke: $b0dc507c91f0d524$var$getStroke(flatStyle, "text-"),
-        backgroundStroke: $b0dc507c91f0d524$var$getStroke(flatStyle, "text-background-")
+        font: flatStyle['text-font'],
+        maxAngle: flatStyle['text-max-angle'],
+        offsetX: flatStyle['text-offset-x'],
+        offsetY: flatStyle['text-offset-y'],
+        overflow: flatStyle['text-overflow'],
+        placement: flatStyle['text-placement'],
+        repeat: flatStyle['text-repeat'],
+        scale: flatStyle['text-scale'],
+        rotateWithView: flatStyle['text-rotate-with-view'],
+        rotation: flatStyle['text-rotation'],
+        textAlign: flatStyle['text-align'],
+        justify: flatStyle['text-justify'],
+        textBaseline: flatStyle['text-baseline'],
+        padding: flatStyle['text-padding'],
+        fill: $b0dc507c91f0d524$var$getFill(flatStyle, 'text-'),
+        backgroundFill: $b0dc507c91f0d524$var$getFill(flatStyle, 'text-background-'),
+        stroke: $b0dc507c91f0d524$var$getStroke(flatStyle, 'text-'),
+        backgroundStroke: $b0dc507c91f0d524$var$getStroke(flatStyle, 'text-background-')
     });
     return text;
 }
@@ -21495,63 +21311,63 @@ function $b0dc507c91f0d524$export$b7b312ddf6b38c9f(flatStyle) {
  * @param {FlatStyle} flatStyle The flat style.
  * @return {import("./Image.js").default|undefined} The image (if any).
  */ function $b0dc507c91f0d524$var$getImage(flatStyle) {
-    const iconSrc = flatStyle["icon-src"];
-    const iconImg = flatStyle["icon-img"];
+    const iconSrc = flatStyle['icon-src'];
+    const iconImg = flatStyle['icon-img'];
     if (iconSrc || iconImg) {
         const icon = new (0, $4dd3b6f7e2acb5b2$export$2e2bcd8739ae039)({
             src: iconSrc,
             img: iconImg,
-            imgSize: flatStyle["icon-img-size"],
-            anchor: flatStyle["icon-anchor"],
-            anchorOrigin: flatStyle["icon-anchor-origin"],
-            anchorXUnits: flatStyle["icon-anchor-x-units"],
-            anchorYUnits: flatStyle["icon-anchor-y-units"],
-            color: flatStyle["icon-color"],
-            crossOrigin: flatStyle["icon-cross-origin"],
-            offset: flatStyle["icon-offset"],
-            displacement: flatStyle["icon-displacement"],
-            opacity: flatStyle["icon-opacity"],
-            scale: flatStyle["icon-scale"],
-            width: flatStyle["icon-width"],
-            height: flatStyle["icon-height"],
-            rotation: flatStyle["icon-rotation"],
-            rotateWithView: flatStyle["icon-rotate-with-view"],
-            size: flatStyle["icon-size"],
-            declutterMode: flatStyle["icon-declutter-mode"]
+            imgSize: flatStyle['icon-img-size'],
+            anchor: flatStyle['icon-anchor'],
+            anchorOrigin: flatStyle['icon-anchor-origin'],
+            anchorXUnits: flatStyle['icon-anchor-x-units'],
+            anchorYUnits: flatStyle['icon-anchor-y-units'],
+            color: flatStyle['icon-color'],
+            crossOrigin: flatStyle['icon-cross-origin'],
+            offset: flatStyle['icon-offset'],
+            displacement: flatStyle['icon-displacement'],
+            opacity: flatStyle['icon-opacity'],
+            scale: flatStyle['icon-scale'],
+            width: flatStyle['icon-width'],
+            height: flatStyle['icon-height'],
+            rotation: flatStyle['icon-rotation'],
+            rotateWithView: flatStyle['icon-rotate-with-view'],
+            size: flatStyle['icon-size'],
+            declutterMode: flatStyle['icon-declutter-mode']
         });
         return icon;
     }
-    const shapePoints = flatStyle["shape-points"];
+    const shapePoints = flatStyle['shape-points'];
     if (shapePoints) {
-        const prefix = "shape-";
+        const prefix = 'shape-';
         const shape = new (0, $839f5b0b6dbb6b4a$export$2e2bcd8739ae039)({
             points: shapePoints,
             fill: $b0dc507c91f0d524$var$getFill(flatStyle, prefix),
             stroke: $b0dc507c91f0d524$var$getStroke(flatStyle, prefix),
-            radius: flatStyle["shape-radius"],
-            radius1: flatStyle["shape-radius1"],
-            radius2: flatStyle["shape-radius2"],
-            angle: flatStyle["shape-angle"],
-            displacement: flatStyle["shape-displacement"],
-            rotation: flatStyle["shape-rotation"],
-            rotateWithView: flatStyle["shape-rotate-with-view"],
-            scale: flatStyle["shape-scale"],
-            declutterMode: flatStyle["shape-declutter-mode"]
+            radius: flatStyle['shape-radius'],
+            radius1: flatStyle['shape-radius1'],
+            radius2: flatStyle['shape-radius2'],
+            angle: flatStyle['shape-angle'],
+            displacement: flatStyle['shape-displacement'],
+            rotation: flatStyle['shape-rotation'],
+            rotateWithView: flatStyle['shape-rotate-with-view'],
+            scale: flatStyle['shape-scale'],
+            declutterMode: flatStyle['shape-declutter-mode']
         });
         return shape;
     }
-    const circleRadius = flatStyle["circle-radius"];
+    const circleRadius = flatStyle['circle-radius'];
     if (circleRadius) {
-        const prefix = "circle-";
+        const prefix = 'circle-';
         const circle = new (0, $4702fef2bdf52596$export$2e2bcd8739ae039)({
             radius: circleRadius,
             fill: $b0dc507c91f0d524$var$getFill(flatStyle, prefix),
             stroke: $b0dc507c91f0d524$var$getStroke(flatStyle, prefix),
-            displacement: flatStyle["circle-displacement"],
-            scale: flatStyle["circle-scale"],
-            rotation: flatStyle["circle-rotation"],
-            rotateWithView: flatStyle["circle-rotate-with-view"],
-            declutterMode: flatStyle["circle-declutter-mode"]
+            displacement: flatStyle['circle-displacement'],
+            scale: flatStyle['circle-scale'],
+            rotation: flatStyle['circle-rotation'],
+            rotateWithView: flatStyle['circle-rotate-with-view'],
+            declutterMode: flatStyle['circle-declutter-mode']
         });
         return circle;
     }
@@ -21559,13 +21375,13 @@ function $b0dc507c91f0d524$export$b7b312ddf6b38c9f(flatStyle) {
 }
 function $b0dc507c91f0d524$export$6865c5ac2f5ce8b6() {
     return {
-        "fill-color": "rgba(255,255,255,0.4)",
-        "stroke-color": "#3399CC",
-        "stroke-width": 1.25,
-        "circle-radius": 5,
-        "circle-fill-color": "rgba(255,255,255,0.4)",
-        "circle-stroke-width": 1.25,
-        "circle-stroke-color": "#3399CC"
+        'fill-color': 'rgba(255,255,255,0.4)',
+        'stroke-color': '#3399CC',
+        'stroke-width': 1.25,
+        'circle-radius': 5,
+        'circle-fill-color': 'rgba(255,255,255,0.4)',
+        'circle-stroke-width': 1.25,
+        'circle-stroke-color': '#3399CC'
     };
 }
 
@@ -21627,7 +21443,7 @@ function $b0dc507c91f0d524$export$6865c5ac2f5ce8b6() {
  * @enum {string}
  * @private
  */ const $d0e9dd5889579bca$var$Property = {
-    RENDER_ORDER: "renderOrder"
+    RENDER_ORDER: 'renderOrder'
 };
 /**
  * @classdesc
@@ -21777,7 +21593,7 @@ function $b0dc507c91f0d524$export$6865c5ac2f5ce8b6() {
      */ let styleLike;
         if (style === undefined) styleLike = (0, $0e8e066c6965c811$export$6865c5ac2f5ce8b6);
         else if (style === null) styleLike = null;
-        else if (typeof style === "function") styleLike = style;
+        else if (typeof style === 'function') styleLike = style;
         else if (style instanceof (0, $0e8e066c6965c811$export$2e2bcd8739ae039)) styleLike = style;
         else if (Array.isArray(style)) {
             const len = style.length;
@@ -22096,7 +21912,7 @@ class $4a55c8b0b7396ae3$var$CanvasBuilder extends (0, $f58af45c89f48916$export$2
         let flatCoordinates, builderEnd, builderEnds, builderEndss;
         let offset;
         switch(type){
-            case "MultiPolygon":
+            case 'MultiPolygon':
                 flatCoordinates = /** @type {import("../../geom/MultiPolygon.js").default} */ geometry.getOrientedFlatCoordinates();
                 builderEndss = [];
                 const endss = /** @type {import("../../geom/MultiPolygon.js").default} */ geometry.getEndss();
@@ -22123,10 +21939,10 @@ class $4a55c8b0b7396ae3$var$CanvasBuilder extends (0, $f58af45c89f48916$export$2
                     (0, $26e6af5078c94bc3$export$915c7058aeb4dfeb)
                 ]);
                 break;
-            case "Polygon":
-            case "MultiLineString":
+            case 'Polygon':
+            case 'MultiLineString':
                 builderEnds = [];
-                flatCoordinates = type == "Polygon" ? /** @type {import("../../geom/Polygon.js").default} */ geometry.getOrientedFlatCoordinates() : geometry.getFlatCoordinates();
+                flatCoordinates = type == 'Polygon' ? /** @type {import("../../geom/Polygon.js").default} */ geometry.getOrientedFlatCoordinates() : geometry.getFlatCoordinates();
                 offset = this.drawCustomCoordinates_(flatCoordinates, 0, /** @type {import("../../geom/Polygon.js").default|import("../../geom/MultiLineString.js").default} */ geometry.getEnds(), stride, builderEnds);
                 this.instructions.push([
                     (0, $3740963e6530651e$export$2e2bcd8739ae039).CUSTOM,
@@ -22145,8 +21961,8 @@ class $4a55c8b0b7396ae3$var$CanvasBuilder extends (0, $f58af45c89f48916$export$2
                     (0, $26e6af5078c94bc3$export$cbb9596fc0f40db2)
                 ]);
                 break;
-            case "LineString":
-            case "Circle":
+            case 'LineString':
+            case 'Circle':
                 flatCoordinates = geometry.getFlatCoordinates();
                 builderEnd = this.appendFlatLineCoordinates(flatCoordinates, 0, flatCoordinates.length, stride, false, false);
                 this.instructions.push([
@@ -22166,7 +21982,7 @@ class $4a55c8b0b7396ae3$var$CanvasBuilder extends (0, $f58af45c89f48916$export$2
                     (0, $26e6af5078c94bc3$export$9c0934e4e9c3f61e)
                 ]);
                 break;
-            case "MultiPoint":
+            case 'MultiPoint':
                 flatCoordinates = geometry.getFlatCoordinates();
                 builderEnd = this.appendFlatPointCoordinates(flatCoordinates, stride);
                 if (builderEnd > builderBegin) {
@@ -22188,7 +22004,7 @@ class $4a55c8b0b7396ae3$var$CanvasBuilder extends (0, $f58af45c89f48916$export$2
                     ]);
                 }
                 break;
-            case "Point":
+            case 'Point':
                 flatCoordinates = geometry.getFlatCoordinates();
                 this.coordinates.push(flatCoordinates[0], flatCoordinates[1]);
                 builderEnd = this.coordinates.length;
@@ -22311,7 +22127,7 @@ class $4a55c8b0b7396ae3$var$CanvasBuilder extends (0, $f58af45c89f48916$export$2
             (0, $3740963e6530651e$export$2e2bcd8739ae039).SET_FILL_STYLE,
             fillStyle
         ];
-        if (typeof fillStyle !== "string") // Fill is a pattern or gradient - align it!
+        if (typeof fillStyle !== 'string') // Fill is a pattern or gradient - align it!
         fillInstruction.push(true);
         return fillInstruction;
     }
@@ -22340,7 +22156,7 @@ class $4a55c8b0b7396ae3$var$CanvasBuilder extends (0, $f58af45c89f48916$export$2
    * @param {function(this:CanvasBuilder, import("../canvas.js").FillStrokeState):Array<*>} createFill Create fill.
    */ updateFillStyle(state, createFill) {
         const fillStyle = state.fillStyle;
-        if (typeof fillStyle !== "string" || state.currentFillStyle != fillStyle) {
+        if (typeof fillStyle !== 'string' || state.currentFillStyle != fillStyle) {
             if (fillStyle !== undefined) this.instructions.push(createFill.call(this, state));
             state.currentFillStyle = fillStyle;
         }
@@ -23040,15 +22856,15 @@ function $d571e35aa85e575b$export$f08272c6ff321e57(chunkLength, flatCoordinates,
 
 
 const $72bb44c946c0e2ac$export$91a016276e4aee96 = {
-    "left": 0,
-    "center": 0.5,
-    "right": 1,
-    "top": 0,
-    "middle": 0.5,
-    "hanging": 0.2,
-    "alphabetic": 0.8,
-    "ideographic": 0.8,
-    "bottom": 1
+    'left': 0,
+    'center': 0.5,
+    'right': 1,
+    'top': 0,
+    'middle': 0.5,
+    'hanging': 0.2,
+    'alphabetic': 0.8,
+    'ideographic': 0.8,
+    'bottom': 1
 };
 class $72bb44c946c0e2ac$var$CanvasTextBuilder extends (0, $4a55c8b0b7396ae3$export$2e2bcd8739ae039) {
     /**
@@ -23065,7 +22881,7 @@ class $72bb44c946c0e2ac$var$CanvasTextBuilder extends (0, $4a55c8b0b7396ae3$expo
         /**
      * @private
      * @type {string|Array<string>}
-     */ this.text_ = "";
+     */ this.text_ = '';
         /**
      * @private
      * @type {number}
@@ -23109,15 +22925,15 @@ class $72bb44c946c0e2ac$var$CanvasTextBuilder extends (0, $4a55c8b0b7396ae3$expo
         /**
      * @private
      * @type {string}
-     */ this.textKey_ = "";
+     */ this.textKey_ = '';
         /**
      * @private
      * @type {string}
-     */ this.fillKey_ = "";
+     */ this.fillKey_ = '';
         /**
      * @private
      * @type {string}
-     */ this.strokeKey_ = "";
+     */ this.strokeKey_ = '';
         /**
      * Data shared with an image builder for combined decluttering.
      * @private
@@ -23140,22 +22956,22 @@ class $72bb44c946c0e2ac$var$CanvasTextBuilder extends (0, $4a55c8b0b7396ae3$expo
         const fillState = this.textFillState_;
         const strokeState = this.textStrokeState_;
         const textState = this.textState_;
-        if (this.text_ === "" || !textState || !fillState && !strokeState) return;
+        if (this.text_ === '' || !textState || !fillState && !strokeState) return;
         const coordinates = this.coordinates;
         let begin = coordinates.length;
         const geometryType = geometry.getType();
         let flatCoordinates = null;
         let stride = geometry.getStride();
-        if (textState.placement === "line" && (geometryType == "LineString" || geometryType == "MultiLineString" || geometryType == "Polygon" || geometryType == "MultiPolygon")) {
+        if (textState.placement === 'line' && (geometryType == 'LineString' || geometryType == 'MultiLineString' || geometryType == 'Polygon' || geometryType == 'MultiPolygon')) {
             if (!(0, $84be800ca44e672c$export$7b0a31e10bbff018)(this.getBufferedMaxExtent(), geometry.getExtent())) return;
             let ends;
             flatCoordinates = geometry.getFlatCoordinates();
-            if (geometryType == "LineString") ends = [
+            if (geometryType == 'LineString') ends = [
                 flatCoordinates.length
             ];
-            else if (geometryType == "MultiLineString") ends = /** @type {import("../../geom/MultiLineString.js").default} */ geometry.getEnds();
-            else if (geometryType == "Polygon") ends = /** @type {import("../../geom/Polygon.js").default} */ geometry.getEnds().slice(0, 1);
-            else if (geometryType == "MultiPolygon") {
+            else if (geometryType == 'MultiLineString') ends = /** @type {import("../../geom/MultiLineString.js").default} */ geometry.getEnds();
+            else if (geometryType == 'Polygon') ends = /** @type {import("../../geom/Polygon.js").default} */ geometry.getEnds().slice(0, 1);
+            else if (geometryType == 'MultiPolygon') {
                 const endss = /** @type {import("../../geom/MultiPolygon.js").default} */ geometry.getEndss();
                 ends = [];
                 for(let i = 0, ii = endss.length; i < ii; ++i)ends.push(endss[i][0]);
@@ -23191,26 +23007,26 @@ class $72bb44c946c0e2ac$var$CanvasTextBuilder extends (0, $4a55c8b0b7396ae3$expo
         } else {
             let geometryWidths = textState.overflow ? null : [];
             switch(geometryType){
-                case "Point":
-                case "MultiPoint":
+                case 'Point':
+                case 'MultiPoint':
                     flatCoordinates = /** @type {import("../../geom/MultiPoint.js").default} */ geometry.getFlatCoordinates();
                     break;
-                case "LineString":
+                case 'LineString':
                     flatCoordinates = /** @type {import("../../geom/LineString.js").default} */ geometry.getFlatMidpoint();
                     break;
-                case "Circle":
+                case 'Circle':
                     flatCoordinates = /** @type {import("../../geom/Circle.js").default} */ geometry.getCenter();
                     break;
-                case "MultiLineString":
+                case 'MultiLineString':
                     flatCoordinates = /** @type {import("../../geom/MultiLineString.js").default} */ geometry.getFlatMidpoints();
                     stride = 2;
                     break;
-                case "Polygon":
+                case 'Polygon':
                     flatCoordinates = /** @type {import("../../geom/Polygon.js").default} */ geometry.getFlatInteriorPoint();
                     if (!textState.overflow) geometryWidths.push(flatCoordinates[2] / this.resolution);
                     stride = 3;
                     break;
-                case "MultiPolygon":
+                case 'MultiPolygon':
                     const interiorPoints = /** @type {import("../../geom/MultiPolygon.js").default} */ geometry.getFlatInteriorPoints();
                     flatCoordinates = [];
                     for(let i = 0, ii = interiorPoints.length; i < ii; i += 3){
@@ -23434,7 +23250,7 @@ class $72bb44c946c0e2ac$var$CanvasTextBuilder extends (0, $4a55c8b0b7396ae3$expo
    * @param {Object} [sharedData] Shared data.
    */ setTextStyle(textStyle, sharedData) {
         let textState, fillState, strokeState;
-        if (!textStyle) this.text_ = "";
+        if (!textStyle) this.text_ = '';
         else {
             const textFillStyle = textStyle.getFill();
             if (!textFillStyle) {
@@ -23493,14 +23309,14 @@ class $72bb44c946c0e2ac$var$CanvasTextBuilder extends (0, $4a55c8b0b7396ae3$expo
             const textOffsetY = textStyle.getOffsetY();
             const textRotateWithView = textStyle.getRotateWithView();
             const textRotation = textStyle.getRotation();
-            this.text_ = textStyle.getText() || "";
+            this.text_ = textStyle.getText() || '';
             this.textOffsetX_ = textOffsetX === undefined ? 0 : textOffsetX;
             this.textOffsetY_ = textOffsetY === undefined ? 0 : textOffsetY;
             this.textRotateWithView_ = textRotateWithView === undefined ? false : textRotateWithView;
             this.textRotation_ = textRotation === undefined ? 0 : textRotation;
-            this.strokeKey_ = strokeState ? (typeof strokeState.strokeStyle == "string" ? strokeState.strokeStyle : (0, $ae7eaaa2c9c1e05d$export$5e82334337e0f204)(strokeState.strokeStyle)) + strokeState.lineCap + strokeState.lineDashOffset + "|" + strokeState.lineWidth + strokeState.lineJoin + strokeState.miterLimit + "[" + strokeState.lineDash.join() + "]" : "";
-            this.textKey_ = textState.font + textState.scale + (textState.textAlign || "?") + (textState.repeat || "?") + (textState.justify || "?") + (textState.textBaseline || "?");
-            this.fillKey_ = fillState ? typeof fillState.fillStyle == "string" ? fillState.fillStyle : "|" + (0, $ae7eaaa2c9c1e05d$export$5e82334337e0f204)(fillState.fillStyle) : "";
+            this.strokeKey_ = strokeState ? (typeof strokeState.strokeStyle == 'string' ? strokeState.strokeStyle : (0, $ae7eaaa2c9c1e05d$export$5e82334337e0f204)(strokeState.strokeStyle)) + strokeState.lineCap + strokeState.lineDashOffset + '|' + strokeState.lineWidth + strokeState.lineJoin + strokeState.miterLimit + '[' + strokeState.lineDash.join() + ']' : '';
+            this.textKey_ = textState.font + textState.scale + (textState.textAlign || '?') + (textState.repeat || '?') + (textState.justify || '?') + (textState.textBaseline || '?');
+            this.fillKey_ = fillState ? typeof fillState.fillStyle == 'string' ? fillState.fillStyle : '|' + (0, $ae7eaaa2c9c1e05d$export$5e82334337e0f204)(fillState.fillStyle) : '';
         }
         this.declutterImageWithText_ = sharedData;
     }
@@ -23511,12 +23327,12 @@ var $72bb44c946c0e2ac$export$2e2bcd8739ae039 = $72bb44c946c0e2ac$var$CanvasTextB
 /**
  * @type {Object<import("../canvas.js").BuilderType, typeof Builder>}
  */ const $0b299ddc8624c50d$var$BATCH_CONSTRUCTORS = {
-    "Circle": (0, $27e367cd1ce66907$export$2e2bcd8739ae039),
-    "Default": (0, $4a55c8b0b7396ae3$export$2e2bcd8739ae039),
-    "Image": (0, $a65436dbf9f74536$export$2e2bcd8739ae039),
-    "LineString": (0, $4422479217846b91$export$2e2bcd8739ae039),
-    "Polygon": (0, $27e367cd1ce66907$export$2e2bcd8739ae039),
-    "Text": (0, $72bb44c946c0e2ac$export$2e2bcd8739ae039)
+    'Circle': (0, $27e367cd1ce66907$export$2e2bcd8739ae039),
+    'Default': (0, $4a55c8b0b7396ae3$export$2e2bcd8739ae039),
+    'Image': (0, $a65436dbf9f74536$export$2e2bcd8739ae039),
+    'LineString': (0, $4422479217846b91$export$2e2bcd8739ae039),
+    'Polygon': (0, $27e367cd1ce66907$export$2e2bcd8739ae039),
+    'Text': (0, $72bb44c946c0e2ac$export$2e2bcd8739ae039)
 };
 class $0b299ddc8624c50d$var$BuilderGroup {
     /**
@@ -23565,7 +23381,7 @@ class $0b299ddc8624c50d$var$BuilderGroup {
    * @param {import("../canvas.js").BuilderType} builderType Replay type.
    * @return {import("../VectorContext.js").default} Replay.
    */ getBuilder(zIndex, builderType) {
-        const zIndexKey = zIndex !== undefined ? zIndex.toString() : "0";
+        const zIndexKey = zIndex !== undefined ? zIndex.toString() : '0';
         let replays = this.buildersByZIndex_[zIndexKey];
         if (replays === undefined) {
             replays = {};
@@ -23663,7 +23479,7 @@ function $6a798d3c1cf17469$export$153a9a17ab3e949f(flatCoordinates, offset, end,
         return result;
     }
     // rendering across line segments
-    text = text.replace(/\n/g, " "); // ensure rendering in single-line as all calculations below don't handle multi-lines
+    text = text.replace(/\n/g, ' '); // ensure rendering in single-line as all calculations below don't handle multi-lines
     for(let i = 0, ii = text.length; i < ii;){
         advance();
         let angle = Math.atan2(y2 - y1, x2 - x1);
@@ -23768,14 +23584,14 @@ function $9d37b56b1e11868f$export$2bbb4f6f727a75c2(flatCoordinates, offset, end,
  */ function $ea2d067b3235e95b$var$getDeclutterBox(replayImageOrLabelArgs) {
     return replayImageOrLabelArgs[3].declutterBox;
 }
-const $ea2d067b3235e95b$var$rtlRegEx = new RegExp(/* eslint-disable prettier/prettier */ "[" + String.fromCharCode(0x00591) + "-" + String.fromCharCode(0x008ff) + String.fromCharCode(0x0fb1d) + "-" + String.fromCharCode(0x0fdff) + String.fromCharCode(0x0fe70) + "-" + String.fromCharCode(0x0fefc) + String.fromCharCode(0x10800) + "-" + String.fromCharCode(0x10fff) + String.fromCharCode(0x1e800) + "-" + String.fromCharCode(0x1efff) + "]");
+const $ea2d067b3235e95b$var$rtlRegEx = new RegExp(/* eslint-disable prettier/prettier */ '[' + String.fromCharCode(0x00591) + '-' + String.fromCharCode(0x008ff) + String.fromCharCode(0x0fb1d) + '-' + String.fromCharCode(0x0fdff) + String.fromCharCode(0x0fe70) + '-' + String.fromCharCode(0x0fefc) + String.fromCharCode(0x10800) + '-' + String.fromCharCode(0x10fff) + String.fromCharCode(0x1e800) + '-' + String.fromCharCode(0x1efff) + ']');
 /**
  * @param {string} text Text.
  * @param {CanvasTextAlign} align Alignment.
  * @return {number} Text alignment.
  */ function $ea2d067b3235e95b$var$horizontalTextAlign(text, align) {
-    if (align === "start") align = $ea2d067b3235e95b$var$rtlRegEx.test(text) ? "right" : "left";
-    else if (align === "end") align = $ea2d067b3235e95b$var$rtlRegEx.test(text) ? "left" : "right";
+    if (align === 'start') align = $ea2d067b3235e95b$var$rtlRegEx.test(text) ? 'right' : 'left';
+    else if (align === 'end') align = $ea2d067b3235e95b$var$rtlRegEx.test(text) ? 'left' : 'right';
     return (0, $72bb44c946c0e2ac$export$91a016276e4aee96)[align];
 }
 /**
@@ -23784,8 +23600,8 @@ const $ea2d067b3235e95b$var$rtlRegEx = new RegExp(/* eslint-disable prettier/pre
  * @param {number} i Index
  * @return {Array<string>} Accumulator.
  */ function $ea2d067b3235e95b$var$createTextChunks(acc, line, i) {
-    if (i > 0) acc.push("\n", "");
-    acc.push(line, "");
+    if (i > 0) acc.push('\n', '');
+    acc.push(line, '');
     return acc;
 }
 class $ea2d067b3235e95b$var$Executor {
@@ -23878,7 +23694,7 @@ class $ea2d067b3235e95b$var$Executor {
         const textIsArray = Array.isArray(text);
         const align = textState.justify ? (0, $72bb44c946c0e2ac$export$91a016276e4aee96)[textState.justify] : $ea2d067b3235e95b$var$horizontalTextAlign(Array.isArray(text) ? text[0] : text, textState.textAlign || (0, $ba06fcc662408736$export$94d53b95641b5766));
         const strokeWidth = strokeKey && strokeState.lineWidth ? strokeState.lineWidth : 0;
-        const chunks = textIsArray ? text : text.split("\n").reduce($ea2d067b3235e95b$var$createTextChunks, []);
+        const chunks = textIsArray ? text : text.split('\n').reduce($ea2d067b3235e95b$var$createTextChunks, []);
         const { width: width, height: height, widths: widths, heights: heights, lineWidths: lineWidths } = (0, $ba06fcc662408736$export$7d7c13020df1e791)(textState, chunks);
         const renderWidth = width + strokeWidth;
         const contextInstructions = [];
@@ -23890,21 +23706,21 @@ class $ea2d067b3235e95b$var$Executor {
             height: h < 0 ? Math.floor(h) : Math.ceil(h),
             contextInstructions: contextInstructions
         };
-        if (scale[0] != 1 || scale[1] != 1) contextInstructions.push("scale", scale);
+        if (scale[0] != 1 || scale[1] != 1) contextInstructions.push('scale', scale);
         if (strokeKey) {
-            contextInstructions.push("strokeStyle", strokeState.strokeStyle);
-            contextInstructions.push("lineWidth", strokeWidth);
-            contextInstructions.push("lineCap", strokeState.lineCap);
-            contextInstructions.push("lineJoin", strokeState.lineJoin);
-            contextInstructions.push("miterLimit", strokeState.miterLimit);
-            contextInstructions.push("setLineDash", [
+            contextInstructions.push('strokeStyle', strokeState.strokeStyle);
+            contextInstructions.push('lineWidth', strokeWidth);
+            contextInstructions.push('lineCap', strokeState.lineCap);
+            contextInstructions.push('lineJoin', strokeState.lineJoin);
+            contextInstructions.push('miterLimit', strokeState.miterLimit);
+            contextInstructions.push('setLineDash', [
                 strokeState.lineDash
             ]);
-            contextInstructions.push("lineDashOffset", strokeState.lineDashOffset);
+            contextInstructions.push('lineDashOffset', strokeState.lineDashOffset);
         }
-        if (fillKey) contextInstructions.push("fillStyle", fillState.fillStyle);
-        contextInstructions.push("textBaseline", "middle");
-        contextInstructions.push("textAlign", "center");
+        if (fillKey) contextInstructions.push('fillStyle', fillState.fillStyle);
+        contextInstructions.push('textBaseline', 'middle');
+        contextInstructions.push('textAlign', 'center');
         const leftRight = 0.5 - align;
         let x = align * renderWidth + leftRight * strokeWidth;
         const strokeInstructions = [];
@@ -23916,7 +23732,7 @@ class $ea2d067b3235e95b$var$Executor {
         let previousFont;
         for(let i = 0, ii = chunks.length; i < ii; i += 2){
             const text = chunks[i];
-            if (text === "\n") {
+            if (text === '\n') {
                 lineOffset += lineHeight;
                 lineHeight = 0;
                 x = align * renderWidth + leftRight * strokeWidth;
@@ -23925,8 +23741,8 @@ class $ea2d067b3235e95b$var$Executor {
             }
             const font = chunks[i + 1] || textState.font;
             if (font !== previousFont) {
-                if (strokeKey) strokeInstructions.push("font", font);
-                if (fillKey) fillInstructions.push("font", font);
+                if (strokeKey) strokeInstructions.push('font', font);
+                if (fillKey) fillInstructions.push('font', font);
                 previousFont = font;
             }
             lineHeight = Math.max(lineHeight, heights[widthHeightIndex]);
@@ -23936,8 +23752,8 @@ class $ea2d067b3235e95b$var$Executor {
                 0.5 * (strokeWidth + lineHeight) + lineOffset
             ];
             x += widths[widthHeightIndex];
-            if (strokeKey) strokeInstructions.push("strokeText", fillStrokeArgs);
-            if (fillKey) fillInstructions.push("fillText", fillStrokeArgs);
+            if (strokeKey) strokeInstructions.push('strokeText', fillStrokeArgs);
+            if (fillKey) fillInstructions.push('fillText', fillStrokeArgs);
             ++widthHeightIndex;
         }
         Array.prototype.push.apply(contextInstructions, strokeInstructions);
@@ -24084,7 +23900,7 @@ class $ea2d067b3235e95b$var$Executor {
    * @param {CanvasRenderingContext2D} context Context.
    * @param {Array<*>} instruction Instruction.
    */ setStrokeStyle_(context, instruction) {
-        context["strokeStyle"] = /** @type {import("../../colorlike.js").ColorLike} */ instruction[1];
+        context['strokeStyle'] = /** @type {import("../../colorlike.js").ColorLike} */ instruction[1];
         context.lineWidth = /** @type {number} */ instruction[2];
         context.lineCap = /** @type {CanvasLineCap} */ instruction[3];
         context.lineJoin = /** @type {CanvasLineJoin} */ instruction[4];
@@ -24291,8 +24107,8 @@ class $ea2d067b3235e95b$var$Executor {
                             backgroundStroke ? /** @type {Array<*>} */ lastStrokeInstruction : null
                         ];
                         if (declutterTree) {
-                            if (declutterMode === "none") continue;
-                            else if (declutterMode === "obstacle") {
+                            if (declutterMode === 'none') continue;
+                            else if (declutterMode === 'obstacle') {
                                 // will always be drawn, thus no collision detection, but insert as obstacle
                                 declutterTree.insert(dimensions.declutterBox);
                                 continue;
@@ -24366,7 +24182,7 @@ class $ea2d067b3235e95b$var$Executor {
                             if (strokeKey) for(c = 0, cc = parts.length; c < cc; ++c){
                                 part = parts[c]; // x, y, anchorX, rotation, chunk
                                 chars = /** @type {string} */ part[4];
-                                label = this.createLabel(chars, textKey, "", strokeKey);
+                                label = this.createLabel(chars, textKey, '', strokeKey);
                                 anchorX = /** @type {number} */ part[2] + (textScale[0] < 0 ? -strokeWidth : strokeWidth);
                                 anchorY = baseline * label.height + (0.5 - baseline) * 2 * strokeWidth * textScale[1] / textScale[0] - offsetY;
                                 const dimensions = this.calculateImageOrLabelDimensions_(label.width, label.height, part[0], part[1], label.width, label.height, anchorX, anchorY, 0, 0, part[3], pixelRatioScale, false, (0, $ba06fcc662408736$export$40a9eeef55665a40), false, feature);
@@ -24384,7 +24200,7 @@ class $ea2d067b3235e95b$var$Executor {
                             if (fillKey) for(c = 0, cc = parts.length; c < cc; ++c){
                                 part = parts[c]; // x, y, anchorX, rotation, chunk
                                 chars = /** @type {string} */ part[4];
-                                label = this.createLabel(chars, textKey, fillKey, "");
+                                label = this.createLabel(chars, textKey, fillKey, '');
                                 anchorX = /** @type {number} */ part[2];
                                 anchorY = baseline * label.height - offsetY;
                                 const dimensions = this.calculateImageOrLabelDimensions_(label.width, label.height, part[0], part[1], label.width, label.height, anchorX, anchorY, 0, 0, part[3], pixelRatioScale, false, (0, $ba06fcc662408736$export$40a9eeef55665a40), false, feature);
@@ -24518,12 +24334,12 @@ var $ea2d067b3235e95b$export$2e2bcd8739ae039 = $ea2d067b3235e95b$var$Executor;
  * @const
  * @type {Array<import("../canvas.js").BuilderType>}
  */ const $9ab3bb4278f389ba$var$ORDER = [
-    "Polygon",
-    "Circle",
-    "LineString",
-    "Image",
-    "Text",
-    "Default"
+    'Polygon',
+    'Circle',
+    'LineString',
+    'Image',
+    'Text',
+    'Default'
 ];
 class $9ab3bb4278f389ba$var$ExecutorGroup {
     /**
@@ -24653,7 +24469,7 @@ class $9ab3bb4278f389ba$var$ExecutorGroup {
      */ function featureCallback(feature, geometry) {
             const imageData = context.getImageData(0, 0, contextSize, contextSize).data;
             for(let i = 0, ii = indexes.length; i < ii; i++)if (imageData[indexes[i]] > 0) {
-                if (!declutteredFeatures || builderType !== "Image" && builderType !== "Text" || declutteredFeatures.includes(feature)) {
+                if (!declutteredFeatures || builderType !== 'Image' && builderType !== 'Text' || declutteredFeatures.includes(feature)) {
                     const idx = (indexes[i] - 3) / 4;
                     const x = hitTolerance - idx % contextSize;
                     const y = hitTolerance - (idx / contextSize | 0);
@@ -24916,7 +24732,7 @@ var $9ab3bb4278f389ba$export$2e2bcd8739ae039 = $9ab3bb4278f389ba$var$ExecutorGro
         /**
      * @private
      * @type {string}
-     */ this.text_ = "";
+     */ this.text_ = '';
         /**
      * @private
      * @type {number}
@@ -25000,7 +24816,7 @@ var $9ab3bb4278f389ba$export$2e2bcd8739ae039 = $9ab3bb4278f389ba$var$ExecutorGro
    * @param {number} stride Stride.
    * @private
    */ drawText_(flatCoordinates, offset, end, stride) {
-        if (!this.textState_ || this.text_ === "") return;
+        if (!this.textState_ || this.text_ === '') return;
         if (this.textFillState_) this.setContextFillState_(this.textFillState_);
         if (this.textStrokeState_) this.setContextStrokeState_(this.textStrokeState_);
         this.setContextTextState_(this.textState_);
@@ -25077,7 +24893,7 @@ var $9ab3bb4278f389ba$export$2e2bcd8739ae039 = $9ab3bb4278f389ba$var$ExecutorGro
             if (this.fillState_) context.fill();
             if (this.strokeState_) context.stroke();
         }
-        if (this.text_ !== "") this.drawText_(geometry.getCenter(), 0, 2, 2);
+        if (this.text_ !== '') this.drawText_(geometry.getCenter(), 0, 2, 2);
     }
     /**
    * Set the rendering style.  Note that since this is an immediate rendering API,
@@ -25104,28 +24920,28 @@ var $9ab3bb4278f389ba$export$2e2bcd8739ae039 = $9ab3bb4278f389ba$var$ExecutorGro
    */ drawGeometry(geometry) {
         const type = geometry.getType();
         switch(type){
-            case "Point":
+            case 'Point':
                 this.drawPoint(/** @type {import("../../geom/Point.js").default} */ geometry);
                 break;
-            case "LineString":
+            case 'LineString':
                 this.drawLineString(/** @type {import("../../geom/LineString.js").default} */ geometry);
                 break;
-            case "Polygon":
+            case 'Polygon':
                 this.drawPolygon(/** @type {import("../../geom/Polygon.js").default} */ geometry);
                 break;
-            case "MultiPoint":
+            case 'MultiPoint':
                 this.drawMultiPoint(/** @type {import("../../geom/MultiPoint.js").default} */ geometry);
                 break;
-            case "MultiLineString":
+            case 'MultiLineString':
                 this.drawMultiLineString(/** @type {import("../../geom/MultiLineString.js").default} */ geometry);
                 break;
-            case "MultiPolygon":
+            case 'MultiPolygon':
                 this.drawMultiPolygon(/** @type {import("../../geom/MultiPolygon.js").default} */ geometry);
                 break;
-            case "GeometryCollection":
+            case 'GeometryCollection':
                 this.drawGeometryCollection(/** @type {import("../../geom/GeometryCollection.js").default} */ geometry);
                 break;
-            case "Circle":
+            case 'Circle':
                 this.drawCircle(/** @type {import("../../geom/Circle.js").default} */ geometry);
                 break;
             default:
@@ -25165,7 +24981,7 @@ var $9ab3bb4278f389ba$export$2e2bcd8739ae039 = $9ab3bb4278f389ba$var$ExecutorGro
         const flatCoordinates = geometry.getFlatCoordinates();
         const stride = geometry.getStride();
         if (this.image_) this.drawImages_(flatCoordinates, 0, flatCoordinates.length, stride);
-        if (this.text_ !== "") this.drawText_(flatCoordinates, 0, flatCoordinates.length, stride);
+        if (this.text_ !== '') this.drawText_(flatCoordinates, 0, flatCoordinates.length, stride);
     }
     /**
    * Render a MultiPoint geometry  into the canvas.  Rendering is immediate and
@@ -25177,7 +24993,7 @@ var $9ab3bb4278f389ba$export$2e2bcd8739ae039 = $9ab3bb4278f389ba$var$ExecutorGro
         const flatCoordinates = geometry.getFlatCoordinates();
         const stride = geometry.getStride();
         if (this.image_) this.drawImages_(flatCoordinates, 0, flatCoordinates.length, stride);
-        if (this.text_ !== "") this.drawText_(flatCoordinates, 0, flatCoordinates.length, stride);
+        if (this.text_ !== '') this.drawText_(flatCoordinates, 0, flatCoordinates.length, stride);
     }
     /**
    * Render a LineString into the canvas.  Rendering is immediate and uses
@@ -25195,7 +25011,7 @@ var $9ab3bb4278f389ba$export$2e2bcd8739ae039 = $9ab3bb4278f389ba$var$ExecutorGro
             this.moveToLineTo_(flatCoordinates, 0, flatCoordinates.length, geometry.getStride(), false);
             context.stroke();
         }
-        if (this.text_ !== "") {
+        if (this.text_ !== '') {
             const flatMidpoint = geometry.getFlatMidpoint();
             this.drawText_(flatMidpoint, 0, 2, 2);
         }
@@ -25220,7 +25036,7 @@ var $9ab3bb4278f389ba$export$2e2bcd8739ae039 = $9ab3bb4278f389ba$var$ExecutorGro
             for(let i = 0, ii = ends.length; i < ii; ++i)offset = this.moveToLineTo_(flatCoordinates, offset, ends[i], stride, false);
             context.stroke();
         }
-        if (this.text_ !== "") {
+        if (this.text_ !== '') {
             const flatMidpoints = geometry.getFlatMidpoints();
             this.drawText_(flatMidpoints, 0, flatMidpoints.length, 2);
         }
@@ -25242,7 +25058,7 @@ var $9ab3bb4278f389ba$export$2e2bcd8739ae039 = $9ab3bb4278f389ba$var$ExecutorGro
             if (this.fillState_) context.fill();
             if (this.strokeState_) context.stroke();
         }
-        if (this.text_ !== "") {
+        if (this.text_ !== '') {
             const flatInteriorPoint = geometry.getFlatInteriorPoint();
             this.drawText_(flatInteriorPoint, 0, 2, 2);
         }
@@ -25270,7 +25086,7 @@ var $9ab3bb4278f389ba$export$2e2bcd8739ae039 = $9ab3bb4278f389ba$var$ExecutorGro
             if (this.fillState_) context.fill();
             if (this.strokeState_) context.stroke();
         }
-        if (this.text_ !== "") {
+        if (this.text_ !== '') {
             const flatInteriorPoints = geometry.getFlatInteriorPoints();
             this.drawText_(flatInteriorPoints, 0, flatInteriorPoints.length, 2);
         }
@@ -25444,7 +25260,7 @@ var $9ab3bb4278f389ba$export$2e2bcd8739ae039 = $9ab3bb4278f389ba$var$ExecutorGro
    *
    * @param {import("../../style/Text.js").default} textStyle Text style.
    */ setTextStyle(textStyle) {
-        if (!textStyle) this.text_ = "";
+        if (!textStyle) this.text_ = '';
         else {
             const textFillStyle = textStyle.getFill();
             if (!textFillStyle) this.textFillState_ = null;
@@ -25488,7 +25304,7 @@ var $9ab3bb4278f389ba$export$2e2bcd8739ae039 = $9ab3bb4278f389ba$var$ExecutorGro
                 textAlign: textTextAlign !== undefined ? textTextAlign : (0, $ba06fcc662408736$export$94d53b95641b5766),
                 textBaseline: textTextBaseline !== undefined ? textTextBaseline : (0, $ba06fcc662408736$export$cf2279a1bff62eb)
             };
-            this.text_ = textText !== undefined ? Array.isArray(textText) ? textText.reduce((acc, t, i)=>acc += i % 2 ? " " : t, "") : textText : "";
+            this.text_ = textText !== undefined ? Array.isArray(textText) ? textText.reduce((acc, t, i)=>acc += i % 2 ? ' ' : t, '') : textText : '';
             this.textOffsetX_ = textOffsetX !== undefined ? this.pixelRatio_ * textOffsetX : 0;
             this.textOffsetY_ = textOffsetY !== undefined ? this.pixelRatio_ * textOffsetY : 0;
             this.textRotateWithView_ = textRotateWithView !== undefined ? textRotateWithView : false;
@@ -25530,7 +25346,7 @@ function $027b7b106c5e63cc$export$bd05e394339d469(size, transforms, features, st
             styles
         ];
         const index = i * indexFactor;
-        const color = index.toString(16).padStart(7, "#00000");
+        const color = index.toString(16).padStart(7, '#00000');
         for(let j = 0, jj = styles.length; j < jj; ++j){
             const originalStyle = styles[j];
             const geometry = originalStyle.getGeometryFunction()(feature);
@@ -25558,8 +25374,8 @@ function $027b7b106c5e63cc$export$bd05e394339d469(size, transforms, features, st
                     img: img,
                     imgSize: imgSize,
                     anchor: image.getAnchor(),
-                    anchorXUnits: "pixels",
-                    anchorYUnits: "pixels",
+                    anchorXUnits: 'pixels',
+                    anchorYUnits: 'pixels',
                     offset: image.getOrigin(),
                     opacity: 1,
                     size: image.getSize(),
@@ -25573,19 +25389,19 @@ function $027b7b106c5e63cc$export$bd05e394339d469(size, transforms, features, st
             if (!byGeometryType) {
                 byGeometryType = {};
                 featuresByZIndex[zIndex] = byGeometryType;
-                byGeometryType["Polygon"] = [];
-                byGeometryType["Circle"] = [];
-                byGeometryType["LineString"] = [];
-                byGeometryType["Point"] = [];
+                byGeometryType['Polygon'] = [];
+                byGeometryType['Circle'] = [];
+                byGeometryType['LineString'] = [];
+                byGeometryType['Point'] = [];
             }
             const type = geometry.getType();
-            if (type === "GeometryCollection") {
+            if (type === 'GeometryCollection') {
                 const geometries = /** @type {import("../../geom/GeometryCollection.js").default} */ geometry.getGeometriesArrayRecursive();
                 for(let i = 0, ii = geometries.length; i < ii; ++i){
                     const geometry = geometries[i];
-                    byGeometryType[geometry.getType().replace("Multi", "")].push(geometry, style);
+                    byGeometryType[geometry.getType().replace('Multi', '')].push(geometry, style);
                 }
-            } else byGeometryType[type.replace("Multi", "")].push(geometry, style);
+            } else byGeometryType[type.replace('Multi', '')].push(geometry, style);
         }
     }
     const zIndexKeys = Object.keys(featuresByZIndex).map(Number).sort((0, $69c1cc8ae30f997f$export$fcb633242ef15540));
@@ -25650,14 +25466,14 @@ function $027b7b106c5e63cc$export$6d4d555ddbfffa32(pixel, features, imageData) {
  *                function(import("../render/canvas/BuilderGroup.js").default, import("../geom/Geometry.js").default,
  *                         import("../style/Style.js").default, Object): void>}
  */ const $0441c6c4e8d0ef48$var$GEOMETRY_RENDERERS = {
-    "Point": $0441c6c4e8d0ef48$var$renderPointGeometry,
-    "LineString": $0441c6c4e8d0ef48$var$renderLineStringGeometry,
-    "Polygon": $0441c6c4e8d0ef48$var$renderPolygonGeometry,
-    "MultiPoint": $0441c6c4e8d0ef48$var$renderMultiPointGeometry,
-    "MultiLineString": $0441c6c4e8d0ef48$var$renderMultiLineStringGeometry,
-    "MultiPolygon": $0441c6c4e8d0ef48$var$renderMultiPolygonGeometry,
-    "GeometryCollection": $0441c6c4e8d0ef48$var$renderGeometryCollectionGeometry,
-    "Circle": $0441c6c4e8d0ef48$var$renderCircleGeometry
+    'Point': $0441c6c4e8d0ef48$var$renderPointGeometry,
+    'LineString': $0441c6c4e8d0ef48$var$renderLineStringGeometry,
+    'Polygon': $0441c6c4e8d0ef48$var$renderPolygonGeometry,
+    'MultiPoint': $0441c6c4e8d0ef48$var$renderMultiPointGeometry,
+    'MultiLineString': $0441c6c4e8d0ef48$var$renderMultiLineStringGeometry,
+    'MultiPolygon': $0441c6c4e8d0ef48$var$renderMultiPolygonGeometry,
+    'GeometryCollection': $0441c6c4e8d0ef48$var$renderGeometryCollectionGeometry,
+    'Circle': $0441c6c4e8d0ef48$var$renderCircleGeometry
 };
 function $0441c6c4e8d0ef48$export$531ddd8416d52dfc(feature1, feature2) {
     return parseInt((0, $ae7eaaa2c9c1e05d$export$5e82334337e0f204)(feature1), 10) - parseInt((0, $ae7eaaa2c9c1e05d$export$5e82334337e0f204)(feature2), 10);
@@ -25679,13 +25495,13 @@ function $0441c6c4e8d0ef48$export$bdacc5b475012edb(resolution, pixelRatio) {
     const fillStyle = style.getFill();
     const strokeStyle = style.getStroke();
     if (fillStyle || strokeStyle) {
-        const circleReplay = builderGroup.getBuilder(style.getZIndex(), "Circle");
+        const circleReplay = builderGroup.getBuilder(style.getZIndex(), 'Circle');
         circleReplay.setFillStrokeStyle(fillStyle, strokeStyle);
         circleReplay.drawCircle(geometry, feature);
     }
     const textStyle = style.getText();
     if (textStyle && textStyle.getText()) {
-        const textReplay = (declutterBuilderGroup || builderGroup).getBuilder(style.getZIndex(), "Text");
+        const textReplay = (declutterBuilderGroup || builderGroup).getBuilder(style.getZIndex(), 'Text');
         textReplay.setTextStyle(textStyle);
         textReplay.drawText(geometry, feature);
     }
@@ -25729,12 +25545,12 @@ function $0441c6c4e8d0ef48$export$36f470a33a42f413(replayGroup, feature, style, 
  * @param {import("../style/Style.js").default} style Style.
  * @param {import("../Feature.js").FeatureLike} feature Feature.
  */ function $0441c6c4e8d0ef48$var$renderGeometry(replayGroup, geometry, style, feature) {
-    if (geometry.getType() == "GeometryCollection") {
+    if (geometry.getType() == 'GeometryCollection') {
         const geometries = /** @type {import("../geom/GeometryCollection.js").default} */ geometry.getGeometries();
         for(let i = 0, ii = geometries.length; i < ii; ++i)$0441c6c4e8d0ef48$var$renderGeometry(replayGroup, geometries[i], style, feature);
         return;
     }
-    const replay = replayGroup.getBuilder(style.getZIndex(), "Default");
+    const replay = replayGroup.getBuilder(style.getZIndex(), 'Default');
     replay.drawCustom(/** @type {import("../geom/SimpleGeometry.js").default} */ geometry, feature, style.getRenderer(), style.getHitDetectionRenderer());
 }
 /**
@@ -25760,13 +25576,13 @@ function $0441c6c4e8d0ef48$export$36f470a33a42f413(replayGroup, feature, style, 
  */ function $0441c6c4e8d0ef48$var$renderLineStringGeometry(builderGroup, geometry, style, feature, declutterBuilderGroup) {
     const strokeStyle = style.getStroke();
     if (strokeStyle) {
-        const lineStringReplay = builderGroup.getBuilder(style.getZIndex(), "LineString");
+        const lineStringReplay = builderGroup.getBuilder(style.getZIndex(), 'LineString');
         lineStringReplay.setFillStrokeStyle(null, strokeStyle);
         lineStringReplay.drawLineString(geometry, feature);
     }
     const textStyle = style.getText();
     if (textStyle && textStyle.getText()) {
-        const textReplay = (declutterBuilderGroup || builderGroup).getBuilder(style.getZIndex(), "Text");
+        const textReplay = (declutterBuilderGroup || builderGroup).getBuilder(style.getZIndex(), 'Text');
         textReplay.setTextStyle(textStyle);
         textReplay.drawText(geometry, feature);
     }
@@ -25780,13 +25596,13 @@ function $0441c6c4e8d0ef48$export$36f470a33a42f413(replayGroup, feature, style, 
  */ function $0441c6c4e8d0ef48$var$renderMultiLineStringGeometry(builderGroup, geometry, style, feature, declutterBuilderGroup) {
     const strokeStyle = style.getStroke();
     if (strokeStyle) {
-        const lineStringReplay = builderGroup.getBuilder(style.getZIndex(), "LineString");
+        const lineStringReplay = builderGroup.getBuilder(style.getZIndex(), 'LineString');
         lineStringReplay.setFillStrokeStyle(null, strokeStyle);
         lineStringReplay.drawMultiLineString(geometry, feature);
     }
     const textStyle = style.getText();
     if (textStyle && textStyle.getText()) {
-        const textReplay = (declutterBuilderGroup || builderGroup).getBuilder(style.getZIndex(), "Text");
+        const textReplay = (declutterBuilderGroup || builderGroup).getBuilder(style.getZIndex(), 'Text');
         textReplay.setTextStyle(textStyle);
         textReplay.drawText(geometry, feature);
     }
@@ -25801,13 +25617,13 @@ function $0441c6c4e8d0ef48$export$36f470a33a42f413(replayGroup, feature, style, 
     const fillStyle = style.getFill();
     const strokeStyle = style.getStroke();
     if (strokeStyle || fillStyle) {
-        const polygonReplay = builderGroup.getBuilder(style.getZIndex(), "Polygon");
+        const polygonReplay = builderGroup.getBuilder(style.getZIndex(), 'Polygon');
         polygonReplay.setFillStrokeStyle(fillStyle, strokeStyle);
         polygonReplay.drawMultiPolygon(geometry, feature);
     }
     const textStyle = style.getText();
     if (textStyle && textStyle.getText()) {
-        const textReplay = (declutterBuilderGroup || builderGroup).getBuilder(style.getZIndex(), "Text");
+        const textReplay = (declutterBuilderGroup || builderGroup).getBuilder(style.getZIndex(), 'Text');
         textReplay.setTextStyle(textStyle);
         textReplay.drawText(geometry, feature);
     }
@@ -25827,24 +25643,24 @@ function $0441c6c4e8d0ef48$export$36f470a33a42f413(replayGroup, feature, style, 
         let imageBuilderGroup = builderGroup;
         if (declutterBuilderGroup) {
             const declutterMode = imageStyle.getDeclutterMode();
-            if (declutterMode !== "none") {
+            if (declutterMode !== 'none') {
                 imageBuilderGroup = declutterBuilderGroup;
-                if (declutterMode === "obstacle") {
+                if (declutterMode === 'obstacle') {
                     // draw in non-declutter group:
-                    const imageReplay = builderGroup.getBuilder(style.getZIndex(), "Image");
+                    const imageReplay = builderGroup.getBuilder(style.getZIndex(), 'Image');
                     imageReplay.setImageStyle(imageStyle, declutterImageWithText);
                     imageReplay.drawPoint(geometry, feature);
                 } else if (textStyle && textStyle.getText()) declutterImageWithText = {};
             }
         }
-        const imageReplay = imageBuilderGroup.getBuilder(style.getZIndex(), "Image");
+        const imageReplay = imageBuilderGroup.getBuilder(style.getZIndex(), 'Image');
         imageReplay.setImageStyle(imageStyle, declutterImageWithText);
         imageReplay.drawPoint(geometry, feature);
     }
     if (textStyle && textStyle.getText()) {
         let textBuilderGroup = builderGroup;
         if (declutterBuilderGroup) textBuilderGroup = declutterBuilderGroup;
-        const textReplay = textBuilderGroup.getBuilder(style.getZIndex(), "Text");
+        const textReplay = textBuilderGroup.getBuilder(style.getZIndex(), 'Text');
         textReplay.setTextStyle(textStyle, declutterImageWithText);
         textReplay.drawText(geometry, feature);
     }
@@ -25864,24 +25680,24 @@ function $0441c6c4e8d0ef48$export$36f470a33a42f413(replayGroup, feature, style, 
         let imageBuilderGroup = builderGroup;
         if (declutterBuilderGroup) {
             const declutterMode = imageStyle.getDeclutterMode();
-            if (declutterMode !== "none") {
+            if (declutterMode !== 'none') {
                 imageBuilderGroup = declutterBuilderGroup;
-                if (declutterMode === "obstacle") {
+                if (declutterMode === 'obstacle') {
                     // draw in non-declutter group:
-                    const imageReplay = builderGroup.getBuilder(style.getZIndex(), "Image");
+                    const imageReplay = builderGroup.getBuilder(style.getZIndex(), 'Image');
                     imageReplay.setImageStyle(imageStyle, declutterImageWithText);
                     imageReplay.drawMultiPoint(geometry, feature);
                 } else if (textStyle && textStyle.getText()) declutterImageWithText = {};
             }
         }
-        const imageReplay = imageBuilderGroup.getBuilder(style.getZIndex(), "Image");
+        const imageReplay = imageBuilderGroup.getBuilder(style.getZIndex(), 'Image');
         imageReplay.setImageStyle(imageStyle, declutterImageWithText);
         imageReplay.drawMultiPoint(geometry, feature);
     }
     if (textStyle && textStyle.getText()) {
         let textBuilderGroup = builderGroup;
         if (declutterBuilderGroup) textBuilderGroup = declutterBuilderGroup;
-        const textReplay = textBuilderGroup.getBuilder(style.getZIndex(), "Text");
+        const textReplay = textBuilderGroup.getBuilder(style.getZIndex(), 'Text');
         textReplay.setTextStyle(textStyle, declutterImageWithText);
         textReplay.drawText(geometry, feature);
     }
@@ -25896,13 +25712,13 @@ function $0441c6c4e8d0ef48$export$36f470a33a42f413(replayGroup, feature, style, 
     const fillStyle = style.getFill();
     const strokeStyle = style.getStroke();
     if (fillStyle || strokeStyle) {
-        const polygonReplay = builderGroup.getBuilder(style.getZIndex(), "Polygon");
+        const polygonReplay = builderGroup.getBuilder(style.getZIndex(), 'Polygon');
         polygonReplay.setFillStrokeStyle(fillStyle, strokeStyle);
         polygonReplay.drawPolygon(geometry, feature);
     }
     const textStyle = style.getText();
     if (textStyle && textStyle.getText()) {
-        const textReplay = (declutterBuilderGroup || builderGroup).getBuilder(style.getZIndex(), "Text");
+        const textReplay = (declutterBuilderGroup || builderGroup).getBuilder(style.getZIndex(), 'Text');
         textReplay.setTextStyle(textStyle);
         textReplay.drawText(geometry, feature);
     }
@@ -26401,7 +26217,7 @@ function $6012a9789a43a621$export$6503ec6e8aabbaf(proj4) {
         if (!(0, $983289ae1d13cd2a$export$3988ae62b71be9a3)(code)) {
             const def = proj4.defs(code);
             let units = /** @type {import("./Units.js").Units} */ def.units;
-            if (!units && def.projName === "longlat") units = "degrees";
+            if (!units && def.projName === 'longlat') units = 'degrees';
             (0, $983289ae1d13cd2a$export$59ae956cd3e343f7)(new (0, $dedce5f77fa1cc84$export$2e2bcd8739ae039)({
                 code: code,
                 axisOrientation: def.axis,
@@ -26444,10 +26260,10 @@ function $6012a9789a43a621$export$740126bd4cc01b24() {
     return $6012a9789a43a621$var$epsgLookup;
 }
 async function $6012a9789a43a621$export$8d835cefe312e037(code) {
-    if (typeof code === "string") code = parseInt(code.split(":").pop(), 10);
+    if (typeof code === 'string') code = parseInt(code.split(':').pop(), 10);
     const proj4 = $6012a9789a43a621$var$registered;
-    if (!proj4) throw new Error("Proj4 must be registered first with register(proj4)");
-    const epsgCode = "EPSG:" + code;
+    if (!proj4) throw new Error('Proj4 must be registered first with register(proj4)');
+    const epsgCode = 'EPSG:' + code;
     if (proj4.defs(epsgCode)) return (0, $983289ae1d13cd2a$export$3988ae62b71be9a3)(epsgCode);
     proj4.defs(epsgCode, await $6012a9789a43a621$var$epsgLookup(code));
     $6012a9789a43a621$export$6503ec6e8aabbaf(proj4);
@@ -26458,21 +26274,21 @@ function $6012a9789a43a621$export$71e713433eeb8730(key) {
         const response = await fetch(`https://api.maptiler.com/coordinates/search/code:${code}.json?transformations=true&exports=true&key=${key}`);
         if (!response.ok) throw new Error(`Unexpected response from maptiler.com: ${response.status}`);
         return response.json().then((json)=>{
-            const results = json["results"];
+            const results = json['results'];
             if (results?.length > 0) {
-                const result = results.filter((r)=>r["id"]?.["authority"] === "EPSG" && r["id"]?.["code"] === code)[0];
+                const result = results.filter((r)=>r['id']?.['authority'] === 'EPSG' && r['id']?.['code'] === code)[0];
                 if (result) {
-                    const transforms = result["transformations"];
+                    const transforms = result['transformations'];
                     if (transforms?.length > 0) {
                         // use default transform if it does not require grids
-                        const defaultTransform = result["default_transformation"];
-                        if (transforms.filter((t)=>t["id"]?.["authority"] === defaultTransform?.["authority"] && t["id"]?.["code"] === defaultTransform?.["code"] && t["grids"]?.length === 0).length > 0) return result["exports"]?.["proj4"];
+                        const defaultTransform = result['default_transformation'];
+                        if (transforms.filter((t)=>t['id']?.['authority'] === defaultTransform?.['authority'] && t['id']?.['code'] === defaultTransform?.['code'] && t['grids']?.length === 0).length > 0) return result['exports']?.['proj4'];
                         // otherwise use most accurate alternative without grids
-                        const transform = transforms.filter((t)=>t["grids"]?.length === 0 && t["target_crs"]?.["authority"] === "EPSG" && t["target_crs"]?.["code"] === 4326 && t["deprecated"] === false && t["usable"] === true).sort((t1, t2)=>t1["accuracy"] - t2["accuracy"])[0]?.["exports"]?.["proj4"];
+                        const transform = transforms.filter((t)=>t['grids']?.length === 0 && t['target_crs']?.['authority'] === 'EPSG' && t['target_crs']?.['code'] === 4326 && t['deprecated'] === false && t['usable'] === true).sort((t1, t2)=>t1['accuracy'] - t2['accuracy'])[0]?.['exports']?.['proj4'];
                         if (transform) return transform;
                     }
                     // fallback to default
-                    return result["exports"]?.["proj4"];
+                    return result['exports']?.['proj4'];
                 }
             }
         });
@@ -26704,7 +26520,7 @@ var $e423f2cb84577a8a$export$2e2bcd8739ae039 = $e423f2cb84577a8a$var$ReprojImage
         /**
      * @private
      * @type {import("./Source.js").State}
-     */ this.state_ = options.state !== undefined ? options.state : "ready";
+     */ this.state_ = options.state !== undefined ? options.state : 'ready';
         /**
      * @private
      * @type {boolean}
@@ -26811,7 +26627,7 @@ var $e423f2cb84577a8a$export$2e2bcd8739ae039 = $e423f2cb84577a8a$var$ReprojImage
     if (Array.isArray(attributionLike)) return function(frameState) {
         return attributionLike;
     };
-    if (typeof attributionLike === "function") return attributionLike;
+    if (typeof attributionLike === 'function') return attributionLike;
     return function(frameState) {
         return [
             attributionLike
@@ -26830,17 +26646,17 @@ const $00813c292f54e75d$export$4e0f6da20e5dcc4f = {
    * Triggered when an image starts loading.
    * @event module:ol/source/Image.ImageSourceEvent#imageloadstart
    * @api
-   */ IMAGELOADSTART: "imageloadstart",
+   */ IMAGELOADSTART: 'imageloadstart',
     /**
    * Triggered when an image finishes loading.
    * @event module:ol/source/Image.ImageSourceEvent#imageloadend
    * @api
-   */ IMAGELOADEND: "imageloadend",
+   */ IMAGELOADEND: 'imageloadend',
     /**
    * Triggered if image loading results in an error.
    * @event module:ol/source/Image.ImageSourceEvent#imageloaderror
    * @api
-   */ IMAGELOADERROR: "imageloaderror"
+   */ IMAGELOADERROR: 'imageloaderror'
 };
 class $00813c292f54e75d$export$58d3276cd83daede extends (0, $f22c10e3757627da$export$2e2bcd8739ae039) {
     /**
@@ -27361,17 +27177,17 @@ var $c64d0b2511f865d8$export$2e2bcd8739ae039 = $c64d0b2511f865d8$var$LRUCache;
     ];
 }
 function $aaf15fb68ed4bc38$export$92d0df0f1d25c63c(z, x, y) {
-    return z + "/" + x + "/" + y;
+    return z + '/' + x + '/' + y;
 }
 function $aaf15fb68ed4bc38$export$a47fb462a08de82f(tileCoord) {
     return $aaf15fb68ed4bc38$export$92d0df0f1d25c63c(tileCoord[0], tileCoord[1], tileCoord[2]);
 }
 function $aaf15fb68ed4bc38$export$7f760414a8e3d2b5(tileKey) {
-    const [z, x, y] = tileKey.substring(tileKey.lastIndexOf("/") + 1, tileKey.length).split(",").map(Number);
+    const [z, x, y] = tileKey.substring(tileKey.lastIndexOf('/') + 1, tileKey.length).split(',').map(Number);
     return $aaf15fb68ed4bc38$export$92d0df0f1d25c63c(z, x, y);
 }
 function $aaf15fb68ed4bc38$export$a807b7874eb66454(key) {
-    return key.split("/").map(Number);
+    return key.split('/').map(Number);
 }
 function $aaf15fb68ed4bc38$export$d6af199866bfb566(tileCoord) {
     return (tileCoord[1] << tileCoord[0]) + tileCoord[2];
@@ -27433,20 +27249,20 @@ var $a8929a8ee91614da$export$2e2bcd8739ae039 = $a8929a8ee91614da$var$TileCache;
    * Triggered when a tile starts loading.
    * @event module:ol/source/Tile.TileSourceEvent#tileloadstart
    * @api
-   */ TILELOADSTART: "tileloadstart",
+   */ TILELOADSTART: 'tileloadstart',
     /**
    * Triggered when a tile finishes loading, either when its data is loaded,
    * or when loading was aborted because the tile is no longer needed.
    * @event module:ol/source/Tile.TileSourceEvent#tileloadend
    * @api
-   */ TILELOADEND: "tileloadend",
+   */ TILELOADEND: 'tileloadend',
     /**
    * Triggered if tile loading results in an error. Note that this is not the
    * right place to re-fetch tiles. See {@link module:ol/ImageTile~ImageTile#load}
    * for details.
    * @event module:ol/source/Tile.TileSourceEvent#tileloaderror
    * @api
-   */ TILELOADERROR: "tileloaderror"
+   */ TILELOADERROR: 'tileloaderror'
 };
 
 
@@ -27955,7 +27771,7 @@ function $2592d561440d896c$export$39a9ce3624977b84(tileGrid, tileCoord, projecti
     return tileCoord;
 }
 function $2592d561440d896c$export$ce88871416242df8(extent, maxZoom, tileSize, corner) {
-    corner = corner !== undefined ? corner : "top-left";
+    corner = corner !== undefined ? corner : 'top-left';
     const resolutions = $2592d561440d896c$var$resolutionsFromExtent(extent, maxZoom, tileSize);
     return new (0, $4c1b5c80c3c7e528$export$2e2bcd8739ae039)({
         extent: extent,
@@ -27966,7 +27782,7 @@ function $2592d561440d896c$export$ce88871416242df8(extent, maxZoom, tileSize, co
 }
 function $2592d561440d896c$export$38500bbeccc864ff(options) {
     const xyzOptions = options || {};
-    const extent = xyzOptions.extent || (0, $983289ae1d13cd2a$export$3988ae62b71be9a3)("EPSG:3857").getExtent();
+    const extent = xyzOptions.extent || (0, $983289ae1d13cd2a$export$3988ae62b71be9a3)('EPSG:3857').getExtent();
     const gridOptions = {
         extent: extent,
         minZoom: xyzOptions.minZoom,
@@ -28092,7 +27908,7 @@ function $2592d561440d896c$export$7b5b6ef8fd55fac4(projection) {
         /**
      * @private
      * @type {string}
-     */ this.key_ = options.key || "";
+     */ this.key_ = options.key || '';
         /**
      * @protected
      * @type {import("../Tile.js").Options}
@@ -28491,7 +28307,7 @@ function $bd26167db2be2a96$export$2a1fa079bfd73dde(url) {
    */ setTileUrlFunction(tileUrlFunction, key) {
         this.tileUrlFunction = tileUrlFunction;
         this.tileCache.pruneExceptNewestZ();
-        if (typeof key !== "undefined") this.setKey(key);
+        if (typeof key !== 'undefined') this.setKey(key);
         else this.changed();
     }
     /**
@@ -28509,7 +28325,7 @@ function $bd26167db2be2a96$export$2a1fa079bfd73dde(url) {
    * @api
    */ setUrls(urls) {
         this.urls = urls;
-        const key = urls.join("\n");
+        const key = urls.join('\n');
         if (this.generateTileUrlFunction_) this.setTileUrlFunction((0, $bd26167db2be2a96$export$436f44dbcc31fea3)(urls, this.tileGrid), key);
         else this.setKey(key);
     }
@@ -28672,7 +28488,7 @@ var $3c628e44f46a5070$export$2e2bcd8739ae039 = $3c628e44f46a5070$var$UrlTile;
    * @return {string} The key for all tiles.
    */ getKey() {
         let key = super.getKey();
-        if (!this.getInterpolate()) key += ":disable-interpolation";
+        if (!this.getInterpolate()) key += ':disable-interpolation';
         return key;
     }
     /**
@@ -28719,7 +28535,7 @@ var $3c628e44f46a5070$export$2e2bcd8739ae039 = $3c628e44f46a5070$var$UrlTile;
         ];
         const urlTileCoord = this.getTileCoordForTileUrlFunction(tileCoord, projection);
         const tileUrl = urlTileCoord ? this.tileUrlFunction(urlTileCoord, pixelRatio, projection) : undefined;
-        const tile = new this.tileClass(tileCoord, tileUrl !== undefined ? (0, $713feb195c3fd859$export$2e2bcd8739ae039).IDLE : (0, $713feb195c3fd859$export$2e2bcd8739ae039).EMPTY, tileUrl !== undefined ? tileUrl : "", this.crossOrigin, this.tileLoadFunction, this.tileOptions);
+        const tile = new this.tileClass(tileCoord, tileUrl !== undefined ? (0, $713feb195c3fd859$export$2e2bcd8739ae039).IDLE : (0, $713feb195c3fd859$export$2e2bcd8739ae039).EMPTY, tileUrl !== undefined ? tileUrl : '', this.crossOrigin, this.tileLoadFunction, this.tileOptions);
         tile.key = key;
         tile.addEventListener((0, $f13d17e3c190470c$export$2e2bcd8739ae039).CHANGE, this.handleTileChange.bind(this));
         return tile;
@@ -28900,7 +28716,7 @@ var $03416dad2946ba1d$export$2e2bcd8739ae039 = $03416dad2946ba1d$var$TileImage;
    * @param {Options} [options] XYZ options.
    */ constructor(options){
         options = options || {};
-        const projection = options.projection !== undefined ? options.projection : "EPSG:3857";
+        const projection = options.projection !== undefined ? options.projection : 'EPSG:3857';
         const tileGrid = options.tileGrid !== undefined ? options.tileGrid : (0, $2592d561440d896c$export$38500bbeccc864ff)({
             extent: (0, $2592d561440d896c$export$7b5b6ef8fd55fac4)(projection),
             maxResolution: options.maxResolution,
@@ -28983,8 +28799,8 @@ const $25838c5bce8055ee$export$4de8a5e77eb994ad = '&#169; <a href="https://www.o
         else attributions = [
             $25838c5bce8055ee$export$4de8a5e77eb994ad
         ];
-        const crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : "anonymous";
-        const url = options.url !== undefined ? options.url : "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+        const crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
+        const url = options.url !== undefined ? options.url : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
         super({
             attributions: attributions,
             attributionsCollapsible: false,
@@ -29204,38 +29020,38 @@ var $15b6a1746ef633ad$export$2e2bcd8739ae039 = $15b6a1746ef633ad$var$RBush;
    * Triggered when a feature is added to the source.
    * @event module:ol/source/Vector.VectorSourceEvent#addfeature
    * @api
-   */ ADDFEATURE: "addfeature",
+   */ ADDFEATURE: 'addfeature',
     /**
    * Triggered when a feature is updated.
    * @event module:ol/source/Vector.VectorSourceEvent#changefeature
    * @api
-   */ CHANGEFEATURE: "changefeature",
+   */ CHANGEFEATURE: 'changefeature',
     /**
    * Triggered when the clear method is called on the source.
    * @event module:ol/source/Vector.VectorSourceEvent#clear
    * @api
-   */ CLEAR: "clear",
+   */ CLEAR: 'clear',
     /**
    * Triggered when a feature is removed from the source.
    * See {@link module:ol/source/Vector~VectorSource#clear source.clear()} for exceptions.
    * @event module:ol/source/Vector.VectorSourceEvent#removefeature
    * @api
-   */ REMOVEFEATURE: "removefeature",
+   */ REMOVEFEATURE: 'removefeature',
     /**
    * Triggered when features starts loading.
    * @event module:ol/source/Vector.VectorSourceEvent#featuresloadstart
    * @api
-   */ FEATURESLOADSTART: "featuresloadstart",
+   */ FEATURESLOADSTART: 'featuresloadstart',
     /**
    * Triggered when features finishes loading.
    * @event module:ol/source/Vector.VectorSourceEvent#featuresloadend
    * @api
-   */ FEATURESLOADEND: "featuresloadend",
+   */ FEATURESLOADEND: 'featuresloadend',
     /**
    * Triggered if feature loading results in an error.
    * @event module:ol/source/Vector.VectorSourceEvent#featuresloaderror
    * @api
-   */ FEATURESLOADERROR: "featuresloaderror"
+   */ FEATURESLOADERROR: 'featuresloaderror'
 };
 
 
@@ -29295,8 +29111,8 @@ function $efc4a0254bd212ee$export$3c17558da18e4d75(tileGrid) {
  */ let $8b4a0712f48d5df6$var$withCredentials = false;
 function $8b4a0712f48d5df6$export$441d7b57adab24d0(url, format, extent, resolution, projection, success, failure) {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", typeof url === "function" ? url(extent, resolution, projection) : url, true);
-    if (format.getType() == "arraybuffer") xhr.responseType = "arraybuffer";
+    xhr.open('GET', typeof url === 'function' ? url(extent, resolution, projection) : url, true);
+    if (format.getType() == 'arraybuffer') xhr.responseType = 'arraybuffer';
     xhr.withCredentials = $8b4a0712f48d5df6$var$withCredentials;
     /**
    * @param {Event} event Event.
@@ -29306,11 +29122,11 @@ function $8b4a0712f48d5df6$export$441d7b57adab24d0(url, format, extent, resoluti
         if (!xhr.status || xhr.status >= 200 && xhr.status < 300) {
             const type = format.getType();
             /** @type {Document|Node|Object|string|undefined} */ let source;
-            if (type == "json" || type == "text") source = xhr.responseText;
-            else if (type == "xml") {
+            if (type == 'json' || type == 'text') source = xhr.responseText;
+            else if (type == 'xml') {
                 source = xhr.responseXML;
-                if (!source) source = new DOMParser().parseFromString(xhr.responseText, "application/xml");
-            } else if (type == "arraybuffer") source = /** @type {ArrayBuffer} */ xhr.response;
+                if (!source) source = new DOMParser().parseFromString(xhr.responseText, 'application/xml');
+            } else if (type == 'arraybuffer') source = /** @type {ArrayBuffer} */ xhr.response;
             if (source) success(/** @type {Array<import("./Feature.js").default>} */ format.readFeatures(source, {
                 extent: extent,
                 featureProjection: projection
@@ -29484,7 +29300,7 @@ class $3b942f73954bd0a6$export$d402fd02dc2b661c extends (0, $f22c10e3757627da$ex
             attributions: options.attributions,
             interpolate: true,
             projection: undefined,
-            state: "ready",
+            state: 'ready',
             wrapX: options.wrapX !== undefined ? options.wrapX : true
         });
         /***
@@ -31153,15 +30969,15 @@ var $b0e71325728b7a56$var$crc32_1 = $b0e71325728b7a56$var$crc32;
 //   misrepresented as being the original software.
 // 3. This notice may not be removed or altered from any source distribution.
 var $b0e71325728b7a56$var$messages = {
-    2: "need dictionary",
-    /* Z_NEED_DICT       2  */ 1: "stream end",
-    /* Z_STREAM_END      1  */ 0: "",
-    /* Z_OK              0  */ "-1": "file error",
-    /* Z_ERRNO         (-1) */ "-2": "stream error",
-    /* Z_STREAM_ERROR  (-2) */ "-3": "data error",
-    /* Z_DATA_ERROR    (-3) */ "-4": "insufficient memory",
-    /* Z_MEM_ERROR     (-4) */ "-5": "buffer error",
-    /* Z_BUF_ERROR     (-5) */ "-6": "incompatible version" /* Z_VERSION_ERROR (-6) */ 
+    2: 'need dictionary',
+    /* Z_NEED_DICT       2  */ 1: 'stream end',
+    /* Z_STREAM_END      1  */ 0: '',
+    /* Z_OK              0  */ '-1': 'file error',
+    /* Z_ERRNO         (-1) */ '-2': 'stream error',
+    /* Z_STREAM_ERROR  (-2) */ '-3': 'data error',
+    /* Z_DATA_ERROR    (-3) */ '-4': 'insufficient memory',
+    /* Z_MEM_ERROR     (-4) */ '-5': 'buffer error',
+    /* Z_BUF_ERROR     (-5) */ '-6': 'incompatible version' /* Z_VERSION_ERROR (-6) */ 
 };
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
 // (C) 2014-2017 Vitaly Puzrin and Andrey Tupitsin
@@ -32579,7 +32395,7 @@ var $b0e71325728b7a56$var$deflateSetHeader_1 = $b0e71325728b7a56$var$deflateSetH
 var $b0e71325728b7a56$var$deflate_2$1 = $b0e71325728b7a56$var$deflate$2;
 var $b0e71325728b7a56$var$deflateEnd_1 = $b0e71325728b7a56$var$deflateEnd;
 var $b0e71325728b7a56$var$deflateSetDictionary_1 = $b0e71325728b7a56$var$deflateSetDictionary;
-var $b0e71325728b7a56$var$deflateInfo = "pako deflate (from Nodeca project)";
+var $b0e71325728b7a56$var$deflateInfo = 'pako deflate (from Nodeca project)';
 /* Not implemented
 module.exports.deflateBound = deflateBound;
 module.exports.deflateCopy = deflateCopy;
@@ -32607,7 +32423,7 @@ var $b0e71325728b7a56$var$assign = function(obj /*from1, from2, from3, ...*/ ) {
     while(sources.length){
         const source = sources.shift();
         if (!source) continue;
-        if (typeof source !== "object") throw new TypeError(source + "must be non-object");
+        if (typeof source !== 'object') throw new TypeError(source + 'must be non-object');
         for(const p in source)if ($b0e71325728b7a56$var$_has(source, p)) obj[p] = source[p];
     }
     return obj;
@@ -32650,7 +32466,7 @@ for(let q = 0; q < 256; q++)$b0e71325728b7a56$var$_utf8len[q] = q >= 252 ? 6 : q
 $b0e71325728b7a56$var$_utf8len[254] = $b0e71325728b7a56$var$_utf8len[254] = 1; // Invalid sequence start
 // convert string to array (typed, when possible)
 var $b0e71325728b7a56$var$string2buf = (str)=>{
-    if (typeof TextEncoder === "function" && TextEncoder.prototype.encode) return new TextEncoder().encode(str);
+    if (typeof TextEncoder === 'function' && TextEncoder.prototype.encode) return new TextEncoder().encode(str);
     let buf, c, c2, m_pos, i, str_len = str.length, buf_len = 0;
     // count binary size
     for(m_pos = 0; m_pos < str_len; m_pos++){
@@ -32701,14 +32517,14 @@ const $b0e71325728b7a56$var$buf2binstring = (buf, len)=>{
     if (len < 65534) {
         if (buf.subarray && $b0e71325728b7a56$var$STR_APPLY_UIA_OK) return String.fromCharCode.apply(null, buf.length === len ? buf : buf.subarray(0, len));
     }
-    let result = "";
+    let result = '';
     for(let i = 0; i < len; i++)result += String.fromCharCode(buf[i]);
     return result;
 };
 // convert array to string
 var $b0e71325728b7a56$var$buf2string = (buf, max)=>{
     const len = max || buf.length;
-    if (typeof TextDecoder === "function" && TextDecoder.prototype.decode) return new TextDecoder().decode(buf.subarray(0, max));
+    if (typeof TextDecoder === 'function' && TextDecoder.prototype.decode) return new TextDecoder().decode(buf.subarray(0, max));
     let i, out;
     // Reserve max possible length (2 words per char)
     // NB: by unknown reasons, Array is significantly faster for
@@ -32801,7 +32617,7 @@ function $b0e71325728b7a56$var$ZStream() {
     this.next_out = 0;
     /* remaining free space at output */ this.avail_out = 0;
     /* total number of bytes output so far */ this.total_out = 0;
-    /* last error message, NULL if no error */ this.msg = "" /*Z_NULL*/ ;
+    /* last error message, NULL if no error */ this.msg = '' /*Z_NULL*/ ;
     /* not visible by applications */ this.state = null;
     /* best guess about the data type: binary or text */ this.data_type = 2 /*Z_UNKNOWN*/ ;
     /* adler32 value of the uncompressed data */ this.adler = 0;
@@ -32895,7 +32711,7 @@ const $b0e71325728b7a56$var$toString$1 = Object.prototype.toString;
     if (opt.raw && opt.windowBits > 0) opt.windowBits = -opt.windowBits;
     else if (opt.gzip && opt.windowBits > 0 && opt.windowBits < 16) opt.windowBits += 16;
     this.err = 0; // error code, if happens (0 = Z_OK)
-    this.msg = ""; // error message
+    this.msg = ''; // error message
     this.ended = false; // used to avoid multiple onEnd() calls
     this.chunks = []; // chunks of compressed data
     this.strm = new $b0e71325728b7a56$var$zstream();
@@ -32906,9 +32722,9 @@ const $b0e71325728b7a56$var$toString$1 = Object.prototype.toString;
     if (opt.dictionary) {
         let dict;
         // Convert data if needed
-        if (typeof opt.dictionary === "string") // If we need to compress text, change encoding to utf8.
+        if (typeof opt.dictionary === 'string') // If we need to compress text, change encoding to utf8.
         dict = $b0e71325728b7a56$var$strings.string2buf(opt.dictionary);
-        else if ($b0e71325728b7a56$var$toString$1.call(opt.dictionary) === "[object ArrayBuffer]") dict = new Uint8Array(opt.dictionary);
+        else if ($b0e71325728b7a56$var$toString$1.call(opt.dictionary) === '[object ArrayBuffer]') dict = new Uint8Array(opt.dictionary);
         else dict = opt.dictionary;
         status = $b0e71325728b7a56$var$deflate_1$2.deflateSetDictionary(this.strm, dict);
         if (status !== $b0e71325728b7a56$var$Z_OK$2) throw new Error($b0e71325728b7a56$var$messages[status]);
@@ -32944,9 +32760,9 @@ const $b0e71325728b7a56$var$toString$1 = Object.prototype.toString;
     if (flush_mode === ~~flush_mode) _flush_mode = flush_mode;
     else _flush_mode = flush_mode === true ? $b0e71325728b7a56$var$Z_FINISH$2 : $b0e71325728b7a56$var$Z_NO_FLUSH$1;
     // Convert data if needed
-    if (typeof data === "string") // If we need to compress text, change encoding to utf8.
+    if (typeof data === 'string') // If we need to compress text, change encoding to utf8.
     strm.input = $b0e71325728b7a56$var$strings.string2buf(data);
-    else if ($b0e71325728b7a56$var$toString$1.call(data) === "[object ArrayBuffer]") strm.input = new Uint8Array(data);
+    else if ($b0e71325728b7a56$var$toString$1.call(data) === '[object ArrayBuffer]') strm.input = new Uint8Array(data);
     else strm.input = data;
     strm.next_in = 0;
     strm.avail_in = strm.input.length;
@@ -33245,7 +33061,7 @@ const $b0e71325728b7a56$var$TYPE$1 = 16191; /* i: waiting for type bits, includi
                         dist += hold & (1 << op) - 1;
                         //#ifdef INFLATE_STRICT
                         if (dist > dmax) {
-                            strm.msg = "invalid distance too far back";
+                            strm.msg = 'invalid distance too far back';
                             state.mode = $b0e71325728b7a56$var$BAD$1;
                             break top;
                         }
@@ -33258,7 +33074,7 @@ const $b0e71325728b7a56$var$TYPE$1 = 16191; /* i: waiting for type bits, includi
                             op = dist - op; /* distance back in window */ 
                             if (op > whave) {
                                 if (state.sane) {
-                                    strm.msg = "invalid distance too far back";
+                                    strm.msg = 'invalid distance too far back';
                                     state.mode = $b0e71325728b7a56$var$BAD$1;
                                     break top;
                                 }
@@ -33328,7 +33144,7 @@ const $b0e71325728b7a56$var$TYPE$1 = 16191; /* i: waiting for type bits, includi
                         here = dcode[(here & 0xffff) + (hold & (1 << op) - 1)];
                         continue dodist;
                     } else {
-                        strm.msg = "invalid distance code";
+                        strm.msg = 'invalid distance code';
                         state.mode = $b0e71325728b7a56$var$BAD$1;
                         break top;
                     }
@@ -33342,7 +33158,7 @@ const $b0e71325728b7a56$var$TYPE$1 = 16191; /* i: waiting for type bits, includi
                 state.mode = $b0e71325728b7a56$var$TYPE$1;
                 break top;
             } else {
-                strm.msg = "invalid literal/length code";
+                strm.msg = 'invalid literal/length code';
                 state.mode = $b0e71325728b7a56$var$BAD$1;
                 break top;
             }
@@ -33837,7 +33653,7 @@ const $b0e71325728b7a56$var$inflateResetKeep = (strm)=>{
     if ($b0e71325728b7a56$var$inflateStateCheck(strm)) return $b0e71325728b7a56$var$Z_STREAM_ERROR$1;
     const state = strm.state;
     strm.total_in = strm.total_out = state.total = 0;
-    strm.msg = ""; /*Z_NULL*/ 
+    strm.msg = ''; /*Z_NULL*/ 
     if (state.wrap) strm.adler = state.wrap & 1;
     state.mode = $b0e71325728b7a56$var$HEAD;
     state.last = 0;
@@ -34067,12 +33883,12 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
             }
             if (state.head) state.head.done = false;
             if (!(state.wrap & 1) || /* check if zlib header allowed */ (((hold & 0xff) << 8) + (hold >> 8)) % 31) {
-                strm.msg = "incorrect header check";
+                strm.msg = 'incorrect header check';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
             if ((hold & 0x0f) !== $b0e71325728b7a56$var$Z_DEFLATED) {
-                strm.msg = "unknown compression method";
+                strm.msg = 'unknown compression method';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
@@ -34083,7 +33899,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
             len = (hold & 0x0f) + 8;
             if (state.wbits === 0) state.wbits = len;
             if (len > 15 || len > state.wbits) {
-                strm.msg = "invalid window size";
+                strm.msg = 'invalid window size';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
@@ -34110,12 +33926,12 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
             //===//
             state.flags = hold;
             if ((state.flags & 0xff) !== $b0e71325728b7a56$var$Z_DEFLATED) {
-                strm.msg = "unknown compression method";
+                strm.msg = 'unknown compression method';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
             if (state.flags & 0xe000) {
-                strm.msg = "unknown header flags set";
+                strm.msg = 'unknown header flags set';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
@@ -34272,7 +34088,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
                 }
                 //===//
                 if (state.wrap & 4 && hold !== (state.check & 0xffff)) {
-                    strm.msg = "header crc mismatch";
+                    strm.msg = 'header crc mismatch';
                     state.mode = $b0e71325728b7a56$var$BAD;
                     break;
                 }
@@ -34365,7 +34181,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
                     state.mode = $b0e71325728b7a56$var$TABLE;
                     break;
                 case 3:
-                    strm.msg = "invalid block type";
+                    strm.msg = 'invalid block type';
                     state.mode = $b0e71325728b7a56$var$BAD;
             }
             //--- DROPBITS(2) ---//
@@ -34386,7 +34202,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
             }
             //===//
             if ((hold & 0xffff) !== (hold >>> 16 ^ 0xffff)) {
-                strm.msg = "invalid stored block lengths";
+                strm.msg = 'invalid stored block lengths';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
@@ -34446,7 +34262,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
             //---//
             //#ifndef PKZIP_BUG_WORKAROUND
             if (state.nlen > 286 || state.ndist > 30) {
-                strm.msg = "too many length or distance symbols";
+                strm.msg = 'too many length or distance symbols';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
@@ -34483,7 +34299,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
             ret = $b0e71325728b7a56$var$inftrees($b0e71325728b7a56$var$CODES, state.lens, 0, 19, state.lencode, 0, state.work, opts);
             state.lenbits = opts.bits;
             if (ret) {
-                strm.msg = "invalid code lengths set";
+                strm.msg = 'invalid code lengths set';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
@@ -34527,7 +34343,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
                         bits -= here_bits;
                         //---//
                         if (state.have === 0) {
-                            strm.msg = "invalid bit length repeat";
+                            strm.msg = 'invalid bit length repeat';
                             state.mode = $b0e71325728b7a56$var$BAD;
                             break;
                         }
@@ -34579,7 +34395,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
                     //---//
                     }
                     if (state.have + copy > state.nlen + state.ndist) {
-                        strm.msg = "invalid bit length repeat";
+                        strm.msg = 'invalid bit length repeat';
                         state.mode = $b0e71325728b7a56$var$BAD;
                         break;
                     }
@@ -34588,7 +34404,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
             }
             /* handle error breaks in while */ if (state.mode === $b0e71325728b7a56$var$BAD) break;
             /* check for end-of-block code (better have one) */ if (state.lens[256] === 0) {
-                strm.msg = "invalid code -- missing end-of-block";
+                strm.msg = 'invalid code -- missing end-of-block';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
@@ -34604,7 +34420,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
             state.lenbits = opts.bits;
             // state.lencode = state.next;
             if (ret) {
-                strm.msg = "invalid literal/lengths set";
+                strm.msg = 'invalid literal/lengths set';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
@@ -34621,7 +34437,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
             state.distbits = opts.bits;
             // state.distcode = state.next;
             if (ret) {
-                strm.msg = "invalid distances set";
+                strm.msg = 'invalid distances set';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
@@ -34711,7 +34527,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
                 break;
             }
             if (here_op & 64) {
-                strm.msg = "invalid literal/length code";
+                strm.msg = 'invalid literal/length code';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
@@ -34781,7 +34597,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
             //---//
             state.back += here_bits;
             if (here_op & 64) {
-                strm.msg = "invalid distance code";
+                strm.msg = 'invalid distance code';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
@@ -34808,7 +34624,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
             }
             //#ifdef INFLATE_STRICT
             if (state.offset > state.dmax) {
-                strm.msg = "invalid distance too far back";
+                strm.msg = 'invalid distance too far back';
                 state.mode = $b0e71325728b7a56$var$BAD;
                 break;
             }
@@ -34822,7 +34638,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
                 copy = state.offset - copy;
                 if (copy > state.whave) {
                     if (state.sane) {
-                        strm.msg = "invalid distance too far back";
+                        strm.msg = 'invalid distance too far back';
                         state.mode = $b0e71325728b7a56$var$BAD;
                         break;
                     }
@@ -34869,7 +34685,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
                 _out = left;
                 // NB: crc32 stored as signed 32-bit int, zswap32 returns signed too
                 if (state.wrap & 4 && (state.flags ? hold : $b0e71325728b7a56$var$zswap32(hold)) !== state.check) {
-                    strm.msg = "incorrect data check";
+                    strm.msg = 'incorrect data check';
                     state.mode = $b0e71325728b7a56$var$BAD;
                     break;
                 }
@@ -34891,7 +34707,7 @@ const $b0e71325728b7a56$var$inflate$2 = (strm, flush)=>{
                 }
                 //===//
                 if (state.wrap & 4 && hold !== (state.total & 0xffffffff)) {
-                    strm.msg = "incorrect length check";
+                    strm.msg = 'incorrect length check';
                     state.mode = $b0e71325728b7a56$var$BAD;
                     break;
                 }
@@ -34986,7 +34802,7 @@ var $b0e71325728b7a56$var$inflate_2$1 = $b0e71325728b7a56$var$inflate$2;
 var $b0e71325728b7a56$var$inflateEnd_1 = $b0e71325728b7a56$var$inflateEnd;
 var $b0e71325728b7a56$var$inflateGetHeader_1 = $b0e71325728b7a56$var$inflateGetHeader;
 var $b0e71325728b7a56$var$inflateSetDictionary_1 = $b0e71325728b7a56$var$inflateSetDictionary;
-var $b0e71325728b7a56$var$inflateInfo = "pako inflate (from Nodeca project)";
+var $b0e71325728b7a56$var$inflateInfo = 'pako inflate (from Nodeca project)';
 /* Not implemented
 module.exports.inflateCodesUsed = inflateCodesUsed;
 module.exports.inflateCopy = inflateCopy;
@@ -35040,9 +34856,9 @@ function $b0e71325728b7a56$var$GZheader() {
     // for inflate use constant limit in 65536 bytes
     //
     /* space at extra (only when reading header) */ // this.extra_max  = 0;
-    /* pointer to zero-terminated file name or Z_NULL */ this.name = "";
+    /* pointer to zero-terminated file name or Z_NULL */ this.name = '';
     /* space at name (only when reading header) */ // this.name_max   = 0;
-    /* pointer to zero-terminated comment or Z_NULL */ this.comment = "";
+    /* pointer to zero-terminated comment or Z_NULL */ this.comment = '';
     /* space at comment (only when reading header) */ // this.comm_max   = 0;
     /* true if there was or will be a header crc */ this.hcrc = 0;
     /* true when done reading gzip header (not used when writing a gzip file) */ this.done = false;
@@ -35119,7 +34935,7 @@ const $b0e71325728b7a56$var$toString = Object.prototype.toString;
     this.options = $b0e71325728b7a56$var$common.assign({
         chunkSize: 65536,
         windowBits: 15,
-        to: ""
+        to: ''
     }, options || {});
     const opt = this.options;
     // Force window size for `raw` data, if not set directly,
@@ -35138,7 +34954,7 @@ const $b0e71325728b7a56$var$toString = Object.prototype.toString;
         if ((opt.windowBits & 15) === 0) opt.windowBits |= 15;
     }
     this.err = 0; // error code, if happens (0 = Z_OK)
-    this.msg = ""; // error message
+    this.msg = ''; // error message
     this.ended = false; // used to avoid multiple onEnd() calls
     this.chunks = []; // chunks of compressed data
     this.strm = new $b0e71325728b7a56$var$zstream();
@@ -35150,8 +34966,8 @@ const $b0e71325728b7a56$var$toString = Object.prototype.toString;
     // Setup dictionary
     if (opt.dictionary) {
         // Convert data if needed
-        if (typeof opt.dictionary === "string") opt.dictionary = $b0e71325728b7a56$var$strings.string2buf(opt.dictionary);
-        else if ($b0e71325728b7a56$var$toString.call(opt.dictionary) === "[object ArrayBuffer]") opt.dictionary = new Uint8Array(opt.dictionary);
+        if (typeof opt.dictionary === 'string') opt.dictionary = $b0e71325728b7a56$var$strings.string2buf(opt.dictionary);
+        else if ($b0e71325728b7a56$var$toString.call(opt.dictionary) === '[object ArrayBuffer]') opt.dictionary = new Uint8Array(opt.dictionary);
         if (opt.raw) {
             status = $b0e71325728b7a56$var$inflate_1$2.inflateSetDictionary(this.strm, opt.dictionary);
             if (status !== $b0e71325728b7a56$var$Z_OK) throw new Error($b0e71325728b7a56$var$messages[status]);
@@ -35191,7 +35007,7 @@ const $b0e71325728b7a56$var$toString = Object.prototype.toString;
     if (flush_mode === ~~flush_mode) _flush_mode = flush_mode;
     else _flush_mode = flush_mode === true ? $b0e71325728b7a56$var$Z_FINISH : $b0e71325728b7a56$var$Z_NO_FLUSH;
     // Convert data if needed
-    if ($b0e71325728b7a56$var$toString.call(data) === "[object ArrayBuffer]") strm.input = new Uint8Array(data);
+    if ($b0e71325728b7a56$var$toString.call(data) === '[object ArrayBuffer]') strm.input = new Uint8Array(data);
     else strm.input = data;
     strm.next_in = 0;
     strm.avail_in = strm.input.length;
@@ -35227,7 +35043,7 @@ const $b0e71325728b7a56$var$toString = Object.prototype.toString;
         last_avail_out = strm.avail_out;
         if (strm.next_out) {
             if (strm.avail_out === 0 || status === $b0e71325728b7a56$var$Z_STREAM_END) {
-                if (this.options.to === "string") {
+                if (this.options.to === 'string') {
                     let next_out_utf8 = $b0e71325728b7a56$var$strings.utf8border(strm.output, strm.next_out);
                     let tail = strm.next_out - next_out_utf8;
                     let utf8str = $b0e71325728b7a56$var$strings.buf2string(strm.output, next_out_utf8);
@@ -35273,7 +35089,7 @@ const $b0e71325728b7a56$var$toString = Object.prototype.toString;
  **/ $b0e71325728b7a56$var$Inflate$1.prototype.onEnd = function(status) {
     // On success - join
     if (status === $b0e71325728b7a56$var$Z_OK) {
-        if (this.options.to === "string") this.result = this.chunks.join("");
+        if (this.options.to === 'string') this.result = this.chunks.join('');
         else this.result = $b0e71325728b7a56$var$common.flattenChunks(this.chunks);
     }
     this.chunks = [];
@@ -35381,41 +35197,103 @@ var $b0e71325728b7a56$export$2e2bcd8739ae039 = {
 
 
 function $960f305f3c6a1403$export$2e2bcd8739ae039(defs) {
-    defs("EPSG:4326", "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees");
-    defs("EPSG:4269", "+title=NAD83 (long/lat) +proj=longlat +a=6378137.0 +b=6356752.31414036 +ellps=GRS80 +datum=NAD83 +units=degrees");
-    defs("EPSG:3857", "+title=WGS 84 / Pseudo-Mercator +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs");
-    defs.WGS84 = defs["EPSG:4326"];
-    defs["EPSG:3785"] = defs["EPSG:3857"]; // maintain backward compat, official code is 3857
-    defs.GOOGLE = defs["EPSG:3857"];
-    defs["EPSG:900913"] = defs["EPSG:3857"];
-    defs["EPSG:102113"] = defs["EPSG:3857"];
+    defs('EPSG:4326', '+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees');
+    defs('EPSG:4269', '+title=NAD83 (long/lat) +proj=longlat +a=6378137.0 +b=6356752.31414036 +ellps=GRS80 +datum=NAD83 +units=degrees');
+    defs('EPSG:3857', '+title=WGS 84 / Pseudo-Mercator +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs');
+    // UTM WGS84
+    for(var i = 1; i <= 60; ++i){
+        defs('EPSG:' + (32600 + i), '+proj=utm +zone=' + i + ' +datum=WGS84 +units=m');
+        defs('EPSG:' + (32700 + i), '+proj=utm +zone=' + i + ' +south +datum=WGS84 +units=m');
+    }
+    defs('EPSG:5041', '+title=WGS 84 / UPS North (E,N) +proj=stere +lat_0=90 +lon_0=0 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m');
+    defs('EPSG:5042', '+title=WGS 84 / UPS South (E,N) +proj=stere +lat_0=-90 +lon_0=0 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m');
+    defs.WGS84 = defs['EPSG:4326'];
+    defs['EPSG:3785'] = defs['EPSG:3857']; // maintain backward compat, official code is 3857
+    defs.GOOGLE = defs['EPSG:3857'];
+    defs['EPSG:900913'] = defs['EPSG:3857'];
+    defs['EPSG:102113'] = defs['EPSG:3857'];
 }
 
 
 
 var $7B7Eg = parcelRequire("7B7Eg");
-var $2603c076096e1383$export$2e2bcd8739ae039 = {};
-$2603c076096e1383$export$2e2bcd8739ae039.greenwich = 0.0; //"0dE",
-$2603c076096e1383$export$2e2bcd8739ae039.lisbon = -9.131906111111; //"9d07'54.862\"W",
-$2603c076096e1383$export$2e2bcd8739ae039.paris = 2.337229166667; //"2d20'14.025\"E",
-$2603c076096e1383$export$2e2bcd8739ae039.bogota = -74.080916666667; //"74d04'51.3\"W",
-$2603c076096e1383$export$2e2bcd8739ae039.madrid = -3.687938888889; //"3d41'16.58\"W",
-$2603c076096e1383$export$2e2bcd8739ae039.rome = 12.452333333333; //"12d27'8.4\"E",
-$2603c076096e1383$export$2e2bcd8739ae039.bern = 7.439583333333; //"7d26'22.5\"E",
-$2603c076096e1383$export$2e2bcd8739ae039.jakarta = 106.807719444444; //"106d48'27.79\"E",
-$2603c076096e1383$export$2e2bcd8739ae039.ferro = -17.666666666667; //"17d40'W",
-$2603c076096e1383$export$2e2bcd8739ae039.brussels = 4.367975; //"4d22'4.71\"E",
-$2603c076096e1383$export$2e2bcd8739ae039.stockholm = 18.058277777778; //"18d3'29.8\"E",
-$2603c076096e1383$export$2e2bcd8739ae039.athens = 23.7163375; //"23d42'58.815\"E",
-$2603c076096e1383$export$2e2bcd8739ae039.oslo = 10.722916666667; //"10d43'22.5\"E"
+var $2603c076096e1383$var$primeMeridian = {};
+$2603c076096e1383$var$primeMeridian.greenwich = 0.0; // "0dE",
+$2603c076096e1383$var$primeMeridian.lisbon = -9.131906111111; // "9d07'54.862\"W",
+$2603c076096e1383$var$primeMeridian.paris = 2.337229166667; // "2d20'14.025\"E",
+$2603c076096e1383$var$primeMeridian.bogota = -74.080916666667; // "74d04'51.3\"W",
+$2603c076096e1383$var$primeMeridian.madrid = -3.687938888889; // "3d41'16.58\"W",
+$2603c076096e1383$var$primeMeridian.rome = 12.452333333333; // "12d27'8.4\"E",
+$2603c076096e1383$var$primeMeridian.bern = 7.439583333333; // "7d26'22.5\"E",
+$2603c076096e1383$var$primeMeridian.jakarta = 106.807719444444; // "106d48'27.79\"E",
+$2603c076096e1383$var$primeMeridian.ferro = -17.666666666667; // "17d40'W",
+$2603c076096e1383$var$primeMeridian.brussels = 4.367975; // "4d22'4.71\"E",
+$2603c076096e1383$var$primeMeridian.stockholm = 18.058277777778; // "18d3'29.8\"E",
+$2603c076096e1383$var$primeMeridian.athens = 23.7163375; // "23d42'58.815\"E",
+$2603c076096e1383$var$primeMeridian.oslo = 10.722916666667; // "10d43'22.5\"E"
+var $2603c076096e1383$export$2e2bcd8739ae039 = $2603c076096e1383$var$primeMeridian;
 
 
 var $bb0ec53ad16732f2$export$2e2bcd8739ae039 = {
+    mm: {
+        to_meter: 0.001
+    },
+    cm: {
+        to_meter: 0.01
+    },
     ft: {
         to_meter: 0.3048
     },
-    "us-ft": {
+    'us-ft': {
         to_meter: 1200 / 3937
+    },
+    fath: {
+        to_meter: 1.8288
+    },
+    kmi: {
+        to_meter: 1852
+    },
+    'us-ch': {
+        to_meter: 20.1168402336805
+    },
+    'us-mi': {
+        to_meter: 1609.34721869444
+    },
+    km: {
+        to_meter: 1000
+    },
+    'ind-ft': {
+        to_meter: 0.30479841
+    },
+    'ind-yd': {
+        to_meter: 0.91439523
+    },
+    mi: {
+        to_meter: 1609.344
+    },
+    yd: {
+        to_meter: 0.9144
+    },
+    ch: {
+        to_meter: 20.1168
+    },
+    link: {
+        to_meter: 0.201168
+    },
+    dm: {
+        to_meter: 0.1
+    },
+    in: {
+        to_meter: 0.0254
+    },
+    'ind-ch': {
+        to_meter: 20.11669506
+    },
+    'us-in': {
+        to_meter: 0.025400050800101
+    },
+    'us-yd': {
+        to_meter: 0.914401828803658
     }
 };
 
@@ -35424,33 +35302,33 @@ var $906e57b8f0ea965b$var$ignoredChar = /[\s_\-\/\(\)]/g;
 function $906e57b8f0ea965b$export$2e2bcd8739ae039(obj, key) {
     if (obj[key]) return obj[key];
     var keys = Object.keys(obj);
-    var lkey = key.toLowerCase().replace($906e57b8f0ea965b$var$ignoredChar, "");
+    var lkey = key.toLowerCase().replace($906e57b8f0ea965b$var$ignoredChar, '');
     var i = -1;
     var testkey, processedKey;
     while(++i < keys.length){
         testkey = keys[i];
-        processedKey = testkey.toLowerCase().replace($906e57b8f0ea965b$var$ignoredChar, "");
+        processedKey = testkey.toLowerCase().replace($906e57b8f0ea965b$var$ignoredChar, '');
         if (processedKey === lkey) return obj[testkey];
     }
 }
 
 
 function $e8b7e57bb6c0f285$export$2e2bcd8739ae039(defData) {
-    var self = {};
-    var paramObj = defData.split("+").map(function(v) {
+    /** @type {import('./defs').ProjectionDefinition} */ var self = {};
+    var paramObj = defData.split('+').map(function(v) {
         return v.trim();
     }).filter(function(a) {
         return a;
     }).reduce(function(p, a) {
-        var split = a.split("=");
+        /** @type {Array<?>} */ var split = a.split('=');
         split.push(true);
         p[split[0].toLowerCase()] = split[1];
         return p;
     }, {});
     var paramName, paramVal, paramOutname;
     var params = {
-        proj: "projName",
-        datum: "datumCode",
+        proj: 'projName',
+        datum: 'datumCode',
         rf: function(v) {
             self.rf = parseFloat(v);
         },
@@ -35479,7 +35357,7 @@ function $e8b7e57bb6c0f285$export$2e2bcd8739ae039(defData) {
             self.alpha = parseFloat(v) * (0, $7B7Eg.D2R);
         },
         gamma: function(v) {
-            self.rectified_grid_angle = parseFloat(v);
+            self.rectified_grid_angle = parseFloat(v) * (0, $7B7Eg.D2R);
         },
         lonc: function(v) {
             self.longc = v * (0, $7B7Eg.D2R);
@@ -35515,7 +35393,7 @@ function $e8b7e57bb6c0f285$export$2e2bcd8739ae039(defData) {
             self.utmSouth = true;
         },
         towgs84: function(v) {
-            self.datum_params = v.split(",").map(function(a) {
+            self.datum_params = v.split(',').map(function(a) {
                 return parseFloat(a);
             });
         },
@@ -35535,27 +35413,324 @@ function $e8b7e57bb6c0f285$export$2e2bcd8739ae039(defData) {
             self.from_greenwich = (pm ? pm : parseFloat(v)) * (0, $7B7Eg.D2R);
         },
         nadgrids: function(v) {
-            if (v === "@null") self.datumCode = "none";
+            if (v === '@null') self.datumCode = 'none';
             else self.nadgrids = v;
         },
         axis: function(v) {
-            var legalAxis = "ewnsud";
+            var legalAxis = 'ewnsud';
             if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) self.axis = v;
         },
         approx: function() {
             self.approx = true;
+        },
+        over: function() {
+            self.over = true;
         }
     };
     for(paramName in paramObj){
         paramVal = paramObj[paramName];
         if (paramName in params) {
             paramOutname = params[paramName];
-            if (typeof paramOutname === "function") paramOutname(paramVal);
+            if (typeof paramOutname === 'function') paramOutname(paramVal);
             else self[paramOutname] = paramVal;
         } else self[paramName] = paramVal;
     }
-    if (typeof self.datumCode === "string" && self.datumCode !== "WGS84") self.datumCode = self.datumCode.toLowerCase();
+    if (typeof self.datumCode === 'string' && self.datumCode !== 'WGS84') self.datumCode = self.datumCode.toLowerCase();
+    self['projStr'] = defData;
     return self;
+}
+
+
+class $f0a167de08d41eb8$var$PROJJSONBuilderBase {
+    static getId(node) {
+        const idNode = node.find((child)=>Array.isArray(child) && child[0] === 'ID');
+        if (idNode && idNode.length >= 3) return {
+            authority: idNode[1],
+            code: parseInt(idNode[2], 10)
+        };
+        return null;
+    }
+    static convertUnit(node, type = 'unit') {
+        if (!node || node.length < 3) return {
+            type: type,
+            name: 'unknown',
+            conversion_factor: null
+        };
+        const name = node[1];
+        const conversionFactor = parseFloat(node[2]) || null;
+        const idNode = node.find((child)=>Array.isArray(child) && child[0] === 'ID');
+        const id = idNode ? {
+            authority: idNode[1],
+            code: parseInt(idNode[2], 10)
+        } : null;
+        return {
+            type: type,
+            name: name,
+            conversion_factor: conversionFactor,
+            id: id
+        };
+    }
+    static convertAxis(node) {
+        const name = node[1] || 'Unknown';
+        // Determine the direction
+        let direction;
+        const abbreviationMatch = name.match(/^\((.)\)$/); // Match abbreviations like "(E)" or "(N)"
+        if (abbreviationMatch) {
+            // Use the abbreviation to determine the direction
+            const abbreviation = abbreviationMatch[1].toUpperCase();
+            if (abbreviation === 'E') direction = 'east';
+            else if (abbreviation === 'N') direction = 'north';
+            else if (abbreviation === 'U') direction = 'up';
+            else if (node[2]) direction = node[2];
+            else throw new Error(`Unknown axis abbreviation: ${abbreviation}`);
+        } else // Use the explicit direction provided in the AXIS node
+        direction = node[2] || 'unknown';
+        const orderNode = node.find((child)=>Array.isArray(child) && child[0] === 'ORDER');
+        const order = orderNode ? parseInt(orderNode[1], 10) : null;
+        const unitNode = node.find((child)=>Array.isArray(child) && (child[0] === 'LENGTHUNIT' || child[0] === 'ANGLEUNIT' || child[0] === 'SCALEUNIT'));
+        const unit = this.convertUnit(unitNode);
+        return {
+            name: name,
+            direction: direction,
+            unit: unit,
+            order: order
+        };
+    }
+    static extractAxes(node) {
+        return node.filter((child)=>Array.isArray(child) && child[0] === 'AXIS').map((axis)=>this.convertAxis(axis)).sort((a, b)=>(a.order || 0) - (b.order || 0)); // Sort by the "order" property
+    }
+    static convert(node, result = {}) {
+        switch(node[0]){
+            case 'PROJCRS':
+                result.type = 'ProjectedCRS';
+                result.name = node[1];
+                result.base_crs = node.find((child)=>Array.isArray(child) && child[0] === 'BASEGEOGCRS') ? this.convert(node.find((child)=>Array.isArray(child) && child[0] === 'BASEGEOGCRS')) : null;
+                result.conversion = node.find((child)=>Array.isArray(child) && child[0] === 'CONVERSION') ? this.convert(node.find((child)=>Array.isArray(child) && child[0] === 'CONVERSION')) : null;
+                const csNode = node.find((child)=>Array.isArray(child) && child[0] === 'CS');
+                if (csNode) result.coordinate_system = {
+                    type: csNode[1],
+                    axis: this.extractAxes(node)
+                };
+                const lengthUnitNode = node.find((child)=>Array.isArray(child) && child[0] === 'LENGTHUNIT');
+                if (lengthUnitNode) {
+                    const unit = this.convertUnit(lengthUnitNode);
+                    result.coordinate_system.unit = unit; // Add unit to coordinate_system
+                }
+                result.id = this.getId(node);
+                break;
+            case 'BASEGEOGCRS':
+            case 'GEOGCRS':
+            case 'GEODCRS':
+                result.type = node[0] === 'GEODCRS' ? 'GeodeticCRS' : 'GeographicCRS';
+                result.name = node[1];
+                // Handle DATUM or ENSEMBLE
+                const datumOrEnsembleNode = node.find((child)=>Array.isArray(child) && (child[0] === 'DATUM' || child[0] === 'ENSEMBLE'));
+                if (datumOrEnsembleNode) {
+                    const datumOrEnsemble = this.convert(datumOrEnsembleNode);
+                    if (datumOrEnsembleNode[0] === 'ENSEMBLE') result.datum_ensemble = datumOrEnsemble;
+                    else result.datum = datumOrEnsemble;
+                    const primem = node.find((child)=>Array.isArray(child) && child[0] === 'PRIMEM');
+                    if (primem && primem[1] !== 'Greenwich') datumOrEnsemble.prime_meridian = {
+                        name: primem[1],
+                        longitude: parseFloat(primem[2])
+                    };
+                }
+                result.coordinate_system = {
+                    type: 'ellipsoidal',
+                    axis: this.extractAxes(node)
+                };
+                result.id = this.getId(node);
+                break;
+            case 'DATUM':
+                result.type = 'GeodeticReferenceFrame';
+                result.name = node[1];
+                result.ellipsoid = node.find((child)=>Array.isArray(child) && child[0] === 'ELLIPSOID') ? this.convert(node.find((child)=>Array.isArray(child) && child[0] === 'ELLIPSOID')) : null;
+                break;
+            case 'ENSEMBLE':
+                result.type = 'DatumEnsemble';
+                result.name = node[1];
+                // Extract ensemble members
+                result.members = node.filter((child)=>Array.isArray(child) && child[0] === 'MEMBER').map((member)=>({
+                        type: 'DatumEnsembleMember',
+                        name: member[1],
+                        id: this.getId(member)
+                    }));
+                // Extract accuracy
+                const accuracyNode = node.find((child)=>Array.isArray(child) && child[0] === 'ENSEMBLEACCURACY');
+                if (accuracyNode) result.accuracy = parseFloat(accuracyNode[1]);
+                // Extract ellipsoid
+                const ellipsoidNode = node.find((child)=>Array.isArray(child) && child[0] === 'ELLIPSOID');
+                if (ellipsoidNode) result.ellipsoid = this.convert(ellipsoidNode); // Convert the ellipsoid node
+                // Extract identifier for the ensemble
+                result.id = this.getId(node);
+                break;
+            case 'ELLIPSOID':
+                result.type = 'Ellipsoid';
+                result.name = node[1];
+                result.semi_major_axis = parseFloat(node[2]);
+                result.inverse_flattening = parseFloat(node[3]);
+                const units = node.find((child)=>Array.isArray(child) && child[0] === 'LENGTHUNIT') ? this.convert(node.find((child)=>Array.isArray(child) && child[0] === 'LENGTHUNIT'), result) : null;
+                break;
+            case 'CONVERSION':
+                result.type = 'Conversion';
+                result.name = node[1];
+                result.method = node.find((child)=>Array.isArray(child) && child[0] === 'METHOD') ? this.convert(node.find((child)=>Array.isArray(child) && child[0] === 'METHOD')) : null;
+                result.parameters = node.filter((child)=>Array.isArray(child) && child[0] === 'PARAMETER').map((param)=>this.convert(param));
+                break;
+            case 'METHOD':
+                result.type = 'Method';
+                result.name = node[1];
+                result.id = this.getId(node);
+                break;
+            case 'PARAMETER':
+                result.type = 'Parameter';
+                result.name = node[1];
+                result.value = parseFloat(node[2]);
+                result.unit = this.convertUnit(node.find((child)=>Array.isArray(child) && (child[0] === 'LENGTHUNIT' || child[0] === 'ANGLEUNIT' || child[0] === 'SCALEUNIT')));
+                result.id = this.getId(node);
+                break;
+            case 'BOUNDCRS':
+                result.type = 'BoundCRS';
+                // Process SOURCECRS
+                const sourceCrsNode = node.find((child)=>Array.isArray(child) && child[0] === 'SOURCECRS');
+                if (sourceCrsNode) {
+                    const sourceCrsContent = sourceCrsNode.find((child)=>Array.isArray(child));
+                    result.source_crs = sourceCrsContent ? this.convert(sourceCrsContent) : null;
+                }
+                // Process TARGETCRS
+                const targetCrsNode = node.find((child)=>Array.isArray(child) && child[0] === 'TARGETCRS');
+                if (targetCrsNode) {
+                    const targetCrsContent = targetCrsNode.find((child)=>Array.isArray(child));
+                    result.target_crs = targetCrsContent ? this.convert(targetCrsContent) : null;
+                }
+                // Process ABRIDGEDTRANSFORMATION
+                const transformationNode = node.find((child)=>Array.isArray(child) && child[0] === 'ABRIDGEDTRANSFORMATION');
+                if (transformationNode) result.transformation = this.convert(transformationNode);
+                else result.transformation = null;
+                break;
+            case 'ABRIDGEDTRANSFORMATION':
+                result.type = 'Transformation';
+                result.name = node[1];
+                result.method = node.find((child)=>Array.isArray(child) && child[0] === 'METHOD') ? this.convert(node.find((child)=>Array.isArray(child) && child[0] === 'METHOD')) : null;
+                result.parameters = node.filter((child)=>Array.isArray(child) && (child[0] === 'PARAMETER' || child[0] === 'PARAMETERFILE')).map((param)=>{
+                    if (param[0] === 'PARAMETER') return this.convert(param);
+                    else if (param[0] === 'PARAMETERFILE') return {
+                        name: param[1],
+                        value: param[2],
+                        id: {
+                            'authority': 'EPSG',
+                            'code': 8656
+                        }
+                    };
+                });
+                // Adjust the Scale difference parameter if present
+                if (result.parameters.length === 7) {
+                    const scaleDifference = result.parameters[6];
+                    if (scaleDifference.name === 'Scale difference') scaleDifference.value = Math.round((scaleDifference.value - 1) * 1e12) / 1e6;
+                }
+                result.id = this.getId(node);
+                break;
+            case 'AXIS':
+                if (!result.coordinate_system) result.coordinate_system = {
+                    type: 'unspecified',
+                    axis: []
+                };
+                result.coordinate_system.axis.push(this.convertAxis(node));
+                break;
+            case 'LENGTHUNIT':
+                const unit = this.convertUnit(node, 'LinearUnit');
+                if (result.coordinate_system && result.coordinate_system.axis) result.coordinate_system.axis.forEach((axis)=>{
+                    if (!axis.unit) axis.unit = unit;
+                });
+                if (unit.conversion_factor && unit.conversion_factor !== 1) {
+                    if (result.semi_major_axis) result.semi_major_axis = {
+                        value: result.semi_major_axis,
+                        unit: unit
+                    };
+                }
+                break;
+            default:
+                result.keyword = node[0];
+                break;
+        }
+        return result;
+    }
+}
+var $f0a167de08d41eb8$export$2e2bcd8739ae039 = $f0a167de08d41eb8$var$PROJJSONBuilderBase;
+
+
+class $0f989114bfed5f74$var$PROJJSONBuilder2015 extends (0, $f0a167de08d41eb8$export$2e2bcd8739ae039) {
+    static convert(node, result = {}) {
+        super.convert(node, result);
+        // Skip `CS` and `USAGE` nodes for WKT2-2015
+        if (result.coordinate_system && result.coordinate_system.subtype === 'Cartesian') delete result.coordinate_system;
+        if (result.usage) delete result.usage;
+        return result;
+    }
+}
+var $0f989114bfed5f74$export$2e2bcd8739ae039 = $0f989114bfed5f74$var$PROJJSONBuilder2015;
+
+
+
+class $73795fe55bfd7580$var$PROJJSONBuilder2019 extends (0, $f0a167de08d41eb8$export$2e2bcd8739ae039) {
+    static convert(node, result = {}) {
+        super.convert(node, result);
+        // Handle `CS` node for WKT2-2019
+        const csNode = node.find((child)=>Array.isArray(child) && child[0] === 'CS');
+        if (csNode) result.coordinate_system = {
+            subtype: csNode[1],
+            axis: this.extractAxes(node)
+        };
+        // Handle `USAGE` node for WKT2-2019
+        const usageNode = node.find((child)=>Array.isArray(child) && child[0] === 'USAGE');
+        if (usageNode) {
+            const scope = usageNode.find((child)=>Array.isArray(child) && child[0] === 'SCOPE');
+            const area = usageNode.find((child)=>Array.isArray(child) && child[0] === 'AREA');
+            const bbox = usageNode.find((child)=>Array.isArray(child) && child[0] === 'BBOX');
+            result.usage = {};
+            if (scope) result.usage.scope = scope[1];
+            if (area) result.usage.area = area[1];
+            if (bbox) result.usage.bbox = bbox.slice(1);
+        }
+        return result;
+    }
+}
+var $73795fe55bfd7580$export$2e2bcd8739ae039 = $73795fe55bfd7580$var$PROJJSONBuilder2019;
+
+
+/**
+ * Detects the WKT2 version based on the structure of the WKT.
+ * @param {Array} root The root WKT array node.
+ * @returns {string} The detected version ("2015" or "2019").
+ */ function $26f9d9e50aac34f9$var$detectWKT2Version(root) {
+    // Check for WKT2-2019-specific nodes
+    if (root.find((child)=>Array.isArray(child) && child[0] === 'USAGE')) return '2019'; // `USAGE` is specific to WKT2-2019
+    // Check for WKT2-2015-specific nodes
+    if (root.find((child)=>Array.isArray(child) && child[0] === 'CS')) return '2015'; // `CS` is valid in both, but default to 2015 unless `USAGE` is present
+    if (root[0] === 'BOUNDCRS' || root[0] === 'PROJCRS' || root[0] === 'GEOGCRS') return '2015'; // These are valid in both, but default to 2015
+    // Default to WKT2-2015 if no specific indicators are found
+    return '2015';
+}
+function $26f9d9e50aac34f9$export$48d0005f67ba915(root) {
+    const version = $26f9d9e50aac34f9$var$detectWKT2Version(root);
+    const builder = version === '2019' ? (0, $73795fe55bfd7580$export$2e2bcd8739ae039) : (0, $0f989114bfed5f74$export$2e2bcd8739ae039);
+    return builder.convert(root);
+}
+
+
+/**
+ * Detects whether the WKT string is WKT1 or WKT2.
+ * @param {string} wkt The WKT string.
+ * @returns {string} The detected version ("WKT1" or "WKT2").
+ */ function $e568b0f60a831772$export$9362d65e4771b5d5(wkt) {
+    // Normalize the WKT string for easier keyword matching
+    const normalizedWKT = wkt.toUpperCase();
+    // Check for WKT2-specific keywords
+    if (normalizedWKT.includes('PROJCRS') || normalizedWKT.includes('GEOGCRS') || normalizedWKT.includes('BOUNDCRS') || normalizedWKT.includes('VERTCRS') || normalizedWKT.includes('LENGTHUNIT') || normalizedWKT.includes('ANGLEUNIT') || normalizedWKT.includes('SCALEUNIT')) return 'WKT2';
+    // Check for WKT1-specific keywords
+    if (normalizedWKT.includes('PROJCS') || normalizedWKT.includes('GEOGCS') || normalizedWKT.includes('LOCAL_CS') || normalizedWKT.includes('VERT_CS') || normalizedWKT.includes('UNIT')) return 'WKT1';
+    // Default to WKT1 if no specific indicators are found
+    return 'WKT1';
 }
 
 
@@ -35573,7 +35748,7 @@ var $81c0a6e96962d9cd$var$endThings = /[,\]]/;
 var $81c0a6e96962d9cd$var$digets = /[\d\.E\-\+]/;
 // const ignoredChar = /[\s_\-\/\(\)]/g;
 function $81c0a6e96962d9cd$var$Parser(text) {
-    if (typeof text !== "string") throw new Error("not a string");
+    if (typeof text !== 'string') throw new Error('not a string');
     this.text = text.trim();
     this.level = 0;
     this.place = 0;
@@ -35614,16 +35789,16 @@ $81c0a6e96962d9cd$var$Parser.prototype.afterquote = function(char) {
         this.afterItem(char);
         return;
     }
-    throw new Error("havn't handled \"" + char + '" in afterquote yet, index ' + this.place);
+    throw new Error('havn\'t handled "' + char + '" in afterquote yet, index ' + this.place);
 };
 $81c0a6e96962d9cd$var$Parser.prototype.afterItem = function(char) {
-    if (char === ",") {
+    if (char === ',') {
         if (this.word !== null) this.currentObject.push(this.word);
         this.word = null;
         this.state = $81c0a6e96962d9cd$var$NEUTRAL;
         return;
     }
-    if (char === "]") {
+    if (char === ']') {
         this.level--;
         if (this.word !== null) {
             this.currentObject.push(this.word);
@@ -35645,7 +35820,7 @@ $81c0a6e96962d9cd$var$Parser.prototype.number = function(char) {
         this.afterItem(char);
         return;
     }
-    throw new Error("havn't handled \"" + char + '" in number yet, index ' + this.place);
+    throw new Error('havn\'t handled "' + char + '" in number yet, index ' + this.place);
 };
 $81c0a6e96962d9cd$var$Parser.prototype.quoted = function(char) {
     if (char === '"') {
@@ -35660,7 +35835,7 @@ $81c0a6e96962d9cd$var$Parser.prototype.keyword = function(char) {
         this.word += char;
         return;
     }
-    if (char === "[") {
+    if (char === '[') {
         var newObjects = [];
         newObjects.push(this.word);
         this.level++;
@@ -35675,7 +35850,7 @@ $81c0a6e96962d9cd$var$Parser.prototype.keyword = function(char) {
         this.afterItem(char);
         return;
     }
-    throw new Error("havn't handled \"" + char + '" in keyword yet, index ' + this.place);
+    throw new Error('havn\'t handled "' + char + '" in keyword yet, index ' + this.place);
 };
 $81c0a6e96962d9cd$var$Parser.prototype.neutral = function(char) {
     if ($81c0a6e96962d9cd$var$latin.test(char)) {
@@ -35684,7 +35859,7 @@ $81c0a6e96962d9cd$var$Parser.prototype.neutral = function(char) {
         return;
     }
     if (char === '"') {
-        this.word = "";
+        this.word = '';
         this.state = $81c0a6e96962d9cd$var$QUOTED;
         return;
     }
@@ -35697,7 +35872,7 @@ $81c0a6e96962d9cd$var$Parser.prototype.neutral = function(char) {
         this.afterItem(char);
         return;
     }
-    throw new Error("havn't handled \"" + char + '" in neutral yet, index ' + this.place);
+    throw new Error('havn\'t handled "' + char + '" in neutral yet, index ' + this.place);
 };
 $81c0a6e96962d9cd$var$Parser.prototype.output = function() {
     while(this.place < this.text.length)this.readCharicter();
@@ -35728,7 +35903,7 @@ function $9a69c5588e7a5f95$export$337bc7a3aef1f775(v, obj) {
         return;
     }
     var key = v.shift();
-    if (key === "PARAMETER") key = v.shift();
+    if (key === 'PARAMETER') key = v.shift();
     if (v.length === 1) {
         if (Array.isArray(v[0])) {
             obj[key] = {};
@@ -35742,11 +35917,11 @@ function $9a69c5588e7a5f95$export$337bc7a3aef1f775(v, obj) {
         obj[key] = true;
         return;
     }
-    if (key === "TOWGS84") {
+    if (key === 'TOWGS84') {
         obj[key] = v;
         return;
     }
-    if (key === "AXIS") {
+    if (key === 'AXIS') {
         if (!(key in obj)) obj[key] = [];
         obj[key].push(v);
         return;
@@ -35754,17 +35929,17 @@ function $9a69c5588e7a5f95$export$337bc7a3aef1f775(v, obj) {
     if (!Array.isArray(key)) obj[key] = {};
     var i;
     switch(key){
-        case "UNIT":
-        case "PRIMEM":
-        case "VERT_DATUM":
+        case 'UNIT':
+        case 'PRIMEM':
+        case 'VERT_DATUM':
             obj[key] = {
                 name: v[0].toLowerCase(),
                 convert: v[1]
             };
             if (v.length === 3) $9a69c5588e7a5f95$export$337bc7a3aef1f775(v[2], obj[key]);
             return;
-        case "SPHEROID":
-        case "ELLIPSOID":
+        case 'SPHEROID':
+        case 'ELLIPSOID':
             obj[key] = {
                 name: v[0],
                 a: v[1],
@@ -35772,32 +35947,41 @@ function $9a69c5588e7a5f95$export$337bc7a3aef1f775(v, obj) {
             };
             if (v.length === 4) $9a69c5588e7a5f95$export$337bc7a3aef1f775(v[3], obj[key]);
             return;
-        case "PROJECTEDCRS":
-        case "PROJCRS":
-        case "GEOGCS":
-        case "GEOCCS":
-        case "PROJCS":
-        case "LOCAL_CS":
-        case "GEODCRS":
-        case "GEODETICCRS":
-        case "GEODETICDATUM":
-        case "EDATUM":
-        case "ENGINEERINGDATUM":
-        case "VERT_CS":
-        case "VERTCRS":
-        case "VERTICALCRS":
-        case "COMPD_CS":
-        case "COMPOUNDCRS":
-        case "ENGINEERINGCRS":
-        case "ENGCRS":
-        case "FITTED_CS":
-        case "LOCAL_DATUM":
-        case "DATUM":
+        case 'EDATUM':
+        case 'ENGINEERINGDATUM':
+        case 'LOCAL_DATUM':
+        case 'DATUM':
+        case 'VERT_CS':
+        case 'VERTCRS':
+        case 'VERTICALCRS':
             v[0] = [
-                "name",
+                'name',
                 v[0]
             ];
             $9a69c5588e7a5f95$var$mapit(obj, key, v);
+            return;
+        case 'COMPD_CS':
+        case 'COMPOUNDCRS':
+        case 'FITTED_CS':
+        // the followings are the crs defined in
+        // https://github.com/proj4js/proj4js/blob/1da4ed0b865d0fcb51c136090569210cdcc9019e/lib/parseCode.js#L11
+        case 'PROJECTEDCRS':
+        case 'PROJCRS':
+        case 'GEOGCS':
+        case 'GEOCCS':
+        case 'PROJCS':
+        case 'LOCAL_CS':
+        case 'GEODCRS':
+        case 'GEODETICCRS':
+        case 'GEODETICDATUM':
+        case 'ENGCRS':
+        case 'ENGINEERINGCRS':
+            v[0] = [
+                'name',
+                v[0]
+            ];
+            $9a69c5588e7a5f95$var$mapit(obj, key, v);
+            obj[key].type = key;
             return;
         default:
             i = -1;
@@ -35809,7 +35993,207 @@ function $9a69c5588e7a5f95$export$337bc7a3aef1f775(v, obj) {
 }
 
 
-var $ed36a1e8f69fe35e$var$D2R = 0.01745329251994329577;
+var $1f603b0e12168508$var$D2R = 0.01745329251994329577;
+function $1f603b0e12168508$export$e726aea149b4fd71(input) {
+    return input * $1f603b0e12168508$var$D2R;
+}
+function $1f603b0e12168508$export$d6def86a6ec68808(wkt) {
+    // Normalize projName for WKT2 compatibility
+    const normalizedProjName = (wkt.projName || '').toLowerCase().replace(/_/g, ' ');
+    if (wkt.long0 === undefined && wkt.longc !== undefined) wkt.long0 = wkt.longc; // keep in the projection's native prime meridian frame
+    if (!wkt.lat_ts && wkt.lat1 && (normalizedProjName === 'stereographic south pole' || normalizedProjName === 'polar stereographic (variant b)')) {
+        wkt.lat0 = $1f603b0e12168508$export$e726aea149b4fd71(wkt.lat1 > 0 ? 90 : -90);
+        wkt.lat_ts = wkt.lat1;
+        delete wkt.lat1;
+    } else if (!wkt.lat_ts && wkt.lat0 && (normalizedProjName === 'polar stereographic' || normalizedProjName === 'polar stereographic (variant a)')) {
+        wkt.lat_ts = wkt.lat0;
+        wkt.lat0 = $1f603b0e12168508$export$e726aea149b4fd71(wkt.lat0 > 0 ? 90 : -90);
+        delete wkt.lat1;
+    }
+}
+
+
+// Helper function to process units and to_meter
+function $050076e7856842fa$var$processUnit(unit) {
+    let result = {
+        units: null,
+        to_meter: undefined
+    };
+    if (typeof unit === 'string') {
+        result.units = unit.toLowerCase();
+        if (result.units === 'metre') result.units = 'meter'; // Normalize 'metre' to 'meter'
+        if (result.units === 'meter') result.to_meter = 1; // Only set to_meter if units are 'meter'
+    } else if (unit && unit.name) {
+        result.units = unit.name.toLowerCase();
+        if (result.units === 'metre') result.units = 'meter'; // Normalize 'metre' to 'meter'
+        result.to_meter = unit.conversion_factor;
+    }
+    return result;
+}
+function $050076e7856842fa$var$toValue(valueOrObject) {
+    if (typeof valueOrObject === 'object') return valueOrObject.value * valueOrObject.unit.conversion_factor;
+    return valueOrObject;
+}
+function $050076e7856842fa$var$calculateEllipsoid(value, result) {
+    if (value.ellipsoid.radius) {
+        result.a = value.ellipsoid.radius;
+        result.rf = 0;
+    } else {
+        result.a = $050076e7856842fa$var$toValue(value.ellipsoid.semi_major_axis);
+        if (value.ellipsoid.inverse_flattening !== undefined) result.rf = value.ellipsoid.inverse_flattening;
+        else if (value.ellipsoid.semi_major_axis !== undefined && value.ellipsoid.semi_minor_axis !== undefined) result.rf = result.a / (result.a - $050076e7856842fa$var$toValue(value.ellipsoid.semi_minor_axis));
+    }
+}
+function $050076e7856842fa$export$b04e619e90585ec3(projjson, result = {}) {
+    if (!projjson || typeof projjson !== 'object') return projjson; // Return primitive values as-is
+    if (projjson.type === 'BoundCRS') {
+        $050076e7856842fa$export$b04e619e90585ec3(projjson.source_crs, result);
+        if (projjson.transformation) {
+            if (projjson.transformation.method && projjson.transformation.method.name === 'NTv2') // Set nadgrids to the filename from the parameterfile
+            result.nadgrids = projjson.transformation.parameters[0].value;
+            else // Populate datum_params if no parameterfile is found
+            result.datum_params = projjson.transformation.parameters.map((param)=>param.value);
+        }
+        return result; // Return early for BoundCRS
+    }
+    // Handle specific keys in PROJJSON
+    Object.keys(projjson).forEach((key)=>{
+        const value = projjson[key];
+        if (value === null) return;
+        switch(key){
+            case 'name':
+                if (result.srsCode) break;
+                result.name = value;
+                result.srsCode = value; // Map `name` to `srsCode`
+                break;
+            case 'type':
+                if (value === 'GeographicCRS') result.projName = 'longlat';
+                else if (value === 'GeodeticCRS') {
+                    if (projjson.coordinate_system && projjson.coordinate_system.subtype === 'Cartesian') result.projName = 'geocent';
+                    else result.projName = 'longlat';
+                } else if (value === 'ProjectedCRS' && projjson.conversion && projjson.conversion.method) result.projName = projjson.conversion.method.name; // Retain original capitalization
+                break;
+            case 'datum':
+            case 'datum_ensemble':
+                if (value.ellipsoid) {
+                    // Extract ellipsoid properties
+                    result.ellps = value.ellipsoid.name;
+                    $050076e7856842fa$var$calculateEllipsoid(value, result);
+                }
+                if (value.prime_meridian) result.from_greenwich = value.prime_meridian.longitude * Math.PI / 180; // Convert to radians
+                break;
+            case 'ellipsoid':
+                result.ellps = value.name;
+                $050076e7856842fa$var$calculateEllipsoid(value, result);
+                break;
+            case 'prime_meridian':
+                result.long0 = (value.longitude || 0) * Math.PI / 180; // Convert to radians
+                break;
+            case 'coordinate_system':
+                if (value.axis) {
+                    const directionMap = {
+                        'east': 'e',
+                        'north': 'n',
+                        'west': 'w',
+                        'south': 's',
+                        'up': 'u',
+                        'down': 'd',
+                        'geocentricx': 'e',
+                        'geocentricy': 'n',
+                        'geocentricz': 'u'
+                    };
+                    const mapped = value.axis.map((axis)=>directionMap[axis.direction.toLowerCase()]);
+                    if (mapped.every(Boolean)) {
+                        result.axis = mapped.join('');
+                        if (result.axis.length === 2) result.axis += 'u';
+                    }
+                    if (value.unit) {
+                        const { units: units, to_meter: to_meter } = $050076e7856842fa$var$processUnit(value.unit);
+                        result.units = units;
+                        result.to_meter = to_meter;
+                    } else if (value.axis[0] && value.axis[0].unit) {
+                        const { units: units, to_meter: to_meter } = $050076e7856842fa$var$processUnit(value.axis[0].unit);
+                        result.units = units;
+                        result.to_meter = to_meter;
+                    }
+                }
+                break;
+            case 'id':
+                if (value.authority && value.code) result.title = value.authority + ':' + value.code;
+                break;
+            case 'conversion':
+                if (value.method && value.method.name) result.projName = value.method.name; // Retain original capitalization
+                if (value.parameters) value.parameters.forEach((param)=>{
+                    const paramName = param.name.toLowerCase().replace(/\s+/g, '_');
+                    const paramValue = param.value;
+                    if (param.unit && param.unit.conversion_factor) result[paramName] = paramValue * param.unit.conversion_factor; // Convert to radians or meters
+                    else if (param.unit === 'degree') result[paramName] = paramValue * Math.PI / 180; // Convert to radians
+                    else result[paramName] = paramValue;
+                });
+                break;
+            case 'unit':
+                if (value.name) {
+                    result.units = value.name.toLowerCase();
+                    if (result.units === 'metre') result.units = 'meter';
+                }
+                if (value.conversion_factor) result.to_meter = value.conversion_factor;
+                break;
+            case 'base_crs':
+                $050076e7856842fa$export$b04e619e90585ec3(value, result); // Pass `result` directly
+                result.datumCode = value.id ? value.id.authority + '_' + value.id.code : value.name; // Set datumCode
+                break;
+            default:
+                break;
+        }
+    });
+    // Additional calculated properties
+    if (result.latitude_of_false_origin !== undefined) result.lat0 = result.latitude_of_false_origin; // Already in radians
+    if (result.longitude_of_false_origin !== undefined) result.long0 = result.longitude_of_false_origin;
+    if (result.latitude_of_standard_parallel !== undefined) {
+        result.lat0 = result.latitude_of_standard_parallel;
+        result.lat1 = result.latitude_of_standard_parallel;
+    }
+    if (result.latitude_of_1st_standard_parallel !== undefined) result.lat1 = result.latitude_of_1st_standard_parallel;
+    if (result.latitude_of_2nd_standard_parallel !== undefined) result.lat2 = result.latitude_of_2nd_standard_parallel;
+    if (result.latitude_of_projection_centre !== undefined) result.lat0 = result.latitude_of_projection_centre;
+    if (result.longitude_of_projection_centre !== undefined) result.longc = result.longitude_of_projection_centre;
+    if (result.easting_at_false_origin !== undefined) result.x0 = result.easting_at_false_origin;
+    if (result.northing_at_false_origin !== undefined) result.y0 = result.northing_at_false_origin;
+    if (result.latitude_of_natural_origin !== undefined) result.lat0 = result.latitude_of_natural_origin;
+    if (result.longitude_of_natural_origin !== undefined) result.long0 = result.longitude_of_natural_origin;
+    if (result.longitude_of_origin !== undefined) result.long0 = result.longitude_of_origin;
+    if (result.false_easting !== undefined) result.x0 = result.false_easting;
+    if (result.easting_at_projection_centre) result.x0 = result.easting_at_projection_centre;
+    if (result.false_northing !== undefined) result.y0 = result.false_northing;
+    if (result.northing_at_projection_centre) result.y0 = result.northing_at_projection_centre;
+    if (result.standard_parallel_1 !== undefined) result.lat1 = result.standard_parallel_1;
+    if (result.standard_parallel_2 !== undefined) result.lat2 = result.standard_parallel_2;
+    if (result.scale_factor_at_natural_origin !== undefined) result.k0 = result.scale_factor_at_natural_origin;
+    if (result.scale_factor_at_projection_centre !== undefined) result.k0 = result.scale_factor_at_projection_centre;
+    if (result.scale_factor_on_pseudo_standard_parallel !== undefined) result.k0 = result.scale_factor_on_pseudo_standard_parallel;
+    if (result.azimuth !== undefined) result.alpha = result.azimuth;
+    if (result.azimuth_at_projection_centre !== undefined) result.alpha = result.azimuth_at_projection_centre;
+    if (result.angle_from_rectified_to_skew_grid) result.rectified_grid_angle = result.angle_from_rectified_to_skew_grid;
+    // Apply projection defaults
+    (0, $1f603b0e12168508$export$d6def86a6ec68808)(result);
+    return result;
+}
+
+
+
+var $ed36a1e8f69fe35e$var$knownTypes = [
+    'PROJECTEDCRS',
+    'PROJCRS',
+    'GEOGCS',
+    'GEOCCS',
+    'PROJCS',
+    'LOCAL_CS',
+    'GEODCRS',
+    'GEODETICCRS',
+    'GEODETICDATUM',
+    'ENGCRS',
+    'ENGINEERINGCRS'
+];
 function $ed36a1e8f69fe35e$var$rename(obj, params) {
     var outName = params[0];
     var inName = params[1];
@@ -35818,71 +36202,79 @@ function $ed36a1e8f69fe35e$var$rename(obj, params) {
         if (params.length === 3) obj[outName] = params[2](obj[outName]);
     }
 }
-function $ed36a1e8f69fe35e$var$d2r(input) {
-    return input * $ed36a1e8f69fe35e$var$D2R;
-}
 function $ed36a1e8f69fe35e$var$cleanWKT(wkt) {
-    if (wkt.type === "GEOGCS") wkt.projName = "longlat";
-    else if (wkt.type === "LOCAL_CS") {
-        wkt.projName = "identity";
+    var keys = Object.keys(wkt);
+    for(var i = 0, ii = keys.length; i < ii; ++i){
+        var key = keys[i];
+        // the followings are the crs defined in
+        // https://github.com/proj4js/proj4js/blob/1da4ed0b865d0fcb51c136090569210cdcc9019e/lib/parseCode.js#L11
+        if ($ed36a1e8f69fe35e$var$knownTypes.indexOf(key) !== -1) $ed36a1e8f69fe35e$var$setPropertiesFromWkt(wkt[key]);
+        if (typeof wkt[key] === 'object') $ed36a1e8f69fe35e$var$cleanWKT(wkt[key]);
+    }
+}
+function $ed36a1e8f69fe35e$var$setPropertiesFromWkt(wkt) {
+    if (wkt.AUTHORITY) {
+        var authority = Object.keys(wkt.AUTHORITY)[0];
+        if (authority && authority in wkt.AUTHORITY) wkt.title = authority + ':' + wkt.AUTHORITY[authority];
+    }
+    if (wkt.type === 'GEOGCS') wkt.projName = 'longlat';
+    else if (wkt.type === 'LOCAL_CS') {
+        wkt.projName = 'identity';
         wkt.local = true;
-    } else if (typeof wkt.PROJECTION === "object") wkt.projName = Object.keys(wkt.PROJECTION)[0];
+    } else if (typeof wkt.PROJECTION === 'object') wkt.projName = Object.keys(wkt.PROJECTION)[0];
     else wkt.projName = wkt.PROJECTION;
     if (wkt.AXIS) {
-        var axisOrder = "";
+        var axisOrder = '';
         for(var i = 0, ii = wkt.AXIS.length; i < ii; ++i){
             var axis = [
                 wkt.AXIS[i][0].toLowerCase(),
                 wkt.AXIS[i][1].toLowerCase()
             ];
-            if (axis[0].indexOf("north") !== -1 || (axis[0] === "y" || axis[0] === "lat") && axis[1] === "north") axisOrder += "n";
-            else if (axis[0].indexOf("south") !== -1 || (axis[0] === "y" || axis[0] === "lat") && axis[1] === "south") axisOrder += "s";
-            else if (axis[0].indexOf("east") !== -1 || (axis[0] === "x" || axis[0] === "lon") && axis[1] === "east") axisOrder += "e";
-            else if (axis[0].indexOf("west") !== -1 || (axis[0] === "x" || axis[0] === "lon") && axis[1] === "west") axisOrder += "w";
+            if (axis[0].indexOf('north') !== -1 || (axis[0] === 'y' || axis[0] === 'lat') && axis[1] === 'north') axisOrder += 'n';
+            else if (axis[0].indexOf('south') !== -1 || (axis[0] === 'y' || axis[0] === 'lat') && axis[1] === 'south') axisOrder += 's';
+            else if (axis[0].indexOf('east') !== -1 || (axis[0] === 'x' || axis[0] === 'lon') && axis[1] === 'east') axisOrder += 'e';
+            else if (axis[0].indexOf('west') !== -1 || (axis[0] === 'x' || axis[0] === 'lon') && axis[1] === 'west') axisOrder += 'w';
         }
-        if (axisOrder.length === 2) axisOrder += "u";
+        if (axisOrder.length === 2) axisOrder += 'u';
         if (axisOrder.length === 3) wkt.axis = axisOrder;
     }
     if (wkt.UNIT) {
         wkt.units = wkt.UNIT.name.toLowerCase();
-        if (wkt.units === "metre") wkt.units = "meter";
+        if (wkt.units === 'metre') wkt.units = 'meter';
         if (wkt.UNIT.convert) {
-            if (wkt.type === "GEOGCS") {
+            if (wkt.type === 'GEOGCS') {
                 if (wkt.DATUM && wkt.DATUM.SPHEROID) wkt.to_meter = wkt.UNIT.convert * wkt.DATUM.SPHEROID.a;
             } else wkt.to_meter = wkt.UNIT.convert;
         }
     }
     var geogcs = wkt.GEOGCS;
-    if (wkt.type === "GEOGCS") geogcs = wkt;
+    if (wkt.type === 'GEOGCS') geogcs = wkt;
     if (geogcs) {
-        //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
-        //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
-        //}
+        if (geogcs.PRIMEM && geogcs.PRIMEM.convert) wkt.from_greenwich = (0, $1f603b0e12168508$export$e726aea149b4fd71)(geogcs.PRIMEM.convert);
         if (geogcs.DATUM) wkt.datumCode = geogcs.DATUM.name.toLowerCase();
         else wkt.datumCode = geogcs.name.toLowerCase();
-        if (wkt.datumCode.slice(0, 2) === "d_") wkt.datumCode = wkt.datumCode.slice(2);
-        if (wkt.datumCode === "new_zealand_geodetic_datum_1949" || wkt.datumCode === "new_zealand_1949") wkt.datumCode = "nzgd49";
-        if (wkt.datumCode === "wgs_1984" || wkt.datumCode === "world_geodetic_system_1984") {
-            if (wkt.PROJECTION === "Mercator_Auxiliary_Sphere") wkt.sphere = true;
-            wkt.datumCode = "wgs84";
+        if (wkt.datumCode.slice(0, 2) === 'd_') wkt.datumCode = wkt.datumCode.slice(2);
+        if (wkt.datumCode === 'new_zealand_1949') wkt.datumCode = 'nzgd49';
+        if (wkt.datumCode === 'wgs_1984' || wkt.datumCode === 'world_geodetic_system_1984') {
+            if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') wkt.sphere = true;
+            wkt.datumCode = 'wgs84';
         }
-        if (wkt.datumCode.slice(-6) === "_ferro") wkt.datumCode = wkt.datumCode.slice(0, -6);
-        if (wkt.datumCode.slice(-8) === "_jakarta") wkt.datumCode = wkt.datumCode.slice(0, -8);
-        if (~wkt.datumCode.indexOf("belge")) wkt.datumCode = "rnb72";
+        if (wkt.datumCode === 'belge_1972') wkt.datumCode = 'rnb72';
         if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
-            wkt.ellps = geogcs.DATUM.SPHEROID.name.replace("_19", "").replace(/[Cc]larke\_18/, "clrk");
-            if (wkt.ellps.toLowerCase().slice(0, 13) === "international") wkt.ellps = "intl";
+            wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
+            if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') wkt.ellps = 'intl';
             wkt.a = geogcs.DATUM.SPHEROID.a;
-            wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
+            wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf);
         }
         if (geogcs.DATUM && geogcs.DATUM.TOWGS84) wkt.datum_params = geogcs.DATUM.TOWGS84;
-        if (~wkt.datumCode.indexOf("osgb_1936")) wkt.datumCode = "osgb36";
-        if (~wkt.datumCode.indexOf("osni_1952")) wkt.datumCode = "osni52";
-        if (~wkt.datumCode.indexOf("tm65") || ~wkt.datumCode.indexOf("geodetic_datum_of_1965")) wkt.datumCode = "ire65";
-        if (wkt.datumCode === "ch1903+") wkt.datumCode = "ch1903";
-        if (~wkt.datumCode.indexOf("israel")) wkt.datumCode = "isr93";
+        if (~wkt.datumCode.indexOf('osgb_1936')) wkt.datumCode = 'osgb36';
+        if (~wkt.datumCode.indexOf('osni_1952')) wkt.datumCode = 'osni52';
+        if (~wkt.datumCode.indexOf('tm65') || ~wkt.datumCode.indexOf('geodetic_datum_of_1965')) wkt.datumCode = 'ire65';
+        if (wkt.datumCode === 'ch1903+') wkt.datumCode = 'ch1903';
+        if (~wkt.datumCode.indexOf('israel')) wkt.datumCode = 'isr93';
     }
     if (wkt.b && !isFinite(wkt.b)) wkt.b = wkt.a;
+    if (wkt.rectified_grid_angle) wkt.rectified_grid_angle = (0, $1f603b0e12168508$export$e726aea149b4fd71)(wkt.rectified_grid_angle);
     function toMeter(input) {
         var ratio = wkt.to_meter || 1;
         return input * ratio;
@@ -35892,203 +36284,253 @@ function $ed36a1e8f69fe35e$var$cleanWKT(wkt) {
     };
     var list = [
         [
-            "standard_parallel_1",
-            "Standard_Parallel_1"
+            'standard_parallel_1',
+            'Standard_Parallel_1'
         ],
         [
-            "standard_parallel_1",
-            "Latitude of 1st standard parallel"
+            'standard_parallel_1',
+            'Latitude of 1st standard parallel'
         ],
         [
-            "standard_parallel_2",
-            "Standard_Parallel_2"
+            'standard_parallel_2',
+            'Standard_Parallel_2'
         ],
         [
-            "standard_parallel_2",
-            "Latitude of 2nd standard parallel"
+            'standard_parallel_2',
+            'Latitude of 2nd standard parallel'
         ],
         [
-            "false_easting",
-            "False_Easting"
+            'false_easting',
+            'False_Easting'
         ],
         [
-            "false_easting",
-            "False easting"
+            'false_easting',
+            'False easting'
         ],
         [
-            "false-easting",
-            "Easting at false origin"
+            'false-easting',
+            'Easting at false origin'
         ],
         [
-            "false_northing",
-            "False_Northing"
+            'false_northing',
+            'False_Northing'
         ],
         [
-            "false_northing",
-            "False northing"
+            'false_northing',
+            'False northing'
         ],
         [
-            "false_northing",
-            "Northing at false origin"
+            'false_northing',
+            'Northing at false origin'
         ],
         [
-            "central_meridian",
-            "Central_Meridian"
+            'central_meridian',
+            'Central_Meridian'
         ],
         [
-            "central_meridian",
-            "Longitude of natural origin"
+            'central_meridian',
+            'Longitude of natural origin'
         ],
         [
-            "central_meridian",
-            "Longitude of false origin"
+            'central_meridian',
+            'Longitude of false origin'
         ],
         [
-            "latitude_of_origin",
-            "Latitude_Of_Origin"
+            'latitude_of_origin',
+            'Latitude_Of_Origin'
         ],
         [
-            "latitude_of_origin",
-            "Central_Parallel"
+            'latitude_of_origin',
+            'Central_Parallel'
         ],
         [
-            "latitude_of_origin",
-            "Latitude of natural origin"
+            'latitude_of_origin',
+            'Latitude of natural origin'
         ],
         [
-            "latitude_of_origin",
-            "Latitude of false origin"
+            'latitude_of_origin',
+            'Latitude of false origin'
         ],
         [
-            "scale_factor",
-            "Scale_Factor"
+            'scale_factor',
+            'Scale_Factor'
         ],
         [
-            "k0",
-            "scale_factor"
+            'k0',
+            'scale_factor'
         ],
         [
-            "latitude_of_center",
-            "Latitude_Of_Center"
+            'latitude_of_center',
+            'Latitude_Of_Center'
         ],
         [
-            "latitude_of_center",
-            "Latitude_of_center"
+            'latitude_of_center',
+            'Latitude_of_center'
         ],
         [
-            "lat0",
-            "latitude_of_center",
-            $ed36a1e8f69fe35e$var$d2r
+            'lat0',
+            'latitude_of_center',
+            (0, $1f603b0e12168508$export$e726aea149b4fd71)
         ],
         [
-            "longitude_of_center",
-            "Longitude_Of_Center"
+            'longitude_of_center',
+            'Longitude_Of_Center'
         ],
         [
-            "longitude_of_center",
-            "Longitude_of_center"
+            'longitude_of_center',
+            'Longitude_of_center'
         ],
         [
-            "longc",
-            "longitude_of_center",
-            $ed36a1e8f69fe35e$var$d2r
+            'longc',
+            'longitude_of_center',
+            (0, $1f603b0e12168508$export$e726aea149b4fd71)
         ],
         [
-            "x0",
-            "false_easting",
+            'x0',
+            'false_easting',
             toMeter
         ],
         [
-            "y0",
-            "false_northing",
+            'y0',
+            'false_northing',
             toMeter
         ],
         [
-            "long0",
-            "central_meridian",
-            $ed36a1e8f69fe35e$var$d2r
+            'long0',
+            'central_meridian',
+            (0, $1f603b0e12168508$export$e726aea149b4fd71)
         ],
         [
-            "lat0",
-            "latitude_of_origin",
-            $ed36a1e8f69fe35e$var$d2r
+            'lat0',
+            'latitude_of_origin',
+            (0, $1f603b0e12168508$export$e726aea149b4fd71)
         ],
         [
-            "lat0",
-            "standard_parallel_1",
-            $ed36a1e8f69fe35e$var$d2r
+            'lat0',
+            'standard_parallel_1',
+            (0, $1f603b0e12168508$export$e726aea149b4fd71)
         ],
         [
-            "lat1",
-            "standard_parallel_1",
-            $ed36a1e8f69fe35e$var$d2r
+            'lat1',
+            'standard_parallel_1',
+            (0, $1f603b0e12168508$export$e726aea149b4fd71)
         ],
         [
-            "lat2",
-            "standard_parallel_2",
-            $ed36a1e8f69fe35e$var$d2r
+            'lat2',
+            'standard_parallel_2',
+            (0, $1f603b0e12168508$export$e726aea149b4fd71)
         ],
         [
-            "azimuth",
-            "Azimuth"
+            'azimuth',
+            'Azimuth'
         ],
         [
-            "alpha",
-            "azimuth",
-            $ed36a1e8f69fe35e$var$d2r
+            'alpha',
+            'azimuth',
+            (0, $1f603b0e12168508$export$e726aea149b4fd71)
         ],
         [
-            "srsCode",
-            "name"
+            'srsCode',
+            'name'
         ]
     ];
     list.forEach(renamer);
-    if (!wkt.long0 && wkt.longc && (wkt.projName === "Albers_Conic_Equal_Area" || wkt.projName === "Lambert_Azimuthal_Equal_Area")) wkt.long0 = wkt.longc;
-    if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === "Stereographic_South_Pole" || wkt.projName === "Polar Stereographic (variant B)")) {
-        wkt.lat0 = $ed36a1e8f69fe35e$var$d2r(wkt.lat1 > 0 ? 90 : -90);
-        wkt.lat_ts = wkt.lat1;
-    } else if (!wkt.lat_ts && wkt.lat0 && wkt.projName === "Polar_Stereographic") {
-        wkt.lat_ts = wkt.lat0;
-        wkt.lat0 = $ed36a1e8f69fe35e$var$d2r(wkt.lat0 > 0 ? 90 : -90);
-    }
+    (0, $1f603b0e12168508$export$d6def86a6ec68808)(wkt);
 }
 function $ed36a1e8f69fe35e$export$2e2bcd8739ae039(wkt) {
+    if (typeof wkt === 'object') return (0, $050076e7856842fa$export$b04e619e90585ec3)(wkt);
+    const version = (0, $e568b0f60a831772$export$9362d65e4771b5d5)(wkt);
     var lisp = (0, $81c0a6e96962d9cd$export$2e2bcd8739ae039)(wkt);
-    var type = lisp.shift();
-    var name = lisp.shift();
-    lisp.unshift([
-        "name",
-        name
-    ]);
-    lisp.unshift([
-        "type",
-        type
-    ]);
+    if (version === 'WKT2') {
+        const projjson = (0, $26f9d9e50aac34f9$export$48d0005f67ba915)(lisp);
+        return (0, $050076e7856842fa$export$b04e619e90585ec3)(projjson);
+    }
+    var type = lisp[0];
     var obj = {};
     (0, $9a69c5588e7a5f95$export$337bc7a3aef1f775)(lisp, obj);
     $ed36a1e8f69fe35e$var$cleanWKT(obj);
-    return obj;
+    return obj[type];
 }
 
 
-function $426e87aa95b0b211$var$defs(name) {
-    /*global console*/ var that = this;
+/**
+ * @typedef {Object} ProjectionDefinition
+ * @property {string} title
+ * @property {string} [projName]
+ * @property {string} [ellps]
+ * @property {import('./Proj.js').DatumDefinition} [datum]
+ * @property {string} [datumName]
+ * @property {number} [rf]
+ * @property {number} [lat0]
+ * @property {number} [lat1]
+ * @property {number} [lat2]
+ * @property {number} [lat_ts]
+ * @property {number} [long0]
+ * @property {number} [long1]
+ * @property {number} [long2]
+ * @property {number} [alpha]
+ * @property {number} [longc]
+ * @property {number} [x0]
+ * @property {number} [y0]
+ * @property {number} [k0]
+ * @property {number} [a]
+ * @property {number} [b]
+ * @property {true} [R_A]
+ * @property {number} [zone]
+ * @property {true} [utmSouth]
+ * @property {string|Array<number>} [datum_params]
+ * @property {number} [to_meter]
+ * @property {string} [units]
+ * @property {number} [from_greenwich]
+ * @property {string} [datumCode]
+ * @property {string} [nadgrids]
+ * @property {string} [axis]
+ * @property {boolean} [sphere]
+ * @property {number} [rectified_grid_angle]
+ * @property {boolean} [approx]
+ * @property {boolean} [over]
+ * @property {string} [projStr]
+ * @property {<T extends import('./core').TemplateCoordinates>(coordinates: T, enforceAxis?: boolean) => T} inverse
+ * @property {<T extends import('./core').TemplateCoordinates>(coordinates: T, enforceAxis?: boolean) => T} forward
+ */ /**
+ * @overload
+ * @param {string} name
+ * @param {string|ProjectionDefinition|import('./core.js').PROJJSONDefinition} projection
+ * @returns {void}
+ */ /**
+ * @overload
+ * @param {Array<[string, string]>} name
+ * @returns {Array<ProjectionDefinition|undefined>}
+ */ /**
+ * @overload
+ * @param {string} name
+ * @returns {ProjectionDefinition}
+ */ /**
+ * @param {string | Array<Array<string>> | Partial<Record<'EPSG'|'ESRI'|'IAU2000', ProjectionDefinition>>} name
+ * @returns {ProjectionDefinition | Array<ProjectionDefinition|undefined> | void}
+ */ function $426e87aa95b0b211$var$defs(name) {
+    /* global console */ var that = this;
     if (arguments.length === 2) {
         var def = arguments[1];
-        if (typeof def === "string") {
-            if (def.charAt(0) === "+") $426e87aa95b0b211$var$defs[name] = (0, $e8b7e57bb6c0f285$export$2e2bcd8739ae039)(arguments[1]);
-            else $426e87aa95b0b211$var$defs[name] = (0, $ed36a1e8f69fe35e$export$2e2bcd8739ae039)(arguments[1]);
-        } else $426e87aa95b0b211$var$defs[name] = def;
+        if (typeof def === 'string') {
+            if (def.charAt(0) === '+') $426e87aa95b0b211$var$defs[/** @type {string} */ name] = (0, $e8b7e57bb6c0f285$export$2e2bcd8739ae039)(arguments[1]);
+            else $426e87aa95b0b211$var$defs[/** @type {string} */ name] = (0, $ed36a1e8f69fe35e$export$2e2bcd8739ae039)(arguments[1]);
+        } else if (def && typeof def === 'object' && !('projName' in def)) // PROJJSON
+        $426e87aa95b0b211$var$defs[/** @type {string} */ name] = (0, $ed36a1e8f69fe35e$export$2e2bcd8739ae039)(arguments[1]);
+        else {
+            $426e87aa95b0b211$var$defs[/** @type {string} */ name] = def;
+            if (!def) delete $426e87aa95b0b211$var$defs[/** @type {string} */ name];
+        }
     } else if (arguments.length === 1) {
         if (Array.isArray(name)) return name.map(function(v) {
-            if (Array.isArray(v)) $426e87aa95b0b211$var$defs.apply(that, v);
-            else $426e87aa95b0b211$var$defs(v);
+            if (Array.isArray(v)) return $426e87aa95b0b211$var$defs.apply(that, v);
+            else return $426e87aa95b0b211$var$defs(v);
         });
-        else if (typeof name === "string") {
+        else if (typeof name === 'string') {
             if (name in $426e87aa95b0b211$var$defs) return $426e87aa95b0b211$var$defs[name];
-        } else if ("EPSG" in name) $426e87aa95b0b211$var$defs["EPSG:" + name.EPSG] = name;
-        else if ("ESRI" in name) $426e87aa95b0b211$var$defs["ESRI:" + name.ESRI] = name;
-        else if ("IAU2000" in name) $426e87aa95b0b211$var$defs["IAU2000:" + name.IAU2000] = name;
+        } else if ('EPSG' in name) $426e87aa95b0b211$var$defs['EPSG:' + name.EPSG] = name;
+        else if ('ESRI' in name) $426e87aa95b0b211$var$defs['ESRI:' + name.ESRI] = name;
+        else if ('IAU2000' in name) $426e87aa95b0b211$var$defs['IAU2000:' + name.IAU2000] = name;
         else console.log(name);
         return;
     }
@@ -36101,63 +36543,52 @@ var $426e87aa95b0b211$export$2e2bcd8739ae039 = $426e87aa95b0b211$var$defs;
 
 
 function $ceec90104c01066b$var$testObj(code) {
-    return typeof code === "string";
+    return typeof code === 'string';
 }
 function $ceec90104c01066b$var$testDef(code) {
     return code in (0, $426e87aa95b0b211$export$2e2bcd8739ae039);
 }
-var $ceec90104c01066b$var$codeWords = [
-    "PROJECTEDCRS",
-    "PROJCRS",
-    "GEOGCS",
-    "GEOCCS",
-    "PROJCS",
-    "LOCAL_CS",
-    "GEODCRS",
-    "GEODETICCRS",
-    "GEODETICDATUM",
-    "ENGCRS",
-    "ENGINEERINGCRS"
-];
 function $ceec90104c01066b$var$testWKT(code) {
-    return $ceec90104c01066b$var$codeWords.some(function(word) {
-        return code.indexOf(word) > -1;
-    });
+    return code.indexOf('+') !== 0 && code.indexOf('[') !== -1 || typeof code === 'object' && !('srsCode' in code);
 }
 var $ceec90104c01066b$var$codes = [
-    "3857",
-    "900913",
-    "3785",
-    "102113"
+    '3857',
+    '900913',
+    '3785',
+    '102113'
 ];
 function $ceec90104c01066b$var$checkMercator(item) {
-    var auth = (0, $906e57b8f0ea965b$export$2e2bcd8739ae039)(item, "authority");
+    if (item.title) return item.title.toLowerCase().indexOf('epsg:') === 0 && $ceec90104c01066b$var$codes.indexOf(item.title.substr(5)) > -1;
+    var auth = (0, $906e57b8f0ea965b$export$2e2bcd8739ae039)(item, 'authority');
     if (!auth) return;
-    var code = (0, $906e57b8f0ea965b$export$2e2bcd8739ae039)(auth, "epsg");
+    var code = (0, $906e57b8f0ea965b$export$2e2bcd8739ae039)(auth, 'epsg');
     return code && $ceec90104c01066b$var$codes.indexOf(code) > -1;
 }
 function $ceec90104c01066b$var$checkProjStr(item) {
-    var ext = (0, $906e57b8f0ea965b$export$2e2bcd8739ae039)(item, "extension");
+    var ext = (0, $906e57b8f0ea965b$export$2e2bcd8739ae039)(item, 'extension');
     if (!ext) return;
-    return (0, $906e57b8f0ea965b$export$2e2bcd8739ae039)(ext, "proj4");
+    return (0, $906e57b8f0ea965b$export$2e2bcd8739ae039)(ext, 'proj4');
 }
 function $ceec90104c01066b$var$testProj(code) {
-    return code[0] === "+";
+    return code[0] === '+';
 }
-function $ceec90104c01066b$var$parse(code) {
+/**
+ * @param {string | import('./core').PROJJSONDefinition | import('./defs').ProjectionDefinition} code
+ * @returns {import('./defs').ProjectionDefinition}
+ */ function $ceec90104c01066b$var$parse(code) {
+    let out;
     if ($ceec90104c01066b$var$testObj(code)) {
-        //check to see if this is a WKT string
-        if ($ceec90104c01066b$var$testDef(code)) return (0, $426e87aa95b0b211$export$2e2bcd8739ae039)[code];
-        if ($ceec90104c01066b$var$testWKT(code)) {
-            var out = (0, $ed36a1e8f69fe35e$export$2e2bcd8739ae039)(code);
-            // test of spetial case, due to this being a very common and often malformed
-            if ($ceec90104c01066b$var$checkMercator(out)) return (0, $426e87aa95b0b211$export$2e2bcd8739ae039)["EPSG:3857"];
+        // check to see if this is a WKT string
+        if ($ceec90104c01066b$var$testDef(code)) out = (0, $426e87aa95b0b211$export$2e2bcd8739ae039)[code];
+        else if ($ceec90104c01066b$var$testWKT(code)) {
+            out = (0, $ed36a1e8f69fe35e$export$2e2bcd8739ae039)(code);
             var maybeProjStr = $ceec90104c01066b$var$checkProjStr(out);
-            if (maybeProjStr) return (0, $e8b7e57bb6c0f285$export$2e2bcd8739ae039)(maybeProjStr);
-            return out;
-        }
-        if ($ceec90104c01066b$var$testProj(code)) return (0, $e8b7e57bb6c0f285$export$2e2bcd8739ae039)(code);
-    } else return code;
+            if (maybeProjStr) out = (0, $e8b7e57bb6c0f285$export$2e2bcd8739ae039)(maybeProjStr);
+        } else if ($ceec90104c01066b$var$testProj(code)) out = (0, $e8b7e57bb6c0f285$export$2e2bcd8739ae039)(code);
+    } else if (!('projName' in code)) out = (0, $ed36a1e8f69fe35e$export$2e2bcd8739ae039)(code);
+    else out = code;
+    // test for special Web Mercator case, due to this being a very common and often malformed
+    return out && $ceec90104c01066b$var$checkMercator(out) ? (0, $426e87aa95b0b211$export$2e2bcd8739ae039)['EPSG:3857'] : out;
 }
 var $ceec90104c01066b$export$2e2bcd8739ae039 = $ceec90104c01066b$var$parse;
 
@@ -36179,16 +36610,39 @@ var $4MKOs = parcelRequire("4MKOs");
 
 var $dbd4D = parcelRequire("dbd4D");
 
-var $biomK = parcelRequire("biomK");
+var $7B7Eg = parcelRequire("7B7Eg");
+function $839446b123659551$export$2e2bcd8739ae039(eccent, phi, sinphi) {
+    var con = eccent * sinphi;
+    var com = 0.5 * eccent;
+    con = Math.pow((1 - con) / (1 + con), com);
+    return Math.tan(0.5 * ((0, $7B7Eg.HALF_PI) - phi)) / con;
+}
 
-var $i2VbV = parcelRequire("i2VbV");
+
+
+var $7B7Eg = parcelRequire("7B7Eg");
+function $d234c6e4c40200dc$export$2e2bcd8739ae039(eccent, ts) {
+    var eccnth = 0.5 * eccent;
+    var con, dphi;
+    var phi = (0, $7B7Eg.HALF_PI) - 2 * Math.atan(ts);
+    for(var i = 0; i <= 15; i++){
+        con = eccent * Math.sin(phi);
+        dphi = (0, $7B7Eg.HALF_PI) - 2 * Math.atan(ts * Math.pow((1 - con) / (1 + con), eccnth)) - phi;
+        phi += dphi;
+        if (Math.abs(dphi) <= 0.0000000001) return phi;
+    }
+    // console.log("phi2z has NoConvergence");
+    return -9999;
+}
+
+
 
 var $7B7Eg = parcelRequire("7B7Eg");
 function $f967e8c85c8c425b$export$2cd8252107eb640b() {
     var con = this.b / this.a;
     this.es = 1 - con * con;
-    if (!("x0" in this)) this.x0 = 0;
-    if (!("y0" in this)) this.y0 = 0;
+    if (!('x0' in this)) this.x0 = 0;
+    if (!('y0' in this)) this.y0 = 0;
     this.e = Math.sqrt(this.es);
     if (this.lat_ts) {
         if (this.sphere) this.k0 = Math.cos(this.lat_ts);
@@ -36207,12 +36661,12 @@ function $f967e8c85c8c425b$export$174bb771924e7eb1(p) {
     if (Math.abs(Math.abs(lat) - (0, $7B7Eg.HALF_PI)) <= (0, $7B7Eg.EPSLN)) return null;
     else {
         if (this.sphere) {
-            x = this.x0 + this.a * this.k0 * (0, $dbd4D.default)(lon - this.long0);
+            x = this.x0 + this.a * this.k0 * (0, $dbd4D.default)(lon - this.long0, this.over);
             y = this.y0 + this.a * this.k0 * Math.log(Math.tan((0, $7B7Eg.FORTPI) + 0.5 * lat));
         } else {
             var sinphi = Math.sin(lat);
-            var ts = (0, $biomK.default)(this.e, lat, sinphi);
-            x = this.x0 + this.a * this.k0 * (0, $dbd4D.default)(lon - this.long0);
+            var ts = (0, $839446b123659551$export$2e2bcd8739ae039)(this.e, lat, sinphi);
+            x = this.x0 + this.a * this.k0 * (0, $dbd4D.default)(lon - this.long0, this.over);
             y = this.y0 - this.a * this.k0 * Math.log(ts);
         }
         p.x = x;
@@ -36227,20 +36681,21 @@ function $f967e8c85c8c425b$export$70ae2c07e401031b(p) {
     if (this.sphere) lat = (0, $7B7Eg.HALF_PI) - 2 * Math.atan(Math.exp(-y / (this.a * this.k0)));
     else {
         var ts = Math.exp(-y / (this.a * this.k0));
-        lat = (0, $i2VbV.default)(this.e, ts);
+        lat = (0, $d234c6e4c40200dc$export$2e2bcd8739ae039)(this.e, ts);
         if (lat === -9999) return null;
     }
-    lon = (0, $dbd4D.default)(this.long0 + x / (this.a * this.k0));
+    lon = (0, $dbd4D.default)(this.long0 + x / (this.a * this.k0), this.over);
     p.x = lon;
     p.y = lat;
     return p;
 }
 var $f967e8c85c8c425b$export$e4b2ac9215619f8d = [
-    "Mercator",
-    "Popular Visualisation Pseudo Mercator",
-    "Mercator_1SP",
-    "Mercator_Auxiliary_Sphere",
-    "merc"
+    'Mercator',
+    'Popular Visualisation Pseudo Mercator',
+    'Mercator_1SP',
+    'Mercator_Auxiliary_Sphere',
+    'Mercator_Variant_A',
+    'merc'
 ];
 var $f967e8c85c8c425b$export$2e2bcd8739ae039 = {
     init: $f967e8c85c8c425b$export$2cd8252107eb640b,
@@ -36251,14 +36706,14 @@ var $f967e8c85c8c425b$export$2e2bcd8739ae039 = {
 
 
 function $fa7a8d9fafd312a9$export$2cd8252107eb640b() {
-//no-op for longlat
+// no-op for longlat
 }
 function $fa7a8d9fafd312a9$export$174bb771924e7eb1(pt) {
     return pt;
 }
 var $fa7a8d9fafd312a9$export$e4b2ac9215619f8d = [
-    "longlat",
-    "identity"
+    'longlat',
+    'identity'
 ];
 var $fa7a8d9fafd312a9$export$2e2bcd8739ae039 = {
     init: $fa7a8d9fafd312a9$export$2cd8252107eb640b,
@@ -36268,7 +36723,7 @@ var $fa7a8d9fafd312a9$export$2e2bcd8739ae039 = {
 };
 
 
-var $1a58b891b1f8f5fa$var$projs = [
+/** @type {Array<Partial<import('./Proj').default>>} */ var $1a58b891b1f8f5fa$var$projs = [
     (0, $f967e8c85c8c425b$export$2e2bcd8739ae039),
     (0, $fa7a8d9fafd312a9$export$2e2bcd8739ae039)
 ];
@@ -36286,10 +36741,15 @@ function $1a58b891b1f8f5fa$export$e16d8520af44a096(proj, i) {
     });
     return this;
 }
+function $1a58b891b1f8f5fa$export$9ee0bb5510679155(n) {
+    return n.replace(/[-\(\)\s]+/g, ' ').trim().replace(/ /g, '_');
+}
 function $1a58b891b1f8f5fa$export$3988ae62b71be9a3(name) {
     if (!name) return false;
     var n = name.toLowerCase();
-    if (typeof $1a58b891b1f8f5fa$var$names[n] !== "undefined" && $1a58b891b1f8f5fa$var$projStore[$1a58b891b1f8f5fa$var$names[n]]) return $1a58b891b1f8f5fa$var$projStore[$1a58b891b1f8f5fa$var$names[n]];
+    if (typeof $1a58b891b1f8f5fa$var$names[n] !== 'undefined' && $1a58b891b1f8f5fa$var$projStore[$1a58b891b1f8f5fa$var$names[n]]) return $1a58b891b1f8f5fa$var$projStore[$1a58b891b1f8f5fa$var$names[n]];
+    n = $1a58b891b1f8f5fa$export$9ee0bb5510679155(n);
+    if (n in $1a58b891b1f8f5fa$var$names && $1a58b891b1f8f5fa$var$projStore[$1a58b891b1f8f5fa$var$names[n]]) return $1a58b891b1f8f5fa$var$projStore[$1a58b891b1f8f5fa$var$names[n]];
 }
 function $1a58b891b1f8f5fa$export$b3571188c770cc5a() {
     $1a58b891b1f8f5fa$var$projs.forEach($1a58b891b1f8f5fa$export$e16d8520af44a096);
@@ -36303,231 +36763,234 @@ var $1a58b891b1f8f5fa$export$2e2bcd8739ae039 = {
 
 
 var $7B7Eg = parcelRequire("7B7Eg");
-var $01faeb9b9e548e50$export$2e2bcd8739ae039 = {};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.MERIT = {
-    a: 6378137.0,
-    rf: 298.257,
-    ellipseName: "MERIT 1983"
+var $01faeb9b9e548e50$var$ellipsoids = {
+    MERIT: {
+        a: 6378137,
+        rf: 298.257,
+        ellipseName: 'MERIT 1983'
+    },
+    SGS85: {
+        a: 6378136,
+        rf: 298.257,
+        ellipseName: 'Soviet Geodetic System 85'
+    },
+    GRS80: {
+        a: 6378137,
+        rf: 298.257222101,
+        ellipseName: 'GRS 1980(IUGG, 1980)'
+    },
+    IAU76: {
+        a: 6378140,
+        rf: 298.257,
+        ellipseName: 'IAU 1976'
+    },
+    airy: {
+        a: 6377563.396,
+        b: 6356256.91,
+        ellipseName: 'Airy 1830'
+    },
+    APL4: {
+        a: 6378137,
+        rf: 298.25,
+        ellipseName: 'Appl. Physics. 1965'
+    },
+    NWL9D: {
+        a: 6378145,
+        rf: 298.25,
+        ellipseName: 'Naval Weapons Lab., 1965'
+    },
+    mod_airy: {
+        a: 6377340.189,
+        b: 6356034.446,
+        ellipseName: 'Modified Airy'
+    },
+    andrae: {
+        a: 6377104.43,
+        rf: 300,
+        ellipseName: 'Andrae 1876 (Den., Iclnd.)'
+    },
+    aust_SA: {
+        a: 6378160,
+        rf: 298.25,
+        ellipseName: 'Australian Natl & S. Amer. 1969'
+    },
+    GRS67: {
+        a: 6378160,
+        rf: 298.247167427,
+        ellipseName: 'GRS 67(IUGG 1967)'
+    },
+    bessel: {
+        a: 6377397.155,
+        rf: 299.1528128,
+        ellipseName: 'Bessel 1841'
+    },
+    bess_nam: {
+        a: 6377483.865,
+        rf: 299.1528128,
+        ellipseName: 'Bessel 1841 (Namibia)'
+    },
+    clrk66: {
+        a: 6378206.4,
+        b: 6356583.8,
+        ellipseName: 'Clarke 1866'
+    },
+    clrk80: {
+        a: 6378249.145,
+        rf: 293.4663,
+        ellipseName: 'Clarke 1880 mod.'
+    },
+    clrk80ign: {
+        a: 6378249.2,
+        b: 6356515,
+        rf: 293.4660213,
+        ellipseName: 'Clarke 1880 (IGN)'
+    },
+    clrk58: {
+        a: 6378293.645208759,
+        rf: 294.2606763692654,
+        ellipseName: 'Clarke 1858'
+    },
+    CPM: {
+        a: 6375738.7,
+        rf: 334.29,
+        ellipseName: 'Comm. des Poids et Mesures 1799'
+    },
+    delmbr: {
+        a: 6376428,
+        rf: 311.5,
+        ellipseName: 'Delambre 1810 (Belgium)'
+    },
+    engelis: {
+        a: 6378136.05,
+        rf: 298.2566,
+        ellipseName: 'Engelis 1985'
+    },
+    evrst30: {
+        a: 6377276.345,
+        rf: 300.8017,
+        ellipseName: 'Everest 1830'
+    },
+    evrst48: {
+        a: 6377304.063,
+        rf: 300.8017,
+        ellipseName: 'Everest 1948'
+    },
+    evrst56: {
+        a: 6377301.243,
+        rf: 300.8017,
+        ellipseName: 'Everest 1956'
+    },
+    evrst69: {
+        a: 6377295.664,
+        rf: 300.8017,
+        ellipseName: 'Everest 1969'
+    },
+    evrstSS: {
+        a: 6377298.556,
+        rf: 300.8017,
+        ellipseName: 'Everest (Sabah & Sarawak)'
+    },
+    fschr60: {
+        a: 6378166,
+        rf: 298.3,
+        ellipseName: 'Fischer (Mercury Datum) 1960'
+    },
+    fschr60m: {
+        a: 6378155,
+        rf: 298.3,
+        ellipseName: 'Fischer 1960'
+    },
+    fschr68: {
+        a: 6378150,
+        rf: 298.3,
+        ellipseName: 'Fischer 1968'
+    },
+    helmert: {
+        a: 6378200,
+        rf: 298.3,
+        ellipseName: 'Helmert 1906'
+    },
+    hough: {
+        a: 6378270,
+        rf: 297,
+        ellipseName: 'Hough'
+    },
+    intl: {
+        a: 6378388,
+        rf: 297,
+        ellipseName: 'International 1909 (Hayford)'
+    },
+    kaula: {
+        a: 6378163,
+        rf: 298.24,
+        ellipseName: 'Kaula 1961'
+    },
+    lerch: {
+        a: 6378139,
+        rf: 298.257,
+        ellipseName: 'Lerch 1979'
+    },
+    mprts: {
+        a: 6397300,
+        rf: 191,
+        ellipseName: 'Maupertius 1738'
+    },
+    new_intl: {
+        a: 6378157.5,
+        b: 6356772.2,
+        ellipseName: 'New International 1967'
+    },
+    plessis: {
+        a: 6376523,
+        rf: 6355863,
+        ellipseName: 'Plessis 1817 (France)'
+    },
+    krass: {
+        a: 6378245,
+        rf: 298.3,
+        ellipseName: 'Krassovsky, 1942'
+    },
+    SEasia: {
+        a: 6378155,
+        b: 6356773.3205,
+        ellipseName: 'Southeast Asia'
+    },
+    walbeck: {
+        a: 6376896,
+        b: 6355834.8467,
+        ellipseName: 'Walbeck'
+    },
+    WGS60: {
+        a: 6378165,
+        rf: 298.3,
+        ellipseName: 'WGS 60'
+    },
+    WGS66: {
+        a: 6378145,
+        rf: 298.25,
+        ellipseName: 'WGS 66'
+    },
+    WGS7: {
+        a: 6378135,
+        rf: 298.26,
+        ellipseName: 'WGS 72'
+    },
+    WGS84: {
+        a: 6378137,
+        rf: 298.257223563,
+        ellipseName: 'WGS 84'
+    },
+    sphere: {
+        a: 6370997,
+        b: 6370997,
+        ellipseName: 'Normal Sphere (r=6370997)'
+    }
 };
-$01faeb9b9e548e50$export$2e2bcd8739ae039.SGS85 = {
-    a: 6378136.0,
-    rf: 298.257,
-    ellipseName: "Soviet Geodetic System 85"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.GRS80 = {
-    a: 6378137.0,
-    rf: 298.257222101,
-    ellipseName: "GRS 1980(IUGG, 1980)"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.IAU76 = {
-    a: 6378140.0,
-    rf: 298.257,
-    ellipseName: "IAU 1976"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.airy = {
-    a: 6377563.396,
-    b: 6356256.910,
-    ellipseName: "Airy 1830"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.APL4 = {
-    a: 6378137,
-    rf: 298.25,
-    ellipseName: "Appl. Physics. 1965"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.NWL9D = {
-    a: 6378145.0,
-    rf: 298.25,
-    ellipseName: "Naval Weapons Lab., 1965"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.mod_airy = {
-    a: 6377340.189,
-    b: 6356034.446,
-    ellipseName: "Modified Airy"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.andrae = {
-    a: 6377104.43,
-    rf: 300.0,
-    ellipseName: "Andrae 1876 (Den., Iclnd.)"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.aust_SA = {
-    a: 6378160.0,
-    rf: 298.25,
-    ellipseName: "Australian Natl & S. Amer. 1969"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.GRS67 = {
-    a: 6378160.0,
-    rf: 298.2471674270,
-    ellipseName: "GRS 67(IUGG 1967)"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.bessel = {
-    a: 6377397.155,
-    rf: 299.1528128,
-    ellipseName: "Bessel 1841"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.bess_nam = {
-    a: 6377483.865,
-    rf: 299.1528128,
-    ellipseName: "Bessel 1841 (Namibia)"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.clrk66 = {
-    a: 6378206.4,
-    b: 6356583.8,
-    ellipseName: "Clarke 1866"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.clrk80 = {
-    a: 6378249.145,
-    rf: 293.4663,
-    ellipseName: "Clarke 1880 mod."
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.clrk80ign = {
-    a: 6378249.2,
-    b: 6356515,
-    rf: 293.4660213,
-    ellipseName: "Clarke 1880 (IGN)"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.clrk58 = {
-    a: 6378293.645208759,
-    rf: 294.2606763692654,
-    ellipseName: "Clarke 1858"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.CPM = {
-    a: 6375738.7,
-    rf: 334.29,
-    ellipseName: "Comm. des Poids et Mesures 1799"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.delmbr = {
-    a: 6376428.0,
-    rf: 311.5,
-    ellipseName: "Delambre 1810 (Belgium)"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.engelis = {
-    a: 6378136.05,
-    rf: 298.2566,
-    ellipseName: "Engelis 1985"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.evrst30 = {
-    a: 6377276.345,
-    rf: 300.8017,
-    ellipseName: "Everest 1830"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.evrst48 = {
-    a: 6377304.063,
-    rf: 300.8017,
-    ellipseName: "Everest 1948"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.evrst56 = {
-    a: 6377301.243,
-    rf: 300.8017,
-    ellipseName: "Everest 1956"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.evrst69 = {
-    a: 6377295.664,
-    rf: 300.8017,
-    ellipseName: "Everest 1969"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.evrstSS = {
-    a: 6377298.556,
-    rf: 300.8017,
-    ellipseName: "Everest (Sabah & Sarawak)"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.fschr60 = {
-    a: 6378166.0,
-    rf: 298.3,
-    ellipseName: "Fischer (Mercury Datum) 1960"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.fschr60m = {
-    a: 6378155.0,
-    rf: 298.3,
-    ellipseName: "Fischer 1960"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.fschr68 = {
-    a: 6378150.0,
-    rf: 298.3,
-    ellipseName: "Fischer 1968"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.helmert = {
-    a: 6378200.0,
-    rf: 298.3,
-    ellipseName: "Helmert 1906"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.hough = {
-    a: 6378270.0,
-    rf: 297.0,
-    ellipseName: "Hough"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.intl = {
-    a: 6378388.0,
-    rf: 297.0,
-    ellipseName: "International 1909 (Hayford)"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.kaula = {
-    a: 6378163.0,
-    rf: 298.24,
-    ellipseName: "Kaula 1961"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.lerch = {
-    a: 6378139.0,
-    rf: 298.257,
-    ellipseName: "Lerch 1979"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.mprts = {
-    a: 6397300.0,
-    rf: 191.0,
-    ellipseName: "Maupertius 1738"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.new_intl = {
-    a: 6378157.5,
-    b: 6356772.2,
-    ellipseName: "New International 1967"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.plessis = {
-    a: 6376523.0,
-    rf: 6355863.0,
-    ellipseName: "Plessis 1817 (France)"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.krass = {
-    a: 6378245.0,
-    rf: 298.3,
-    ellipseName: "Krassovsky, 1942"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.SEasia = {
-    a: 6378155.0,
-    b: 6356773.3205,
-    ellipseName: "Southeast Asia"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.walbeck = {
-    a: 6376896.0,
-    b: 6355834.8467,
-    ellipseName: "Walbeck"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.WGS60 = {
-    a: 6378165.0,
-    rf: 298.3,
-    ellipseName: "WGS 60"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.WGS66 = {
-    a: 6378145.0,
-    rf: 298.25,
-    ellipseName: "WGS 66"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.WGS7 = {
-    a: 6378135.0,
-    rf: 298.26,
-    ellipseName: "WGS 72"
-};
-var $01faeb9b9e548e50$export$a1db874f6c0f1ba1 = $01faeb9b9e548e50$export$2e2bcd8739ae039.WGS84 = {
-    a: 6378137.0,
-    rf: 298.257223563,
-    ellipseName: "WGS 84"
-};
-$01faeb9b9e548e50$export$2e2bcd8739ae039.sphere = {
-    a: 6370997.0,
-    b: 6370997.0,
-    ellipseName: "Normal Sphere (r=6370997)"
-};
+var $01faeb9b9e548e50$export$2e2bcd8739ae039 = $01faeb9b9e548e50$var$ellipsoids;
 
 
 
+const $887a004fd69f983c$var$WGS84 = (0, $01faeb9b9e548e50$export$2e2bcd8739ae039).WGS84; // default ellipsoid
 function $887a004fd69f983c$export$e3d7bf2ed2a7479f(a, b, rf, R_A) {
     var a2 = a * a; // used in geocentric
     var b2 = b * b; // used in geocentric
@@ -36548,7 +37011,7 @@ function $887a004fd69f983c$export$e3d7bf2ed2a7479f(a, b, rf, R_A) {
 function $887a004fd69f983c$export$b2690196de52b050(a, b, rf, ellps, sphere) {
     if (!a) {
         var ellipse = (0, $906e57b8f0ea965b$export$2e2bcd8739ae039)((0, $01faeb9b9e548e50$export$2e2bcd8739ae039), ellps);
-        if (!ellipse) ellipse = (0, $01faeb9b9e548e50$export$a1db874f6c0f1ba1);
+        if (!ellipse) ellipse = $887a004fd69f983c$var$WGS84;
         a = ellipse.a;
         b = ellipse.b;
         rf = ellipse.rf;
@@ -36567,104 +37030,1371 @@ function $887a004fd69f983c$export$b2690196de52b050(a, b, rf, ellps, sphere) {
 }
 
 
-var $691fb6ad5e69deed$export$2e2bcd8739ae039 = {};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.wgs84 = {
-    towgs84: "0,0,0",
-    ellipse: "WGS84",
-    datumName: "WGS84"
+var $691fb6ad5e69deed$var$datums = {
+    wgs84: {
+        towgs84: '0,0,0',
+        ellipse: 'WGS84',
+        datumName: 'WGS84'
+    },
+    ch1903: {
+        towgs84: '674.374,15.056,405.346',
+        ellipse: 'bessel',
+        datumName: 'swiss'
+    },
+    ggrs87: {
+        towgs84: '-199.87,74.79,246.62',
+        ellipse: 'GRS80',
+        datumName: 'Greek_Geodetic_Reference_System_1987'
+    },
+    nad83: {
+        towgs84: '0,0,0',
+        ellipse: 'GRS80',
+        datumName: 'North_American_Datum_1983'
+    },
+    nad27: {
+        nadgrids: '@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat',
+        ellipse: 'clrk66',
+        datumName: 'North_American_Datum_1927'
+    },
+    potsdam: {
+        towgs84: '598.1,73.7,418.2,0.202,0.045,-2.455,6.7',
+        ellipse: 'bessel',
+        datumName: 'Potsdam Rauenberg 1950 DHDN'
+    },
+    carthage: {
+        towgs84: '-263.0,6.0,431.0',
+        ellipse: 'clark80',
+        datumName: 'Carthage 1934 Tunisia'
+    },
+    hermannskogel: {
+        towgs84: '577.326,90.129,463.919,5.137,1.474,5.297,2.4232',
+        ellipse: 'bessel',
+        datumName: 'Hermannskogel'
+    },
+    mgi: {
+        towgs84: '577.326,90.129,463.919,5.137,1.474,5.297,2.4232',
+        ellipse: 'bessel',
+        datumName: 'Militar-Geographische Institut'
+    },
+    osni52: {
+        towgs84: '482.530,-130.596,564.557,-1.042,-0.214,-0.631,8.15',
+        ellipse: 'airy',
+        datumName: 'Irish National'
+    },
+    ire65: {
+        towgs84: '482.530,-130.596,564.557,-1.042,-0.214,-0.631,8.15',
+        ellipse: 'mod_airy',
+        datumName: 'Ireland 1965'
+    },
+    rassadiran: {
+        towgs84: '-133.63,-157.5,-158.62',
+        ellipse: 'intl',
+        datumName: 'Rassadiran'
+    },
+    nzgd49: {
+        towgs84: '59.47,-5.04,187.44,0.47,-0.1,1.024,-4.5993',
+        ellipse: 'intl',
+        datumName: 'New Zealand Geodetic Datum 1949'
+    },
+    osgb36: {
+        towgs84: '446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894',
+        ellipse: 'airy',
+        datumName: 'Ordnance Survey of Great Britain 1936'
+    },
+    s_jtsk: {
+        towgs84: '589,76,480',
+        ellipse: 'bessel',
+        datumName: 'S-JTSK (Ferro)'
+    },
+    beduaram: {
+        towgs84: '-106,-87,188',
+        ellipse: 'clrk80',
+        datumName: 'Beduaram'
+    },
+    gunung_segara: {
+        towgs84: '-403,684,41',
+        ellipse: 'bessel',
+        datumName: 'Gunung Segara Jakarta'
+    },
+    rnb72: {
+        towgs84: '106.869,-52.2978,103.724,-0.33657,0.456955,-1.84218,1',
+        ellipse: 'intl',
+        datumName: 'Reseau National Belge 1972'
+    },
+    EPSG_5451: {
+        towgs84: '6.41,-49.05,-11.28,1.5657,0.5242,6.9718,-5.7649'
+    },
+    IGNF_LURESG: {
+        towgs84: '-192.986,13.673,-39.309,-0.4099,-2.9332,2.6881,0.43'
+    },
+    EPSG_4614: {
+        towgs84: '-119.4248,-303.65872,-11.00061,1.164298,0.174458,1.096259,3.657065'
+    },
+    EPSG_4615: {
+        towgs84: '-494.088,-312.129,279.877,-1.423,-1.013,1.59,-0.748'
+    },
+    ESRI_37241: {
+        towgs84: '-76.822,257.457,-12.817,2.136,-0.033,-2.392,-0.031'
+    },
+    ESRI_37249: {
+        towgs84: '-440.296,58.548,296.265,1.128,10.202,4.559,-0.438'
+    },
+    ESRI_37245: {
+        towgs84: '-511.151,-181.269,139.609,1.05,2.703,1.798,3.071'
+    },
+    EPSG_4178: {
+        towgs84: '24.9,-126.4,-93.2,-0.063,-0.247,-0.041,1.01'
+    },
+    EPSG_4622: {
+        towgs84: '-472.29,-5.63,-304.12,0.4362,-0.8374,0.2563,1.8984'
+    },
+    EPSG_4625: {
+        towgs84: '126.93,547.94,130.41,-2.7867,5.1612,-0.8584,13.8227'
+    },
+    EPSG_5252: {
+        towgs84: '0.023,0.036,-0.068,0.00176,0.00912,-0.01136,0.00439'
+    },
+    EPSG_4314: {
+        towgs84: '597.1,71.4,412.1,0.894,0.068,-1.563,7.58'
+    },
+    EPSG_4282: {
+        towgs84: '-178.3,-316.7,-131.5,5.278,6.077,10.979,19.166'
+    },
+    EPSG_4231: {
+        towgs84: '-83.11,-97.38,-117.22,0.005693,-0.044698,0.044285,0.1218'
+    },
+    EPSG_4274: {
+        towgs84: '-230.994,102.591,25.199,0.633,-0.239,0.9,1.95'
+    },
+    EPSG_4134: {
+        towgs84: '-180.624,-225.516,173.919,-0.81,-1.898,8.336,16.71006'
+    },
+    EPSG_4254: {
+        towgs84: '18.38,192.45,96.82,0.056,-0.142,-0.2,-0.0013'
+    },
+    EPSG_4159: {
+        towgs84: '-194.513,-63.978,-25.759,-3.4027,3.756,-3.352,-0.9175'
+    },
+    EPSG_4687: {
+        towgs84: '0.072,-0.507,-0.245,0.0183,-0.0003,0.007,-0.0093'
+    },
+    EPSG_4227: {
+        towgs84: '-83.58,-397.54,458.78,-17.595,-2.847,4.256,3.225'
+    },
+    EPSG_4746: {
+        towgs84: '599.4,72.4,419.2,-0.062,-0.022,-2.723,6.46'
+    },
+    EPSG_4745: {
+        towgs84: '612.4,77,440.2,-0.054,0.057,-2.797,2.55'
+    },
+    EPSG_6311: {
+        towgs84: '8.846,-4.394,-1.122,-0.00237,-0.146528,0.130428,0.783926'
+    },
+    EPSG_4289: {
+        towgs84: '565.7381,50.4018,465.2904,-0.395026,0.330772,-1.876073,4.07244'
+    },
+    EPSG_4230: {
+        towgs84: '-68.863,-134.888,-111.49,-0.53,-0.14,0.57,-3.4'
+    },
+    EPSG_4154: {
+        towgs84: '-123.02,-158.95,-168.47'
+    },
+    EPSG_4156: {
+        towgs84: '570.8,85.7,462.8,4.998,1.587,5.261,3.56'
+    },
+    EPSG_4299: {
+        towgs84: '482.5,-130.6,564.6,-1.042,-0.214,-0.631,8.15'
+    },
+    EPSG_4179: {
+        towgs84: '33.4,-146.6,-76.3,-0.359,-0.053,0.844,-0.84'
+    },
+    EPSG_4313: {
+        towgs84: '-106.8686,52.2978,-103.7239,0.3366,-0.457,1.8422,-1.2747'
+    },
+    EPSG_4194: {
+        towgs84: '163.511,127.533,-159.789'
+    },
+    EPSG_4195: {
+        towgs84: '105,326,-102.5'
+    },
+    EPSG_4196: {
+        towgs84: '-45,417,-3.5'
+    },
+    EPSG_4611: {
+        towgs84: '-162.619,-276.959,-161.764,0.067753,-2.243648,-1.158828,-1.094246'
+    },
+    EPSG_4633: {
+        towgs84: '137.092,131.66,91.475,-1.9436,-11.5993,-4.3321,-7.4824'
+    },
+    EPSG_4641: {
+        towgs84: '-408.809,366.856,-412.987,1.8842,-0.5308,2.1655,-121.0993'
+    },
+    EPSG_4643: {
+        towgs84: '-480.26,-438.32,-643.429,16.3119,20.1721,-4.0349,-111.7002'
+    },
+    EPSG_4300: {
+        towgs84: '482.5,-130.6,564.6,-1.042,-0.214,-0.631,8.15'
+    },
+    EPSG_4188: {
+        towgs84: '482.5,-130.6,564.6,-1.042,-0.214,-0.631,8.15'
+    },
+    EPSG_4660: {
+        towgs84: '982.6087,552.753,-540.873,6.681627,-31.611492,-19.848161,16.805'
+    },
+    EPSG_4662: {
+        towgs84: '97.295,-263.247,310.882,-1.5999,0.8386,3.1409,13.3259'
+    },
+    EPSG_3906: {
+        towgs84: '577.88891,165.22205,391.18289,4.9145,-0.94729,-13.05098,7.78664'
+    },
+    EPSG_4307: {
+        towgs84: '-209.3622,-87.8162,404.6198,0.0046,3.4784,0.5805,-1.4547'
+    },
+    EPSG_6892: {
+        towgs84: '-76.269,-16.683,68.562,-6.275,10.536,-4.286,-13.686'
+    },
+    EPSG_4690: {
+        towgs84: '221.597,152.441,176.523,2.403,1.3893,0.884,11.4648'
+    },
+    EPSG_4691: {
+        towgs84: '218.769,150.75,176.75,3.5231,2.0037,1.288,10.9817'
+    },
+    EPSG_4629: {
+        towgs84: '72.51,345.411,79.241,-1.5862,-0.8826,-0.5495,1.3653'
+    },
+    EPSG_4630: {
+        towgs84: '165.804,216.213,180.26,-0.6251,-0.4515,-0.0721,7.4111'
+    },
+    EPSG_4692: {
+        towgs84: '217.109,86.452,23.711,0.0183,-0.0003,0.007,-0.0093'
+    },
+    EPSG_9333: {
+        towgs84: '0,0,0,-0.008393,0.000749,-0.010276,0'
+    },
+    EPSG_9059: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4312: {
+        towgs84: '601.705,84.263,485.227,4.7354,1.3145,5.393,-2.3887'
+    },
+    EPSG_4123: {
+        towgs84: '-96.062,-82.428,-121.753,4.801,0.345,-1.376,1.496'
+    },
+    EPSG_4309: {
+        towgs84: '-124.45,183.74,44.64,-0.4384,0.5446,-0.9706,-2.1365'
+    },
+    ESRI_104106: {
+        towgs84: '-283.088,-70.693,117.445,-1.157,0.059,-0.652,-4.058'
+    },
+    EPSG_4281: {
+        towgs84: '-219.247,-73.802,269.529'
+    },
+    EPSG_4322: {
+        towgs84: '0,0,4.5'
+    },
+    EPSG_4324: {
+        towgs84: '0,0,1.9'
+    },
+    EPSG_4284: {
+        towgs84: '43.822,-108.842,-119.585,1.455,-0.761,0.737,0.549'
+    },
+    EPSG_4277: {
+        towgs84: '446.448,-125.157,542.06,0.15,0.247,0.842,-20.489'
+    },
+    EPSG_4207: {
+        towgs84: '-282.1,-72.2,120,-1.529,0.145,-0.89,-4.46'
+    },
+    EPSG_4688: {
+        towgs84: '347.175,1077.618,2623.677,33.9058,-70.6776,9.4013,186.0647'
+    },
+    EPSG_4689: {
+        towgs84: '410.793,54.542,80.501,-2.5596,-2.3517,-0.6594,17.3218'
+    },
+    EPSG_4720: {
+        towgs84: '0,0,4.5'
+    },
+    EPSG_4273: {
+        towgs84: '278.3,93,474.5,7.889,0.05,-6.61,6.21'
+    },
+    EPSG_4240: {
+        towgs84: '204.64,834.74,293.8'
+    },
+    EPSG_4817: {
+        towgs84: '278.3,93,474.5,7.889,0.05,-6.61,6.21'
+    },
+    ESRI_104131: {
+        towgs84: '426.62,142.62,460.09,4.98,4.49,-12.42,-17.1'
+    },
+    EPSG_4265: {
+        towgs84: '-104.1,-49.1,-9.9,0.971,-2.917,0.714,-11.68'
+    },
+    EPSG_4263: {
+        towgs84: '-111.92,-87.85,114.5,1.875,0.202,0.219,0.032'
+    },
+    EPSG_4298: {
+        towgs84: '-689.5937,623.84046,-65.93566,-0.02331,1.17094,-0.80054,5.88536'
+    },
+    EPSG_4270: {
+        towgs84: '-253.4392,-148.452,386.5267,0.15605,0.43,-0.1013,-0.0424'
+    },
+    EPSG_4229: {
+        towgs84: '-121.8,98.1,-10.7'
+    },
+    EPSG_4220: {
+        towgs84: '-55.5,-348,-229.2'
+    },
+    EPSG_4214: {
+        towgs84: '12.646,-155.176,-80.863'
+    },
+    EPSG_4232: {
+        towgs84: '-345,3,223'
+    },
+    EPSG_4238: {
+        towgs84: '-1.977,-13.06,-9.993,0.364,0.254,0.689,-1.037'
+    },
+    EPSG_4168: {
+        towgs84: '-170,33,326'
+    },
+    EPSG_4131: {
+        towgs84: '199,931,318.9'
+    },
+    EPSG_4152: {
+        towgs84: '-0.9102,2.0141,0.5602,0.029039,0.010065,0.010101,0'
+    },
+    EPSG_5228: {
+        towgs84: '572.213,85.334,461.94,4.9732,1.529,5.2484,3.5378'
+    },
+    EPSG_8351: {
+        towgs84: '485.021,169.465,483.839,7.786342,4.397554,4.102655,0'
+    },
+    EPSG_4683: {
+        towgs84: '-127.62,-67.24,-47.04,-3.068,4.903,1.578,-1.06'
+    },
+    EPSG_4133: {
+        towgs84: '0,0,0'
+    },
+    EPSG_7373: {
+        towgs84: '0.819,-0.5762,-1.6446,-0.00378,-0.03317,0.00318,0.0693'
+    },
+    EPSG_9075: {
+        towgs84: '-0.9102,2.0141,0.5602,0.029039,0.010065,0.010101,0'
+    },
+    EPSG_9072: {
+        towgs84: '-0.9102,2.0141,0.5602,0.029039,0.010065,0.010101,0'
+    },
+    EPSG_9294: {
+        towgs84: '1.16835,-1.42001,-2.24431,-0.00822,-0.05508,0.01818,0.23388'
+    },
+    EPSG_4212: {
+        towgs84: '-267.434,173.496,181.814,-13.4704,8.7154,7.3926,14.7492'
+    },
+    EPSG_4191: {
+        towgs84: '-44.183,-0.58,-38.489,2.3867,2.7072,-3.5196,-8.2703'
+    },
+    EPSG_4237: {
+        towgs84: '52.684,-71.194,-13.975,-0.312,-0.1063,-0.3729,1.0191'
+    },
+    EPSG_4740: {
+        towgs84: '-1.08,-0.27,-0.9'
+    },
+    EPSG_4124: {
+        towgs84: '419.3836,99.3335,591.3451,0.850389,1.817277,-7.862238,-0.99496'
+    },
+    EPSG_5681: {
+        towgs84: '584.9636,107.7175,413.8067,1.1155,0.2824,-3.1384,7.9922'
+    },
+    EPSG_4141: {
+        towgs84: '23.772,17.49,17.859,-0.3132,-1.85274,1.67299,-5.4262'
+    },
+    EPSG_4204: {
+        towgs84: '-85.645,-273.077,-79.708,2.289,-1.421,2.532,3.194'
+    },
+    EPSG_4319: {
+        towgs84: '226.702,-193.337,-35.371,-2.229,-4.391,9.238,0.9798'
+    },
+    EPSG_4200: {
+        towgs84: '24.82,-131.21,-82.66'
+    },
+    EPSG_4130: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4127: {
+        towgs84: '-82.875,-57.097,-156.768,-2.158,1.524,-0.982,-0.359'
+    },
+    EPSG_4149: {
+        towgs84: '674.374,15.056,405.346'
+    },
+    EPSG_4617: {
+        towgs84: '-0.991,1.9072,0.5129,0.02579,0.00965,0.01166,0'
+    },
+    EPSG_4663: {
+        towgs84: '-210.502,-66.902,-48.476,2.094,-15.067,-5.817,0.485'
+    },
+    EPSG_4664: {
+        towgs84: '-211.939,137.626,58.3,-0.089,0.251,0.079,0.384'
+    },
+    EPSG_4665: {
+        towgs84: '-105.854,165.589,-38.312,-0.003,-0.026,0.024,-0.048'
+    },
+    EPSG_4666: {
+        towgs84: '631.392,-66.551,481.442,1.09,-4.445,-4.487,-4.43'
+    },
+    EPSG_4756: {
+        towgs84: '-192.873,-39.382,-111.202,-0.00205,-0.0005,0.00335,0.0188'
+    },
+    EPSG_4723: {
+        towgs84: '-179.483,-69.379,-27.584,-7.862,8.163,6.042,-13.925'
+    },
+    EPSG_4726: {
+        towgs84: '8.853,-52.644,180.304,-0.393,-2.323,2.96,-24.081'
+    },
+    EPSG_4267: {
+        towgs84: '-8.0,160.0,176.0'
+    },
+    EPSG_5365: {
+        towgs84: '-0.16959,0.35312,0.51846,0.03385,-0.16325,0.03446,0.03693'
+    },
+    EPSG_4218: {
+        towgs84: '304.5,306.5,-318.1'
+    },
+    EPSG_4242: {
+        towgs84: '-33.722,153.789,94.959,-8.581,-4.478,4.54,8.95'
+    },
+    EPSG_4216: {
+        towgs84: '-292.295,248.758,429.447,4.9971,2.99,6.6906,1.0289'
+    },
+    ESRI_104105: {
+        towgs84: '631.392,-66.551,481.442,1.09,-4.445,-4.487,-4.43'
+    },
+    ESRI_104129: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4673: {
+        towgs84: '174.05,-25.49,112.57'
+    },
+    EPSG_4202: {
+        towgs84: '-124,-60,154'
+    },
+    EPSG_4203: {
+        towgs84: '-117.763,-51.51,139.061,0.292,0.443,0.277,-0.191'
+    },
+    EPSG_3819: {
+        towgs84: '595.48,121.69,515.35,4.115,-2.9383,0.853,-3.408'
+    },
+    EPSG_8694: {
+        towgs84: '-93.799,-132.737,-219.073,-1.844,0.648,-6.37,-0.169'
+    },
+    EPSG_4145: {
+        towgs84: '275.57,676.78,229.6'
+    },
+    EPSG_4283: {
+        towgs84: '0.06155,-0.01087,-0.04019,0.039492,0.032722,0.032898,-0.009994'
+    },
+    EPSG_4317: {
+        towgs84: '2.3287,-147.0425,-92.0802,-0.309248,0.324822,0.497299,5.689063'
+    },
+    EPSG_4272: {
+        towgs84: '59.47,-5.04,187.44,0.47,-0.1,1.024,-4.5993'
+    },
+    EPSG_4248: {
+        towgs84: '-307.7,265.3,-363.5'
+    },
+    EPSG_5561: {
+        towgs84: '24,-121,-76'
+    },
+    EPSG_5233: {
+        towgs84: '-0.293,766.95,87.713,0.195704,1.695068,3.473016,-0.039338'
+    },
+    ESRI_104130: {
+        towgs84: '-86,-98,-119'
+    },
+    ESRI_104102: {
+        towgs84: '682,-203,480'
+    },
+    ESRI_37207: {
+        towgs84: '7,-10,-26'
+    },
+    EPSG_4675: {
+        towgs84: '59.935,118.4,-10.871'
+    },
+    ESRI_104109: {
+        towgs84: '-89.121,-348.182,260.871'
+    },
+    ESRI_104112: {
+        towgs84: '-185.583,-230.096,281.361'
+    },
+    ESRI_104113: {
+        towgs84: '25.1,-275.6,222.6'
+    },
+    IGNF_WGS72G: {
+        towgs84: '0,12,6'
+    },
+    IGNF_NTFG: {
+        towgs84: '-168,-60,320'
+    },
+    IGNF_EFATE57G: {
+        towgs84: '-127,-769,472'
+    },
+    IGNF_PGP50G: {
+        towgs84: '324.8,153.6,172.1'
+    },
+    IGNF_REUN47G: {
+        towgs84: '94,-948,-1262'
+    },
+    IGNF_CSG67G: {
+        towgs84: '-186,230,110'
+    },
+    IGNF_GUAD48G: {
+        towgs84: '-467,-16,-300'
+    },
+    IGNF_TAHI51G: {
+        towgs84: '162,117,154'
+    },
+    IGNF_TAHAAG: {
+        towgs84: '65,342,77'
+    },
+    IGNF_NUKU72G: {
+        towgs84: '84,274,65'
+    },
+    IGNF_PETRELS72G: {
+        towgs84: '365,194,166'
+    },
+    IGNF_WALL78G: {
+        towgs84: '253,-133,-127'
+    },
+    IGNF_MAYO50G: {
+        towgs84: '-382,-59,-262'
+    },
+    IGNF_TANNAG: {
+        towgs84: '-139,-967,436'
+    },
+    IGNF_IGN72G: {
+        towgs84: '-13,-348,292'
+    },
+    IGNF_ATIGG: {
+        towgs84: '1118,23,66'
+    },
+    IGNF_FANGA84G: {
+        towgs84: '150.57,158.33,118.32'
+    },
+    IGNF_RUSAT84G: {
+        towgs84: '202.13,174.6,-15.74'
+    },
+    IGNF_KAUE70G: {
+        towgs84: '126.74,300.1,-75.49'
+    },
+    IGNF_MOP90G: {
+        towgs84: '-10.8,-1.8,12.77'
+    },
+    IGNF_MHPF67G: {
+        towgs84: '338.08,212.58,-296.17'
+    },
+    IGNF_TAHI79G: {
+        towgs84: '160.61,116.05,153.69'
+    },
+    IGNF_ANAA92G: {
+        towgs84: '1.5,3.84,4.81'
+    },
+    IGNF_MARQUI72G: {
+        towgs84: '330.91,-13.92,58.56'
+    },
+    IGNF_APAT86G: {
+        towgs84: '143.6,197.82,74.05'
+    },
+    IGNF_TUBU69G: {
+        towgs84: '237.17,171.61,-77.84'
+    },
+    IGNF_STPM50G: {
+        towgs84: '11.363,424.148,373.13'
+    },
+    EPSG_4150: {
+        towgs84: '674.374,15.056,405.346'
+    },
+    EPSG_4754: {
+        towgs84: '-208.4058,-109.8777,-2.5764'
+    },
+    ESRI_104101: {
+        towgs84: '372.87,149.23,585.29'
+    },
+    EPSG_4693: {
+        towgs84: '0,-0.15,0.68'
+    },
+    EPSG_6207: {
+        towgs84: '293.17,726.18,245.36'
+    },
+    EPSG_4153: {
+        towgs84: '-133.63,-157.5,-158.62'
+    },
+    EPSG_4132: {
+        towgs84: '-241.54,-163.64,396.06'
+    },
+    EPSG_4221: {
+        towgs84: '-154.5,150.7,100.4'
+    },
+    EPSG_4266: {
+        towgs84: '-80.7,-132.5,41.1'
+    },
+    EPSG_4193: {
+        towgs84: '-70.9,-151.8,-41.4'
+    },
+    EPSG_5340: {
+        towgs84: '-0.41,0.46,-0.35'
+    },
+    EPSG_4246: {
+        towgs84: '-294.7,-200.1,525.5'
+    },
+    EPSG_4318: {
+        towgs84: '-3.2,-5.7,2.8'
+    },
+    EPSG_4121: {
+        towgs84: '-199.87,74.79,246.62'
+    },
+    EPSG_4223: {
+        towgs84: '-260.1,5.5,432.2'
+    },
+    EPSG_4158: {
+        towgs84: '-0.465,372.095,171.736'
+    },
+    EPSG_4285: {
+        towgs84: '-128.16,-282.42,21.93'
+    },
+    EPSG_4613: {
+        towgs84: '-404.78,685.68,45.47'
+    },
+    EPSG_4607: {
+        towgs84: '195.671,332.517,274.607'
+    },
+    EPSG_4475: {
+        towgs84: '-381.788,-57.501,-256.673'
+    },
+    EPSG_4208: {
+        towgs84: '-157.84,308.54,-146.6'
+    },
+    EPSG_4743: {
+        towgs84: '70.995,-335.916,262.898'
+    },
+    EPSG_4710: {
+        towgs84: '-323.65,551.39,-491.22'
+    },
+    EPSG_7881: {
+        towgs84: '-0.077,0.079,0.086'
+    },
+    EPSG_4682: {
+        towgs84: '283.729,735.942,261.143'
+    },
+    EPSG_4739: {
+        towgs84: '-156,-271,-189'
+    },
+    EPSG_4679: {
+        towgs84: '-80.01,253.26,291.19'
+    },
+    EPSG_4750: {
+        towgs84: '-56.263,16.136,-22.856'
+    },
+    EPSG_4644: {
+        towgs84: '-10.18,-350.43,291.37'
+    },
+    EPSG_4695: {
+        towgs84: '-103.746,-9.614,-255.95'
+    },
+    EPSG_4292: {
+        towgs84: '-355,21,72'
+    },
+    EPSG_4302: {
+        towgs84: '-61.702,284.488,472.052'
+    },
+    EPSG_4143: {
+        towgs84: '-124.76,53,466.79'
+    },
+    EPSG_4606: {
+        towgs84: '-153,153,307'
+    },
+    EPSG_4699: {
+        towgs84: '-770.1,158.4,-498.2'
+    },
+    EPSG_4247: {
+        towgs84: '-273.5,110.6,-357.9'
+    },
+    EPSG_4160: {
+        towgs84: '8.88,184.86,106.69'
+    },
+    EPSG_4161: {
+        towgs84: '-233.43,6.65,173.64'
+    },
+    EPSG_9251: {
+        towgs84: '-9.5,122.9,138.2'
+    },
+    EPSG_9253: {
+        towgs84: '-78.1,101.6,133.3'
+    },
+    EPSG_4297: {
+        towgs84: '-198.383,-240.517,-107.909'
+    },
+    EPSG_4269: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4301: {
+        towgs84: '-147,506,687'
+    },
+    EPSG_4618: {
+        towgs84: '-59,-11,-52'
+    },
+    EPSG_4612: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4678: {
+        towgs84: '44.585,-131.212,-39.544'
+    },
+    EPSG_4250: {
+        towgs84: '-130,29,364'
+    },
+    EPSG_4144: {
+        towgs84: '214,804,268'
+    },
+    EPSG_4147: {
+        towgs84: '-17.51,-108.32,-62.39'
+    },
+    EPSG_4259: {
+        towgs84: '-254.1,-5.36,-100.29'
+    },
+    EPSG_4164: {
+        towgs84: '-76,-138,67'
+    },
+    EPSG_4211: {
+        towgs84: '-378.873,676.002,-46.255'
+    },
+    EPSG_4182: {
+        towgs84: '-422.651,-172.995,84.02'
+    },
+    EPSG_4224: {
+        towgs84: '-143.87,243.37,-33.52'
+    },
+    EPSG_4225: {
+        towgs84: '-205.57,168.77,-4.12'
+    },
+    EPSG_5527: {
+        towgs84: '-67.35,3.88,-38.22'
+    },
+    EPSG_4752: {
+        towgs84: '98,390,-22'
+    },
+    EPSG_4310: {
+        towgs84: '-30,190,89'
+    },
+    EPSG_9248: {
+        towgs84: '-192.26,65.72,132.08'
+    },
+    EPSG_4680: {
+        towgs84: '124.5,-63.5,-281'
+    },
+    EPSG_4701: {
+        towgs84: '-79.9,-158,-168.9'
+    },
+    EPSG_4706: {
+        towgs84: '-146.21,112.63,4.05'
+    },
+    EPSG_4805: {
+        towgs84: '682,-203,480'
+    },
+    EPSG_4201: {
+        towgs84: '-165,-11,206'
+    },
+    EPSG_4210: {
+        towgs84: '-157,-2,-299'
+    },
+    EPSG_4183: {
+        towgs84: '-104,167,-38'
+    },
+    EPSG_4139: {
+        towgs84: '11,72,-101'
+    },
+    EPSG_4668: {
+        towgs84: '-86,-98,-119'
+    },
+    EPSG_4717: {
+        towgs84: '-2,151,181'
+    },
+    EPSG_4732: {
+        towgs84: '102,52,-38'
+    },
+    EPSG_4280: {
+        towgs84: '-377,681,-50'
+    },
+    EPSG_4209: {
+        towgs84: '-138,-105,-289'
+    },
+    EPSG_4261: {
+        towgs84: '31,146,47'
+    },
+    EPSG_4658: {
+        towgs84: '-73,46,-86'
+    },
+    EPSG_4721: {
+        towgs84: '265.025,384.929,-194.046'
+    },
+    EPSG_4222: {
+        towgs84: '-136,-108,-292'
+    },
+    EPSG_4601: {
+        towgs84: '-255,-15,71'
+    },
+    EPSG_4602: {
+        towgs84: '725,685,536'
+    },
+    EPSG_4603: {
+        towgs84: '72,213.7,93'
+    },
+    EPSG_4605: {
+        towgs84: '9,183,236'
+    },
+    EPSG_4621: {
+        towgs84: '137,248,-430'
+    },
+    EPSG_4657: {
+        towgs84: '-28,199,5'
+    },
+    EPSG_4316: {
+        towgs84: '103.25,-100.4,-307.19'
+    },
+    EPSG_4642: {
+        towgs84: '-13,-348,292'
+    },
+    EPSG_4698: {
+        towgs84: '145,-187,103'
+    },
+    EPSG_4192: {
+        towgs84: '-206.1,-174.7,-87.7'
+    },
+    EPSG_4311: {
+        towgs84: '-265,120,-358'
+    },
+    EPSG_4135: {
+        towgs84: '58,-283,-182'
+    },
+    ESRI_104138: {
+        towgs84: '198,-226,-347'
+    },
+    EPSG_4245: {
+        towgs84: '-11,851,5'
+    },
+    EPSG_4142: {
+        towgs84: '-125,53,467'
+    },
+    EPSG_4213: {
+        towgs84: '-106,-87,188'
+    },
+    EPSG_4253: {
+        towgs84: '-133,-77,-51'
+    },
+    EPSG_4129: {
+        towgs84: '-132,-110,-335'
+    },
+    EPSG_4713: {
+        towgs84: '-77,-128,142'
+    },
+    EPSG_4239: {
+        towgs84: '217,823,299'
+    },
+    EPSG_4146: {
+        towgs84: '295,736,257'
+    },
+    EPSG_4155: {
+        towgs84: '-83,37,124'
+    },
+    EPSG_4165: {
+        towgs84: '-173,253,27'
+    },
+    EPSG_4672: {
+        towgs84: '175,-38,113'
+    },
+    EPSG_4236: {
+        towgs84: '-637,-549,-203'
+    },
+    EPSG_4251: {
+        towgs84: '-90,40,88'
+    },
+    EPSG_4271: {
+        towgs84: '-2,374,172'
+    },
+    EPSG_4175: {
+        towgs84: '-88,4,101'
+    },
+    EPSG_4716: {
+        towgs84: '298,-304,-375'
+    },
+    EPSG_4315: {
+        towgs84: '-23,259,-9'
+    },
+    EPSG_4744: {
+        towgs84: '-242.2,-144.9,370.3'
+    },
+    EPSG_4244: {
+        towgs84: '-97,787,86'
+    },
+    EPSG_4293: {
+        towgs84: '616,97,-251'
+    },
+    EPSG_4714: {
+        towgs84: '-127,-769,472'
+    },
+    EPSG_4736: {
+        towgs84: '260,12,-147'
+    },
+    EPSG_6883: {
+        towgs84: '-235,-110,393'
+    },
+    EPSG_6894: {
+        towgs84: '-63,176,185'
+    },
+    EPSG_4205: {
+        towgs84: '-43,-163,45'
+    },
+    EPSG_4256: {
+        towgs84: '41,-220,-134'
+    },
+    EPSG_4262: {
+        towgs84: '639,405,60'
+    },
+    EPSG_4604: {
+        towgs84: '174,359,365'
+    },
+    EPSG_4169: {
+        towgs84: '-115,118,426'
+    },
+    EPSG_4620: {
+        towgs84: '-106,-129,165'
+    },
+    EPSG_4184: {
+        towgs84: '-203,141,53'
+    },
+    EPSG_4616: {
+        towgs84: '-289,-124,60'
+    },
+    EPSG_9403: {
+        towgs84: '-307,-92,127'
+    },
+    EPSG_4684: {
+        towgs84: '-133,-321,50'
+    },
+    EPSG_4708: {
+        towgs84: '-491,-22,435'
+    },
+    EPSG_4707: {
+        towgs84: '114,-116,-333'
+    },
+    EPSG_4709: {
+        towgs84: '145,75,-272'
+    },
+    EPSG_4712: {
+        towgs84: '-205,107,53'
+    },
+    EPSG_4711: {
+        towgs84: '124,-234,-25'
+    },
+    EPSG_4718: {
+        towgs84: '230,-199,-752'
+    },
+    EPSG_4719: {
+        towgs84: '211,147,111'
+    },
+    EPSG_4724: {
+        towgs84: '208,-435,-229'
+    },
+    EPSG_4725: {
+        towgs84: '189,-79,-202'
+    },
+    EPSG_4735: {
+        towgs84: '647,1777,-1124'
+    },
+    EPSG_4722: {
+        towgs84: '-794,119,-298'
+    },
+    EPSG_4728: {
+        towgs84: '-307,-92,127'
+    },
+    EPSG_4734: {
+        towgs84: '-632,438,-609'
+    },
+    EPSG_4727: {
+        towgs84: '912,-58,1227'
+    },
+    EPSG_4729: {
+        towgs84: '185,165,42'
+    },
+    EPSG_4730: {
+        towgs84: '170,42,84'
+    },
+    EPSG_4733: {
+        towgs84: '276,-57,149'
+    },
+    ESRI_37218: {
+        towgs84: '230,-199,-752'
+    },
+    ESRI_37240: {
+        towgs84: '-7,215,225'
+    },
+    ESRI_37221: {
+        towgs84: '252,-209,-751'
+    },
+    ESRI_4305: {
+        towgs84: '-123,-206,219'
+    },
+    ESRI_104139: {
+        towgs84: '-73,-247,227'
+    },
+    EPSG_4748: {
+        towgs84: '51,391,-36'
+    },
+    EPSG_4219: {
+        towgs84: '-384,664,-48'
+    },
+    EPSG_4255: {
+        towgs84: '-333,-222,114'
+    },
+    EPSG_4257: {
+        towgs84: '-587.8,519.75,145.76'
+    },
+    EPSG_4646: {
+        towgs84: '-963,510,-359'
+    },
+    EPSG_6881: {
+        towgs84: '-24,-203,268'
+    },
+    EPSG_6882: {
+        towgs84: '-183,-15,273'
+    },
+    EPSG_4715: {
+        towgs84: '-104,-129,239'
+    },
+    IGNF_RGF93GDD: {
+        towgs84: '0,0,0'
+    },
+    IGNF_RGM04GDD: {
+        towgs84: '0,0,0'
+    },
+    IGNF_RGSPM06GDD: {
+        towgs84: '0,0,0'
+    },
+    IGNF_RGTAAF07GDD: {
+        towgs84: '0,0,0'
+    },
+    IGNF_RGFG95GDD: {
+        towgs84: '0,0,0'
+    },
+    IGNF_RGNCG: {
+        towgs84: '0,0,0'
+    },
+    IGNF_RGPFGDD: {
+        towgs84: '0,0,0'
+    },
+    IGNF_ETRS89G: {
+        towgs84: '0,0,0'
+    },
+    IGNF_RGR92GDD: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4173: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4180: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4619: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4667: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4075: {
+        towgs84: '0,0,0'
+    },
+    EPSG_6706: {
+        towgs84: '0,0,0'
+    },
+    EPSG_7798: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4661: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4669: {
+        towgs84: '0,0,0'
+    },
+    EPSG_8685: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4151: {
+        towgs84: '0,0,0'
+    },
+    EPSG_9702: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4758: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4761: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4765: {
+        towgs84: '0,0,0'
+    },
+    EPSG_8997: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4023: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4670: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4694: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4148: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4163: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4167: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4189: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4190: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4176: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4659: {
+        towgs84: '0,0,0'
+    },
+    EPSG_3824: {
+        towgs84: '0,0,0'
+    },
+    EPSG_3889: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4046: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4081: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4558: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4483: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5013: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5264: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5324: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5354: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5371: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5373: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5381: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5393: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5489: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5593: {
+        towgs84: '0,0,0'
+    },
+    EPSG_6135: {
+        towgs84: '0,0,0'
+    },
+    EPSG_6365: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5246: {
+        towgs84: '0,0,0'
+    },
+    EPSG_7886: {
+        towgs84: '0,0,0'
+    },
+    EPSG_8431: {
+        towgs84: '0,0,0'
+    },
+    EPSG_8427: {
+        towgs84: '0,0,0'
+    },
+    EPSG_8699: {
+        towgs84: '0,0,0'
+    },
+    EPSG_8818: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4757: {
+        towgs84: '0,0,0'
+    },
+    EPSG_9140: {
+        towgs84: '0,0,0'
+    },
+    EPSG_8086: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4686: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4737: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4702: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4747: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4749: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4674: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4755: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4759: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4762: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4763: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4764: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4166: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4170: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5546: {
+        towgs84: '0,0,0'
+    },
+    EPSG_7844: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4818: {
+        towgs84: '589,76,480'
+    },
+    EPSG_10328: {
+        towgs84: '0,0,0'
+    },
+    EPSG_9782: {
+        towgs84: '0,0,0'
+    },
+    EPSG_9777: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10690: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10639: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10739: {
+        towgs84: '0,0,0'
+    },
+    EPSG_7686: {
+        towgs84: '0,0,0'
+    },
+    EPSG_8900: {
+        towgs84: '0,0,0'
+    },
+    EPSG_5886: {
+        towgs84: '0,0,0'
+    },
+    EPSG_7683: {
+        towgs84: '0,0,0'
+    },
+    EPSG_6668: {
+        towgs84: '0,0,0'
+    },
+    EPSG_20046: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10299: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10310: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10475: {
+        towgs84: '0,0,0'
+    },
+    EPSG_4742: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10671: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10762: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10725: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10791: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10800: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10305: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10941: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10968: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10875: {
+        towgs84: '0,0,0'
+    },
+    EPSG_6318: {
+        towgs84: '0,0,0'
+    },
+    EPSG_10910: {
+        towgs84: '0,0,0'
+    }
 };
-$691fb6ad5e69deed$export$2e2bcd8739ae039.ch1903 = {
-    towgs84: "674.374,15.056,405.346",
-    ellipse: "bessel",
-    datumName: "swiss"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.ggrs87 = {
-    towgs84: "-199.87,74.79,246.62",
-    ellipse: "GRS80",
-    datumName: "Greek_Geodetic_Reference_System_1987"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.nad83 = {
-    towgs84: "0,0,0",
-    ellipse: "GRS80",
-    datumName: "North_American_Datum_1983"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.nad27 = {
-    nadgrids: "@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat",
-    ellipse: "clrk66",
-    datumName: "North_American_Datum_1927"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.potsdam = {
-    towgs84: "598.1,73.7,418.2,0.202,0.045,-2.455,6.7",
-    ellipse: "bessel",
-    datumName: "Potsdam Rauenberg 1950 DHDN"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.carthage = {
-    towgs84: "-263.0,6.0,431.0",
-    ellipse: "clark80",
-    datumName: "Carthage 1934 Tunisia"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.hermannskogel = {
-    towgs84: "577.326,90.129,463.919,5.137,1.474,5.297,2.4232",
-    ellipse: "bessel",
-    datumName: "Hermannskogel"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.militargeographische_institut = {
-    towgs84: "577.326,90.129,463.919,5.137,1.474,5.297,2.4232",
-    ellipse: "bessel",
-    datumName: "Militar-Geographische Institut"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.osni52 = {
-    towgs84: "482.530,-130.596,564.557,-1.042,-0.214,-0.631,8.15",
-    ellipse: "airy",
-    datumName: "Irish National"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.ire65 = {
-    towgs84: "482.530,-130.596,564.557,-1.042,-0.214,-0.631,8.15",
-    ellipse: "mod_airy",
-    datumName: "Ireland 1965"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.rassadiran = {
-    towgs84: "-133.63,-157.5,-158.62",
-    ellipse: "intl",
-    datumName: "Rassadiran"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.nzgd49 = {
-    towgs84: "59.47,-5.04,187.44,0.47,-0.1,1.024,-4.5993",
-    ellipse: "intl",
-    datumName: "New Zealand Geodetic Datum 1949"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.osgb36 = {
-    towgs84: "446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894",
-    ellipse: "airy",
-    datumName: "Airy 1830"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.s_jtsk = {
-    towgs84: "589,76,480",
-    ellipse: "bessel",
-    datumName: "S-JTSK (Ferro)"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.beduaram = {
-    towgs84: "-106,-87,188",
-    ellipse: "clrk80",
-    datumName: "Beduaram"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.gunung_segara = {
-    towgs84: "-403,684,41",
-    ellipse: "bessel",
-    datumName: "Gunung Segara Jakarta"
-};
-$691fb6ad5e69deed$export$2e2bcd8739ae039.rnb72 = {
-    towgs84: "106.869,-52.2978,103.724,-0.33657,0.456955,-1.84218,1",
-    ellipse: "intl",
-    datumName: "Reseau National Belge 1972"
-};
+for(var $691fb6ad5e69deed$var$key in $691fb6ad5e69deed$var$datums){
+    var $691fb6ad5e69deed$var$datum = $691fb6ad5e69deed$var$datums[$691fb6ad5e69deed$var$key];
+    if (!$691fb6ad5e69deed$var$datum.datumName) continue;
+    $691fb6ad5e69deed$var$datums[$691fb6ad5e69deed$var$datum.datumName] = $691fb6ad5e69deed$var$datum;
+}
+var $691fb6ad5e69deed$export$2e2bcd8739ae039 = $691fb6ad5e69deed$var$datums;
 
 
 
 var $7B7Eg = parcelRequire("7B7Eg");
 function $a8dbaa2f69d6c335$var$datum(datumCode, datum_params, a, b, es, ep2, nadgrids) {
     var out = {};
-    if (datumCode === undefined || datumCode === "none") out.datum_type = (0, $7B7Eg.PJD_NODATUM);
+    if (datumCode === undefined || datumCode === 'none') out.datum_type = (0, $7B7Eg.PJD_NODATUM);
     else out.datum_type = (0, $7B7Eg.PJD_WGS84);
     if (datum_params) {
         out.datum_params = datum_params.map(parseFloat);
@@ -36683,7 +38413,7 @@ function $a8dbaa2f69d6c335$var$datum(datumCode, datum_params, a, b, es, ep2, nad
         out.datum_type = (0, $7B7Eg.PJD_GRIDSHIFT);
         out.grids = nadgrids;
     }
-    out.a = a; //datum object also uses these values
+    out.a = a; // datum object also uses these values
     out.b = b;
     out.es = es;
     out.ep2 = ep2;
@@ -36697,12 +38427,63 @@ var $a8dbaa2f69d6c335$export$2e2bcd8739ae039 = $a8dbaa2f69d6c335$var$datum;
  * Resources for details of NTv2 file formats:
  * - https://web.archive.org/web/20140127204822if_/http://www.mgs.gov.on.ca:80/stdprodconsume/groups/content/@mgs/@iandit/documents/resourcelist/stel02_047447.pdf
  * - http://mimaka.com/help/gs/html/004_NTV2%20Data%20Format.htm
+ */ /**
+ * @typedef {Object} NadgridInfo
+ * @property {string} name The name of the NAD grid or 'null' if not specified.
+ * @property {boolean} mandatory Indicates if the grid is mandatory (true) or optional (false).
+ * @property {*} grid The loaded NAD grid object, or null if not loaded or not applicable.
+ * @property {boolean} isNull True if the grid is explicitly 'null', otherwise false.
+ */ /**
+ * @typedef {Object} NTV2GridOptions
+ * @property {boolean} [includeErrorFields=true] Whether to include error fields in the subgrids.
+ */ /**
+ * @typedef {Object} NadgridHeader
+ * @property {number} [nFields] Number of fields in the header.
+ * @property {number} [nSubgridFields] Number of fields in each subgrid header.
+ * @property {number} nSubgrids Number of subgrids in the file.
+ * @property {string} [shiftType] Type of shift (e.g., "SECONDS").
+ * @property {number} [fromSemiMajorAxis] Source ellipsoid semi-major axis.
+ * @property {number} [fromSemiMinorAxis] Source ellipsoid semi-minor axis.
+ * @property {number} [toSemiMajorAxis] Target ellipsoid semi-major axis.
+ * @property {number} [toSemiMinorAxis] Target ellipsoid semi-minor axis.
+ */ /**
+ * @typedef {Object} Subgrid
+ * @property {Array<number>} ll Lower left corner of the grid in radians [longitude, latitude].
+ * @property {Array<number>} del Grid spacing in radians [longitude interval, latitude interval].
+ * @property {Array<number>} lim Number of columns in the grid [longitude columns, latitude columns].
+ * @property {number} [count] Total number of grid nodes.
+ * @property {Array} cvs Mapped node values for the grid.
+ */ /** @typedef {{header: NadgridHeader, subgrids: Array<Subgrid>}} NADGrid */ /**
+ * @typedef {Object} GeoTIFF
+ * @property {() => Promise<number>} getImageCount - Returns the number of images in the GeoTIFF.
+ * @property {(index: number) => Promise<GeoTIFFImage>} getImage - Returns a GeoTIFFImage for the given index.
+ */ /**
+ * @typedef {Object} GeoTIFFImage
+ * @property {() => number} getWidth - Returns the width of the image.
+ * @property {() => number} getHeight - Returns the height of the image.
+ * @property {() => number[]} getBoundingBox - Returns the bounding box as [minX, minY, maxX, maxY] in degrees.
+ * @property {() => Promise<ArrayLike<ArrayLike<number>>>} readRasters - Returns the raster data as an array of bands.
+ * @property {Object} fileDirectory - The file directory object containing metadata.
+ * @property {Object} fileDirectory.ModelPixelScale - The pixel scale array [scaleX, scaleY, scaleZ] in degrees.
  */ var $11c5d1275fd03d1e$var$loadedNadgrids = {};
-function $11c5d1275fd03d1e$export$2e2bcd8739ae039(key, data) {
+function $11c5d1275fd03d1e$export$2e2bcd8739ae039(key, data, options) {
+    if (data instanceof ArrayBuffer) return $11c5d1275fd03d1e$var$readNTV2Grid(key, data, options);
+    return {
+        ready: $11c5d1275fd03d1e$var$readGeotiffGrid(key, data)
+    };
+}
+/**
+ * @param {string} key The key to associate with the loaded grid.
+ * @param {ArrayBuffer} data The NTv2 grid data as an ArrayBuffer.
+ * @param {NTV2GridOptions} [options] Optional parameters for loading the grid.
+ * @returns {NADGrid} The loaded NAD grid information.
+ */ function $11c5d1275fd03d1e$var$readNTV2Grid(key, data, options) {
+    var includeErrorFields = true;
+    if (options !== undefined && options.includeErrorFields === false) includeErrorFields = false;
     var view = new DataView(data);
     var isLittleEndian = $11c5d1275fd03d1e$var$detectLittleEndian(view);
     var header = $11c5d1275fd03d1e$var$readHeader(view, isLittleEndian);
-    var subgrids = $11c5d1275fd03d1e$var$readSubgrids(view, header, isLittleEndian);
+    var subgrids = $11c5d1275fd03d1e$var$readSubgrids(view, header, isLittleEndian, includeErrorFields);
     var nadgrid = {
         header: header,
         subgrids: subgrids
@@ -36710,18 +38491,73 @@ function $11c5d1275fd03d1e$export$2e2bcd8739ae039(key, data) {
     $11c5d1275fd03d1e$var$loadedNadgrids[key] = nadgrid;
     return nadgrid;
 }
+/**
+ * @param {string} key The key to associate with the loaded grid.
+ * @param {GeoTIFF} tiff The GeoTIFF instance to read the grid from.
+ * @returns {Promise<NADGrid>} A promise that resolves to the loaded NAD grid information.
+ */ async function $11c5d1275fd03d1e$var$readGeotiffGrid(key, tiff) {
+    var subgrids = [];
+    var subGridCount = await tiff.getImageCount();
+    // proj produced tiff grid shift files appear to organize lower res subgrids first, higher res/ child subgrids last.
+    for(var subgridIndex = subGridCount - 1; subgridIndex >= 0; subgridIndex--){
+        var image = await tiff.getImage(subgridIndex);
+        var rasters = await image.readRasters();
+        var data = rasters;
+        var lim = [
+            image.getWidth(),
+            image.getHeight()
+        ];
+        var imageBBoxRadians = image.getBoundingBox().map($11c5d1275fd03d1e$var$degreesToRadians);
+        var del = [
+            image.fileDirectory.ModelPixelScale[0],
+            image.fileDirectory.ModelPixelScale[1]
+        ].map($11c5d1275fd03d1e$var$degreesToRadians);
+        var maxX = imageBBoxRadians[0] + (lim[0] - 1) * del[0];
+        var minY = imageBBoxRadians[3] - (lim[1] - 1) * del[1];
+        var latitudeOffsetBand = data[0];
+        var longitudeOffsetBand = data[1];
+        var nodes = [];
+        for(let i = lim[1] - 1; i >= 0; i--)for(let j = lim[0] - 1; j >= 0; j--){
+            var index = i * lim[0] + j;
+            nodes.push([
+                -$11c5d1275fd03d1e$var$secondsToRadians(longitudeOffsetBand[index]),
+                $11c5d1275fd03d1e$var$secondsToRadians(latitudeOffsetBand[index])
+            ]);
+        }
+        subgrids.push({
+            del: del,
+            lim: lim,
+            ll: [
+                -maxX,
+                minY
+            ],
+            cvs: nodes
+        });
+    }
+    var tifGrid = {
+        header: {
+            nSubgrids: subGridCount
+        },
+        subgrids: subgrids
+    };
+    $11c5d1275fd03d1e$var$loadedNadgrids[key] = tifGrid;
+    return tifGrid;
+}
 function $11c5d1275fd03d1e$export$31c4d9288d81329a(nadgrids) {
     // Format details: http://proj.maptools.org/gen_parms.html
     if (nadgrids === undefined) return null;
-    var grids = nadgrids.split(",");
+    var grids = nadgrids.split(',');
     return grids.map($11c5d1275fd03d1e$var$parseNadgridString);
 }
-function $11c5d1275fd03d1e$var$parseNadgridString(value) {
+/**
+ * @param {string} value The nadgrid string to get information for.
+ * @returns {NadgridInfo|null} An object with grid information, or null if the input is empty.
+ */ function $11c5d1275fd03d1e$var$parseNadgridString(value) {
     if (value.length === 0) return null;
-    var optional = value[0] === "@";
+    var optional = value[0] === '@';
     if (optional) value = value.slice(1);
-    if (value === "null") return {
-        name: "null",
+    if (value === 'null') return {
+        name: 'null',
         mandatory: !optional,
         grid: null,
         isNull: true
@@ -36733,6 +38569,9 @@ function $11c5d1275fd03d1e$var$parseNadgridString(value) {
         isNull: false
     };
 }
+function $11c5d1275fd03d1e$var$degreesToRadians(degrees) {
+    return degrees * Math.PI / 180;
+}
 function $11c5d1275fd03d1e$var$secondsToRadians(seconds) {
     return seconds / 3600 * Math.PI / 180;
 }
@@ -36740,7 +38579,7 @@ function $11c5d1275fd03d1e$var$detectLittleEndian(view) {
     var nFields = view.getInt32(8, false);
     if (nFields === 11) return false;
     nFields = view.getInt32(8, true);
-    if (nFields !== 11) console.warn("Failed to detect nadgrid endian-ness, defaulting to little-endian");
+    if (nFields !== 11) console.warn('Failed to detect nadgrid endian-ness, defaulting to little-endian');
     return true;
 }
 function $11c5d1275fd03d1e$var$readHeader(view, isLittleEndian) {
@@ -36758,12 +38597,12 @@ function $11c5d1275fd03d1e$var$readHeader(view, isLittleEndian) {
 function $11c5d1275fd03d1e$var$decodeString(view, start, end) {
     return String.fromCharCode.apply(null, new Uint8Array(view.buffer.slice(start, end)));
 }
-function $11c5d1275fd03d1e$var$readSubgrids(view, header, isLittleEndian) {
+function $11c5d1275fd03d1e$var$readSubgrids(view, header, isLittleEndian, includeErrorFields) {
     var gridOffset = 176;
     var grids = [];
     for(var i = 0; i < header.nSubgrids; i++){
         var subHeader = $11c5d1275fd03d1e$var$readGridHeader(view, gridOffset, isLittleEndian);
-        var nodes = $11c5d1275fd03d1e$var$readGridNodes(view, gridOffset, subHeader, isLittleEndian);
+        var nodes = $11c5d1275fd03d1e$var$readGridNodes(view, gridOffset, subHeader, isLittleEndian, includeErrorFields);
         var lngColumnCount = Math.round(1 + (subHeader.upperLongitude - subHeader.lowerLongitude) / subHeader.longitudeInterval);
         var latColumnCount = Math.round(1 + (subHeader.upperLatitude - subHeader.lowerLatitude) / subHeader.latitudeInterval);
         // Proj4 operates on radians whereas the coordinates are in seconds in the grid
@@ -36783,11 +38622,16 @@ function $11c5d1275fd03d1e$var$readSubgrids(view, header, isLittleEndian) {
             count: subHeader.gridNodeCount,
             cvs: $11c5d1275fd03d1e$var$mapNodes(nodes)
         });
-        gridOffset += 176 + subHeader.gridNodeCount * 16;
+        var rowSize = 16;
+        if (includeErrorFields === false) rowSize = 8;
+        gridOffset += 176 + subHeader.gridNodeCount * rowSize;
     }
     return grids;
 }
-function $11c5d1275fd03d1e$var$mapNodes(nodes) {
+/**
+ * @param {*} nodes
+ * @returns Array<Array<number>>
+ */ function $11c5d1275fd03d1e$var$mapNodes(nodes) {
     return nodes.map(function(r) {
         return [
             $11c5d1275fd03d1e$var$secondsToRadians(r.longitudeShift),
@@ -36808,54 +38652,73 @@ function $11c5d1275fd03d1e$var$readGridHeader(view, offset, isLittleEndian) {
         gridNodeCount: view.getInt32(offset + 168, isLittleEndian)
     };
 }
-function $11c5d1275fd03d1e$var$readGridNodes(view, offset, gridHeader, isLittleEndian) {
+function $11c5d1275fd03d1e$var$readGridNodes(view, offset, gridHeader, isLittleEndian, includeErrorFields) {
     var nodesOffset = offset + 176;
     var gridRecordLength = 16;
+    if (includeErrorFields === false) gridRecordLength = 8;
     var gridShiftRecords = [];
     for(var i = 0; i < gridHeader.gridNodeCount; i++){
         var record = {
             latitudeShift: view.getFloat32(nodesOffset + i * gridRecordLength, isLittleEndian),
-            longitudeShift: view.getFloat32(nodesOffset + i * gridRecordLength + 4, isLittleEndian),
-            latitudeAccuracy: view.getFloat32(nodesOffset + i * gridRecordLength + 8, isLittleEndian),
-            longitudeAccuracy: view.getFloat32(nodesOffset + i * gridRecordLength + 12, isLittleEndian)
+            longitudeShift: view.getFloat32(nodesOffset + i * gridRecordLength + 4, isLittleEndian)
         };
+        if (includeErrorFields !== false) {
+            record.latitudeAccuracy = view.getFloat32(nodesOffset + i * gridRecordLength + 8, isLittleEndian);
+            record.longitudeAccuracy = view.getFloat32(nodesOffset + i * gridRecordLength + 12, isLittleEndian);
+        }
         gridShiftRecords.push(record);
     }
     return gridShiftRecords;
 }
 
 
-function $673c8104677fb23d$var$Projection(srsCode, callback) {
+/**
+ * @typedef {Object} DatumDefinition
+ * @property {number} datum_type - The type of datum.
+ * @property {number} a - Semi-major axis of the ellipsoid.
+ * @property {number} b - Semi-minor axis of the ellipsoid.
+ * @property {number} es - Eccentricity squared of the ellipsoid.
+ * @property {number} ep2 - Second eccentricity squared of the ellipsoid.
+ */ /**
+ * @param {string | import('./core').PROJJSONDefinition | import('./defs').ProjectionDefinition} srsCode
+ * @param {(errorMessage?: string, instance?: Projection) => void} [callback]
+ */ function $673c8104677fb23d$var$Projection(srsCode, callback) {
     if (!(this instanceof $673c8104677fb23d$var$Projection)) return new $673c8104677fb23d$var$Projection(srsCode);
+    /** @type {<T extends import('./core').TemplateCoordinates>(coordinates: T, enforceAxis?: boolean) => T} */ this.forward = null;
+    /** @type {<T extends import('./core').TemplateCoordinates>(coordinates: T, enforceAxis?: boolean) => T} */ this.inverse = null;
+    /** @type {function(): void} */ this.init = null;
+    /** @type {string} */ this.name;
+    /** @type {Array<string>} */ this.names = null;
+    /** @type {string} */ this.title;
     callback = callback || function(error) {
         if (error) throw error;
     };
     var json = (0, $ceec90104c01066b$export$2e2bcd8739ae039)(srsCode);
-    if (typeof json !== "object") {
-        callback("Could not parse to valid json: " + srsCode);
+    if (typeof json !== 'object') {
+        callback('Could not parse to valid json: ' + srsCode);
         return;
     }
     var ourProj = $673c8104677fb23d$var$Projection.projections.get(json.projName);
     if (!ourProj) {
-        callback("Could not get projection name from: " + srsCode);
+        callback('Could not get projection name from: ' + srsCode);
         return;
     }
-    if (json.datumCode && json.datumCode !== "none") {
+    if (json.datumCode && json.datumCode !== 'none') {
         var datumDef = (0, $906e57b8f0ea965b$export$2e2bcd8739ae039)((0, $691fb6ad5e69deed$export$2e2bcd8739ae039), json.datumCode);
         if (datumDef) {
-            json.datum_params = json.datum_params || (datumDef.towgs84 ? datumDef.towgs84.split(",") : null);
+            json.datum_params = json.datum_params || (datumDef.towgs84 ? datumDef.towgs84.split(',') : null);
             json.ellps = datumDef.ellipse;
             json.datumName = datumDef.datumName ? datumDef.datumName : json.datumCode;
         }
     }
     json.k0 = json.k0 || 1.0;
-    json.axis = json.axis || "enu";
-    json.ellps = json.ellps || "wgs84";
+    json.axis = json.axis || 'enu';
+    json.ellps = json.ellps || 'wgs84';
     json.lat1 = json.lat1 || json.lat0; // Lambert_Conformal_Conic_1SP, for example, needs this
     var sphere_ = (0, $887a004fd69f983c$export$b2690196de52b050)(json.a, json.b, json.rf, json.ellps, json.sphere);
     var ecc = (0, $887a004fd69f983c$export$e3d7bf2ed2a7479f)(sphere_.a, sphere_.b, sphere_.rf, json.R_A);
     var nadgrids = (0, $11c5d1275fd03d1e$export$31c4d9288d81329a)(json.nadgrids);
-    var datumObj = json.datum || (0, $a8dbaa2f69d6c335$export$2e2bcd8739ae039)(json.datumCode, json.datum_params, sphere_.a, sphere_.b, ecc.es, ecc.ep2, nadgrids);
+    /** @type {DatumDefinition} */ var datumObj = json.datum || (0, $a8dbaa2f69d6c335$export$2e2bcd8739ae039)(json.datumCode, json.datum_params, sphere_.a, sphere_.b, ecc.es, ecc.ep2, nadgrids);
     (0, $cb046200faa8ce19$export$2e2bcd8739ae039)(this, json); // transfer everything over from the projection because we don't know what we'll need
     (0, $cb046200faa8ce19$export$2e2bcd8739ae039)(this, ourProj); // transfer all the methods from the projection
     // copy the 4 things over we calculated in deriveConstants.sphere
@@ -36870,7 +38733,7 @@ function $673c8104677fb23d$var$Projection(srsCode, callback) {
     // add in the datum object
     this.datum = datumObj;
     // init the projection
-    this.init();
+    if ('init' in this && typeof this.init === 'function') this.init();
     // legecy callback from back in the day when it went to spatialreference.org
     callback(null, this);
 }
@@ -36885,7 +38748,7 @@ var $7B7Eg = parcelRequire("7B7Eg");
 var $7B7Eg = parcelRequire("7B7Eg");
 
 var $7B7Eg = parcelRequire("7B7Eg");
-"use strict";
+'use strict';
 function $9492081abc6963cf$export$68c8d8590fbb24e4(source, dest) {
     if (source.datum_type !== dest.datum_type) return false; // false, datums are not equal
     else if (source.a !== dest.a || Math.abs(source.es - dest.es) > 0.000000000050) // the tolerance for es is to ensure that GRS80 and WGS84
@@ -36898,7 +38761,7 @@ function $9492081abc6963cf$export$68c8d8590fbb24e4(source, dest) {
 function $9492081abc6963cf$export$4a4ae2976f9a808a(p, es, a) {
     var Longitude = p.x;
     var Latitude = p.y;
-    var Height = p.z ? p.z : 0; //Z value not always supplied
+    var Height = p.z ? p.z : 0; // Z value not always supplied
     var Rn; /*  Earth radius at location  */ 
     var Sin_Lat; /*  Math.sin(Latitude)  */ 
     var Sin2_Lat; /*  Square of Math.sin(Latitude)  */ 
@@ -36909,7 +38772,7 @@ function $9492081abc6963cf$export$4a4ae2976f9a808a(p, es, a) {
    ** test, it should be wrapped by Math.cos() and Math.sin().  NFW for PROJ.4, Sep/2001.
    */ if (Latitude < -(0, $7B7Eg.HALF_PI) && Latitude > -1.001 * (0, $7B7Eg.HALF_PI)) Latitude = -(0, $7B7Eg.HALF_PI);
     else if (Latitude > (0, $7B7Eg.HALF_PI) && Latitude < 1.001 * (0, $7B7Eg.HALF_PI)) Latitude = (0, $7B7Eg.HALF_PI);
-    else if (Latitude < -(0, $7B7Eg.HALF_PI)) /* Latitude out of range */ //..reportError('geocent:lat out of range:' + Latitude);
+    else if (Latitude < -(0, $7B7Eg.HALF_PI)) /* Latitude out of range */ // ..reportError('geocent:lat out of range:' + Latitude);
     return {
         x: -Infinity,
         y: -Infinity,
@@ -36950,7 +38813,7 @@ function $9492081abc6963cf$export$26210192c8922750(p, es, a, b) {
     var iter; /* # of continous iteration, max. 30 is always enough (s.a.) */ 
     var X = p.x;
     var Y = p.y;
-    var Z = p.z ? p.z : 0.0; //Z value not always supplied
+    var Z = p.z ? p.z : 0.0; // Z value not always supplied
     var Longitude;
     var Latitude;
     var Height;
@@ -37030,7 +38893,7 @@ function $9492081abc6963cf$export$d18952b9ecb47c8f(p, datum_type, datum_params) 
     }
 } // cs_geocentric_to_wgs84
 function $9492081abc6963cf$export$2b744ad521e7ac0b(p, datum_type, datum_params) {
-    if (datum_type === (0, $7B7Eg.PJD_3PARAM)) //if( x[io] === HUGE_VAL )
+    if (datum_type === (0, $7B7Eg.PJD_3PARAM)) // if( x[io] === HUGE_VAL )
     //    continue;
     return {
         x: p.x - datum_params[0],
@@ -37048,14 +38911,14 @@ function $9492081abc6963cf$export$2b744ad521e7ac0b(p, datum_type, datum_params) 
         var x_tmp = (p.x - Dx_BF) / M_BF;
         var y_tmp = (p.y - Dy_BF) / M_BF;
         var z_tmp = (p.z - Dz_BF) / M_BF;
-        //if( x[io] === HUGE_VAL )
+        // if( x[io] === HUGE_VAL )
         //    continue;
         return {
             x: x_tmp + Rz_BF * y_tmp - Ry_BF * z_tmp,
             y: -Rz_BF * x_tmp + y_tmp + Rx_BF * z_tmp,
             z: Ry_BF * x_tmp - Rx_BF * y_tmp + z_tmp
         };
-    } //cs_geocentric_from_wgs84()
+    } // cs_geocentric_from_wgs84()
 }
 
 
@@ -37102,7 +38965,7 @@ function $5ffe676e8d600cda$export$2e2bcd8739ae039(source, dest, point) {
 }
 function $5ffe676e8d600cda$export$cfa06df23524576a(source, inverse, point) {
     if (source.grids === null || source.grids.length === 0) {
-        console.log("Grid shift grids not found");
+        console.log('Grid shift grids not found');
         return -1;
     }
     var input = {
@@ -37113,7 +38976,6 @@ function $5ffe676e8d600cda$export$cfa06df23524576a(source, inverse, point) {
         x: Number.NaN,
         y: Number.NaN
     };
-    var onlyMandatoryGrids = false;
     var attemptedGrids = [];
     outer: for(var i = 0; i < source.grids.length; i++){
         var grid = source.grids[i];
@@ -37122,10 +38984,9 @@ function $5ffe676e8d600cda$export$cfa06df23524576a(source, inverse, point) {
             output = input;
             break;
         }
-        onlyMandatoryGrids = grid.mandatory;
         if (grid.grid === null) {
             if (grid.mandatory) {
-                console.log("Unable to find mandatory grid '" + grid.name + "'");
+                console.log('Unable to find mandatory grid \'' + grid.name + '\'');
                 return -1;
             }
             continue;
@@ -37145,7 +39006,7 @@ function $5ffe676e8d600cda$export$cfa06df23524576a(source, inverse, point) {
         }
     }
     if (isNaN(output.x)) {
-        console.log("Failed to find a grid shift table for location '" + -input.x * (0, $7B7Eg.R2D) + " " + input.y * (0, $7B7Eg.R2D) + " tried: '" + attemptedGrids + "'");
+        console.log('Failed to find a grid shift table for location \'' + -input.x * (0, $7B7Eg.R2D) + ' ' + input.y * (0, $7B7Eg.R2D) + ' tried: \'' + attemptedGrids + '\'');
         return -1;
     }
     point.x = -output.x;
@@ -37175,7 +39036,7 @@ function $5ffe676e8d600cda$var$applySubgridShift(pin, inverse, ct) {
         do {
             del = $5ffe676e8d600cda$var$nadInterpolate(t, ct);
             if (isNaN(del.x)) {
-                console.log("Inverse grid shift iteration failed, presumably at grid edge.  Using first approximation.");
+                console.log('Inverse grid shift iteration failed, presumably at grid edge.  Using first approximation.');
                 break;
             }
             dif = {
@@ -37186,7 +39047,7 @@ function $5ffe676e8d600cda$var$applySubgridShift(pin, inverse, ct) {
             t.y += dif.y;
         }while (i-- && Math.abs(dif.x) > tol && Math.abs(dif.y) > tol);
         if (i < 0) {
-            console.log("Inverse grid shift iterator failed to converge.");
+            console.log('Inverse grid shift iterator failed to converge.');
             return val;
         }
         val.x = (0, $dbd4D.default)(t.x + ct.ll[0]);
@@ -37247,42 +39108,42 @@ function $5ffe676e8d600cda$var$nadInterpolate(pin, ct) {
 function $87e63c6b511b85b5$export$2e2bcd8739ae039(crs, denorm, point) {
     var xin = point.x, yin = point.y, zin = point.z || 0.0;
     var v, t, i;
-    var out = {};
+    /** @type {import("./core").InterfaceCoordinates} */ var out = {};
     for(i = 0; i < 3; i++){
         if (denorm && i === 2 && point.z === undefined) continue;
         if (i === 0) {
             v = xin;
-            if ("ew".indexOf(crs.axis[i]) !== -1) t = "x";
-            else t = "y";
+            if ('ew'.indexOf(crs.axis[i]) !== -1) t = 'x';
+            else t = 'y';
         } else if (i === 1) {
             v = yin;
-            if ("ns".indexOf(crs.axis[i]) !== -1) t = "y";
-            else t = "x";
+            if ('ns'.indexOf(crs.axis[i]) !== -1) t = 'y';
+            else t = 'x';
         } else {
             v = zin;
-            t = "z";
+            t = 'z';
         }
         switch(crs.axis[i]){
-            case "e":
+            case 'e':
                 out[t] = v;
                 break;
-            case "w":
+            case 'w':
                 out[t] = -v;
                 break;
-            case "n":
+            case 'n':
                 out[t] = v;
                 break;
-            case "s":
+            case 's':
                 out[t] = -v;
                 break;
-            case "u":
+            case 'u':
                 if (point[t] !== undefined) out.z = v;
                 break;
-            case "d":
+            case 'd':
                 if (point[t] !== undefined) out.z = -v;
                 break;
             default:
-                //console.log("ERROR: unknow axis ("+crs.axis[i]+") - check definition of "+crs.projName);
+                // console.log("ERROR: unknow axis ("+crs.axis[i]+") - check definition of "+crs.projName);
                 return null;
         }
     }
@@ -37291,7 +39152,10 @@ function $87e63c6b511b85b5$export$2e2bcd8739ae039(crs, denorm, point) {
 
 
 
-function $75c20f164bd887af$export$2e2bcd8739ae039(array) {
+/**
+ * @param {Array<number>} array
+ * @returns {import("../core").InterfaceCoordinates}
+ */ function $75c20f164bd887af$export$2e2bcd8739ae039(array) {
     var out = {
         x: array[0],
         y: array[1]
@@ -37307,16 +39171,16 @@ function $9ebb3c02db1122f3$export$2e2bcd8739ae039(point) {
     $9ebb3c02db1122f3$var$checkCoord(point.y);
 }
 function $9ebb3c02db1122f3$var$checkCoord(num) {
-    if (typeof Number.isFinite === "function") {
+    if (typeof Number.isFinite === 'function') {
         if (Number.isFinite(num)) return;
-        throw new TypeError("coordinates must be finite numbers");
+        throw new TypeError('coordinates must be finite numbers');
     }
-    if (typeof num !== "number" || num !== num || !isFinite(num)) throw new TypeError("coordinates must be finite numbers");
+    if (typeof num !== 'number' || num !== num || !isFinite(num)) throw new TypeError('coordinates must be finite numbers');
 }
 
 
 function $b56b1bf61c7cfac7$var$checkNotWGS(source, dest) {
-    return (source.datum.datum_type === (0, $7B7Eg.PJD_3PARAM) || source.datum.datum_type === (0, $7B7Eg.PJD_7PARAM) || source.datum.datum_type === (0, $7B7Eg.PJD_GRIDSHIFT)) && dest.datumCode !== "WGS84" || (dest.datum.datum_type === (0, $7B7Eg.PJD_3PARAM) || dest.datum.datum_type === (0, $7B7Eg.PJD_7PARAM) || dest.datum.datum_type === (0, $7B7Eg.PJD_GRIDSHIFT)) && source.datumCode !== "WGS84";
+    return (source.datum.datum_type === (0, $7B7Eg.PJD_3PARAM) || source.datum.datum_type === (0, $7B7Eg.PJD_7PARAM) || source.datum.datum_type === (0, $7B7Eg.PJD_GRIDSHIFT)) && dest.datumCode !== 'WGS84' || (dest.datum.datum_type === (0, $7B7Eg.PJD_3PARAM) || dest.datum.datum_type === (0, $7B7Eg.PJD_7PARAM) || dest.datum.datum_type === (0, $7B7Eg.PJD_GRIDSHIFT)) && source.datumCode !== 'WGS84';
 }
 function $b56b1bf61c7cfac7$export$2e2bcd8739ae039(source, dest, point, enforceAxis) {
     var wgs84;
@@ -37332,14 +39196,14 @@ function $b56b1bf61c7cfac7$export$2e2bcd8739ae039(source, dest, point, enforceAx
     (0, $9ebb3c02db1122f3$export$2e2bcd8739ae039)(point);
     // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
     if (source.datum && dest.datum && $b56b1bf61c7cfac7$var$checkNotWGS(source, dest)) {
-        wgs84 = new (0, $673c8104677fb23d$export$2e2bcd8739ae039)("WGS84");
+        wgs84 = new (0, $673c8104677fb23d$export$2e2bcd8739ae039)('WGS84');
         point = $b56b1bf61c7cfac7$export$2e2bcd8739ae039(source, wgs84, point, enforceAxis);
         source = wgs84;
     }
     // DGR, 2010/11/12
-    if (enforceAxis && source.axis !== "enu") point = (0, $87e63c6b511b85b5$export$2e2bcd8739ae039)(source, false, point);
+    if (enforceAxis && source.axis !== 'enu') point = (0, $87e63c6b511b85b5$export$2e2bcd8739ae039)(source, false, point);
     // Transform source points to long/lat, if they aren't already.
-    if (source.projName === "longlat") point = {
+    if (source.projName === 'longlat') point = {
         x: point.x * (0, $7B7Eg.D2R),
         y: point.y * (0, $7B7Eg.D2R),
         z: point.z || 0
@@ -37358,13 +39222,14 @@ function $b56b1bf61c7cfac7$export$2e2bcd8739ae039(source, dest, point, enforceAx
     // Convert datums if needed, and if possible.
     point = (0, $5ffe676e8d600cda$export$2e2bcd8739ae039)(source.datum, dest.datum, point);
     if (!point) return;
+    /** @type {import('./core').InterfaceCoordinates} */ point;
     // Adjust for the prime meridian if necessary
     if (dest.from_greenwich) point = {
         x: point.x - dest.from_greenwich,
         y: point.y,
         z: point.z || 0
     };
-    if (dest.projName === "longlat") // convert radians to decimal degrees
+    if (dest.projName === 'longlat') // convert radians to decimal degrees
     point = {
         x: point.x * (0, $7B7Eg.R2D),
         y: point.y * (0, $7B7Eg.R2D),
@@ -37379,14 +39244,84 @@ function $b56b1bf61c7cfac7$export$2e2bcd8739ae039(source, dest, point, enforceAx
         };
     }
     // DGR, 2010/11/12
-    if (enforceAxis && dest.axis !== "enu") return (0, $87e63c6b511b85b5$export$2e2bcd8739ae039)(dest, true, point);
-    if (point && !hasZ) delete point.z;
+    if (enforceAxis && dest.axis !== 'enu') return (0, $87e63c6b511b85b5$export$2e2bcd8739ae039)(dest, true, point);
+    if (point && !hasZ && dest.projName !== 'geocent') delete point.z;
     return point;
 }
 
 
-var $afb9f31c9f432b0c$var$wgs84 = (0, $673c8104677fb23d$export$2e2bcd8739ae039)("WGS84");
-function $afb9f31c9f432b0c$var$transformer(from, to, coords, enforceAxis) {
+var $afb9f31c9f432b0c$var$wgs84 = (0, $673c8104677fb23d$export$2e2bcd8739ae039)('WGS84');
+/**
+ * @typedef {{x: number, y: number, z?: number, m?: number}} InterfaceCoordinates
+ */ /**
+ * @typedef {Array<number> | InterfaceCoordinates} TemplateCoordinates
+ */ /**
+ * @typedef {Object} Converter
+ * @property {<T extends TemplateCoordinates>(coordinates: T, enforceAxis?: boolean) => T} forward
+ * @property {<T extends TemplateCoordinates>(coordinates: T, enforceAxis?: boolean) => T} inverse
+ * @property {proj} [oProj]
+ */ /**
+ * @typedef {Object} PROJJSONDefinition
+ * @property {string} [$schema]
+ * @property {string} type
+ * @property {string} [name]
+ * @property {{authority: string, code: number}} [id]
+ * @property {string} [scope]
+ * @property {string} [area]
+ * @property {{south_latitude: number, west_longitude: number, north_latitude: number, east_longitude: number}} [bbox]
+ * @property {PROJJSONDefinition[]} [components]
+ * @property {{type: string, name: string}} [datum]
+ * @property {{
+ *   name: string,
+ *   members: Array<{
+ *     name: string,
+ *     id?: {authority: string, code: number}
+ *   }>,
+ *   ellipsoid?: {
+ *     name: string,
+ *     semi_major_axis: number,
+ *     inverse_flattening?: number
+ *   },
+ *   accuracy?: string,
+ *   id?: {authority: string, code: number}
+ * }} [datum_ensemble]
+ * @property {{
+ *   subtype: string,
+ *   axis: Array<{
+ *     name: string,
+ *     abbreviation?: string,
+ *     direction: string,
+ *     unit: string
+ *   }>
+ * }} [coordinate_system]
+ * @property {{
+ *   name: string,
+ *   method: {name: string},
+ *   parameters: Array<{
+ *     name: string,
+ *     value: number,
+ *     unit?: string
+ *   }>
+ * }} [conversion]
+ * @property {{
+ *   name: string,
+ *   method: {name: string},
+ *   parameters: Array<{
+ *     name: string,
+ *     value: number,
+ *     unit?: string,
+ *     type?: string,
+ *     file_name?: string
+ *   }>
+ * }} [transformation]
+ */ /**
+ * @template {TemplateCoordinates} T
+ * @param {proj} from
+ * @param {proj} to
+ * @param {T} coords
+ * @param {boolean} [enforceAxis]
+ * @returns {T}
+ */ function $afb9f31c9f432b0c$var$transformer(from, to, coords, enforceAxis) {
     var transformedArray, out, keys;
     if (Array.isArray(coords)) {
         transformedArray = (0, $b56b1bf61c7cfac7$export$2e2bcd8739ae039)(from, to, coords, enforceAxis) || {
@@ -37394,67 +39329,110 @@ function $afb9f31c9f432b0c$var$transformer(from, to, coords, enforceAxis) {
             y: NaN
         };
         if (coords.length > 2) {
-            if (typeof from.name !== "undefined" && from.name === "geocent" || typeof to.name !== "undefined" && to.name === "geocent") {
-                if (typeof transformedArray.z === "number") return [
+            if (typeof from.name !== 'undefined' && from.name === 'geocent' || typeof to.name !== 'undefined' && to.name === 'geocent') {
+                if (typeof transformedArray.z === 'number') return /** @type {T} */ [
                     transformedArray.x,
                     transformedArray.y,
                     transformedArray.z
                 ].concat(coords.slice(3));
-                else return [
+                else return /** @type {T} */ [
                     transformedArray.x,
                     transformedArray.y,
                     coords[2]
                 ].concat(coords.slice(3));
-            } else return [
+            } else return /** @type {T} */ [
                 transformedArray.x,
                 transformedArray.y
             ].concat(coords.slice(2));
-        } else return [
+        } else return /** @type {T} */ [
             transformedArray.x,
             transformedArray.y
         ];
     } else {
         out = (0, $b56b1bf61c7cfac7$export$2e2bcd8739ae039)(from, to, coords, enforceAxis);
         keys = Object.keys(coords);
-        if (keys.length === 2) return out;
+        if (keys.length === 2) return /** @type {T} */ out;
         keys.forEach(function(key) {
-            if (typeof from.name !== "undefined" && from.name === "geocent" || typeof to.name !== "undefined" && to.name === "geocent") {
-                if (key === "x" || key === "y" || key === "z") return;
+            if (typeof from.name !== 'undefined' && from.name === 'geocent' || typeof to.name !== 'undefined' && to.name === 'geocent') {
+                if (key === 'x' || key === 'y' || key === 'z') return;
             } else {
-                if (key === "x" || key === "y") return;
+                if (key === 'x' || key === 'y') return;
             }
             out[key] = coords[key];
         });
-        return out;
+        return /** @type {T} */ out;
     }
 }
-function $afb9f31c9f432b0c$var$checkProj(item) {
+/**
+ * @param {proj | string | PROJJSONDefinition | Converter} item
+ * @returns {import('./Proj').default}
+ */ function $afb9f31c9f432b0c$var$checkProj(item) {
     if (item instanceof (0, $673c8104677fb23d$export$2e2bcd8739ae039)) return item;
-    if (item.oProj) return item.oProj;
-    return (0, $673c8104677fb23d$export$2e2bcd8739ae039)(item);
+    if (typeof item === 'object' && 'oProj' in item) return item.oProj;
+    return (0, $673c8104677fb23d$export$2e2bcd8739ae039)(/** @type {string | PROJJSONDefinition} */ item);
 }
-function $afb9f31c9f432b0c$var$proj4(fromProj, toProj, coord) {
-    fromProj = $afb9f31c9f432b0c$var$checkProj(fromProj);
+/**
+ * @overload
+ * @param {string | PROJJSONDefinition | proj} toProj
+ * @returns {Converter}
+ */ /**
+ * @overload
+ * @param {string | PROJJSONDefinition | proj} fromProj
+ * @param {string | PROJJSONDefinition | proj} toProj
+ * @returns {Converter}
+ */ /**
+ * @template {TemplateCoordinates} T
+ * @overload
+ * @param {string | PROJJSONDefinition | proj} toProj
+ * @param {T} coord
+ * @returns {T}
+ */ /**
+ * @template {TemplateCoordinates} T
+ * @overload
+ * @param {string | PROJJSONDefinition | proj} fromProj
+ * @param {string | PROJJSONDefinition | proj} toProj
+ * @param {T} coord
+ * @returns {T}
+ */ /**
+ * @template {TemplateCoordinates} T
+ * @param {string | PROJJSONDefinition | proj} fromProjOrToProj
+ * @param {string | PROJJSONDefinition | proj | TemplateCoordinates} [toProjOrCoord]
+ * @param {T} [coord]
+ * @returns {T|Converter}
+ */ function $afb9f31c9f432b0c$var$proj4(fromProjOrToProj, toProjOrCoord, coord) {
+    /** @type {proj} */ var fromProj;
+    /** @type {proj} */ var toProj;
     var single = false;
-    var obj;
-    if (typeof toProj === "undefined") {
-        toProj = fromProj;
+    /** @type {Converter} */ var obj;
+    if (typeof toProjOrCoord === 'undefined') {
+        toProj = $afb9f31c9f432b0c$var$checkProj(fromProjOrToProj);
         fromProj = $afb9f31c9f432b0c$var$wgs84;
         single = true;
-    } else if (typeof toProj.x !== "undefined" || Array.isArray(toProj)) {
-        coord = toProj;
-        toProj = fromProj;
+    } else if (typeof /** @type {?} */ toProjOrCoord.x !== 'undefined' || Array.isArray(toProjOrCoord)) {
+        coord = /** @type {?} */ toProjOrCoord;
+        toProj = $afb9f31c9f432b0c$var$checkProj(fromProjOrToProj);
         fromProj = $afb9f31c9f432b0c$var$wgs84;
         single = true;
     }
-    toProj = $afb9f31c9f432b0c$var$checkProj(toProj);
+    if (!fromProj) fromProj = $afb9f31c9f432b0c$var$checkProj(fromProjOrToProj);
+    if (!toProj) toProj = $afb9f31c9f432b0c$var$checkProj(/** @type {string | PROJJSONDefinition | proj } */ toProjOrCoord);
     if (coord) return $afb9f31c9f432b0c$var$transformer(fromProj, toProj, coord);
     else {
         obj = {
-            forward: function(coords, enforceAxis) {
+            /**
+       * @template {TemplateCoordinates} T
+       * @param {T} coords
+       * @param {boolean=} enforceAxis
+       * @returns {T}
+       */ forward: function(coords, enforceAxis) {
                 return $afb9f31c9f432b0c$var$transformer(fromProj, toProj, coords, enforceAxis);
             },
-            inverse: function(coords, enforceAxis) {
+            /**
+       * @template {TemplateCoordinates} T
+       * @param {T} coords
+       * @param {boolean=} enforceAxis
+       * @returns {T}
+       */ inverse: function(coords, enforceAxis) {
                 return $afb9f31c9f432b0c$var$transformer(toProj, fromProj, coords, enforceAxis);
             }
         };
@@ -37477,13 +39455,13 @@ var $afb9f31c9f432b0c$export$2e2bcd8739ae039 = $afb9f31c9f432b0c$var$proj4;
  * set.
  *
  * {string} @private
- */ var $7e782048f8c9ac26$var$SET_ORIGIN_COLUMN_LETTERS = "AJSAJS";
+ */ var $7e782048f8c9ac26$var$SET_ORIGIN_COLUMN_LETTERS = 'AJSAJS';
 /**
  * The row letters (for northing) of the lower left value, per
  * set.
  *
  * {string} @private
- */ var $7e782048f8c9ac26$var$SET_ORIGIN_ROW_LETTERS = "AFAFAF";
+ */ var $7e782048f8c9ac26$var$SET_ORIGIN_ROW_LETTERS = 'AFAFAF';
 var $7e782048f8c9ac26$var$A = 65; // A
 var $7e782048f8c9ac26$var$I = 73; // I
 var $7e782048f8c9ac26$var$O = 79; // O
@@ -37637,7 +39615,7 @@ function $7e782048f8c9ac26$export$b63cca88ddc558a9(mgrs) {
     // hemisphere, this is the only time we use the letter So even
     // if the Zone letter isn't exactly correct it should indicate
     // the hemisphere correctly
-    if (zoneLetter < "N") y -= 10000000.0; // remove 10,000,000 meter offset used
+    if (zoneLetter < 'N') y -= 10000000.0; // remove 10,000,000 meter offset used
     // There are 60 zones with zone 1 being at West -180 to -174
     LongOrigin = (zoneNumber - 1) * 6 - 180 + 3; // +3 puts origin
     // in middle of
@@ -37686,27 +39664,27 @@ function $7e782048f8c9ac26$export$b63cca88ddc558a9(mgrs) {
  */ function $7e782048f8c9ac26$var$getLetterDesignator(lat) {
     //This is here as an error flag to show that the Latitude is
     //outside MGRS limits
-    var LetterDesignator = "Z";
-    if (84 >= lat && lat >= 72) LetterDesignator = "X";
-    else if (72 > lat && lat >= 64) LetterDesignator = "W";
-    else if (64 > lat && lat >= 56) LetterDesignator = "V";
-    else if (56 > lat && lat >= 48) LetterDesignator = "U";
-    else if (48 > lat && lat >= 40) LetterDesignator = "T";
-    else if (40 > lat && lat >= 32) LetterDesignator = "S";
-    else if (32 > lat && lat >= 24) LetterDesignator = "R";
-    else if (24 > lat && lat >= 16) LetterDesignator = "Q";
-    else if (16 > lat && lat >= 8) LetterDesignator = "P";
-    else if (8 > lat && lat >= 0) LetterDesignator = "N";
-    else if (0 > lat && lat >= -8) LetterDesignator = "M";
-    else if (-8 > lat && lat >= -16) LetterDesignator = "L";
-    else if (-16 > lat && lat >= -24) LetterDesignator = "K";
-    else if (-24 > lat && lat >= -32) LetterDesignator = "J";
-    else if (-32 > lat && lat >= -40) LetterDesignator = "H";
-    else if (-40 > lat && lat >= -48) LetterDesignator = "G";
-    else if (-48 > lat && lat >= -56) LetterDesignator = "F";
-    else if (-56 > lat && lat >= -64) LetterDesignator = "E";
-    else if (-64 > lat && lat >= -72) LetterDesignator = "D";
-    else if (-72 > lat && lat >= -80) LetterDesignator = "C";
+    var LetterDesignator = 'Z';
+    if (84 >= lat && lat >= 72) LetterDesignator = 'X';
+    else if (72 > lat && lat >= 64) LetterDesignator = 'W';
+    else if (64 > lat && lat >= 56) LetterDesignator = 'V';
+    else if (56 > lat && lat >= 48) LetterDesignator = 'U';
+    else if (48 > lat && lat >= 40) LetterDesignator = 'T';
+    else if (40 > lat && lat >= 32) LetterDesignator = 'S';
+    else if (32 > lat && lat >= 24) LetterDesignator = 'R';
+    else if (24 > lat && lat >= 16) LetterDesignator = 'Q';
+    else if (16 > lat && lat >= 8) LetterDesignator = 'P';
+    else if (8 > lat && lat >= 0) LetterDesignator = 'N';
+    else if (0 > lat && lat >= -8) LetterDesignator = 'M';
+    else if (-8 > lat && lat >= -16) LetterDesignator = 'L';
+    else if (-16 > lat && lat >= -24) LetterDesignator = 'K';
+    else if (-24 > lat && lat >= -32) LetterDesignator = 'J';
+    else if (-32 > lat && lat >= -40) LetterDesignator = 'H';
+    else if (-40 > lat && lat >= -48) LetterDesignator = 'G';
+    else if (-48 > lat && lat >= -56) LetterDesignator = 'F';
+    else if (-56 > lat && lat >= -64) LetterDesignator = 'E';
+    else if (-64 > lat && lat >= -72) LetterDesignator = 'D';
+    else if (-72 > lat && lat >= -80) LetterDesignator = 'C';
     return LetterDesignator;
 }
 /**
@@ -37821,7 +39799,7 @@ function $7e782048f8c9ac26$export$b63cca88ddc558a9(mgrs) {
     throw "MGRSPoint bad conversion from: " + mgrsString;
     var zoneLetter = mgrsString.charAt(i++);
     // Should we check the zone letter here? Why not.
-    if (zoneLetter <= "A" || zoneLetter === "B" || zoneLetter === "Y" || zoneLetter >= "Z" || zoneLetter === "I" || zoneLetter === "O") throw "MGRSPoint zone letter " + zoneLetter + " not handled: " + mgrsString;
+    if (zoneLetter <= 'A' || zoneLetter === 'B' || zoneLetter === 'Y' || zoneLetter >= 'Z' || zoneLetter === 'I' || zoneLetter === 'O') throw "MGRSPoint zone letter " + zoneLetter + " not handled: " + mgrsString;
     hunK = mgrsString.substring(i, i += 2);
     var set = $7e782048f8c9ac26$var$get100kSetForZone(zoneNumber);
     var east100k = $7e782048f8c9ac26$var$getEastingFromChar(hunK.charAt(0), set);
@@ -37898,7 +39876,7 @@ function $7e782048f8c9ac26$export$b63cca88ddc558a9(mgrs) {
  *     UTM zone number.
  * @return {number} The northing value for the given letter and set.
  */ function $7e782048f8c9ac26$var$getNorthingFromChar(n, set) {
-    if (n > "V") throw "MGRSPoint given invalid Northing " + n;
+    if (n > 'V') throw "MGRSPoint given invalid Northing " + n;
     // rowOrigin is the letter at the origin of the set for the
     // column
     var curRow = $7e782048f8c9ac26$var$SET_ORIGIN_ROW_LETTERS.charCodeAt(set - 1);
@@ -37931,64 +39909,64 @@ function $7e782048f8c9ac26$export$b63cca88ddc558a9(mgrs) {
  */ function $7e782048f8c9ac26$var$getMinNorthing(zoneLetter) {
     var northing;
     switch(zoneLetter){
-        case "C":
+        case 'C':
             northing = 1100000.0;
             break;
-        case "D":
+        case 'D':
             northing = 2000000.0;
             break;
-        case "E":
+        case 'E':
             northing = 2800000.0;
             break;
-        case "F":
+        case 'F':
             northing = 3700000.0;
             break;
-        case "G":
+        case 'G':
             northing = 4600000.0;
             break;
-        case "H":
+        case 'H':
             northing = 5500000.0;
             break;
-        case "J":
+        case 'J':
             northing = 6400000.0;
             break;
-        case "K":
+        case 'K':
             northing = 7300000.0;
             break;
-        case "L":
+        case 'L':
             northing = 8200000.0;
             break;
-        case "M":
+        case 'M':
             northing = 9100000.0;
             break;
-        case "N":
+        case 'N':
             northing = 0.0;
             break;
-        case "P":
+        case 'P':
             northing = 800000.0;
             break;
-        case "Q":
+        case 'Q':
             northing = 1700000.0;
             break;
-        case "R":
+        case 'R':
             northing = 2600000.0;
             break;
-        case "S":
+        case 'S':
             northing = 3500000.0;
             break;
-        case "T":
+        case 'T':
             northing = 4400000.0;
             break;
-        case "U":
+        case 'U':
             northing = 5300000.0;
             break;
-        case "V":
+        case 'V':
             northing = 6200000.0;
             break;
-        case "W":
+        case 'W':
             northing = 7000000.0;
             break;
-        case "X":
+        case 'X':
             northing = 7900000.0;
             break;
         default:
@@ -37999,27 +39977,32 @@ function $7e782048f8c9ac26$export$b63cca88ddc558a9(mgrs) {
 }
 
 
-function $ef4e27688b0ecb61$var$Point(x, y, z) {
+/**
+ * @deprecated v3.0.0 - use proj4.toPoint instead
+ * @param {number | import('./core').TemplateCoordinates | string} x
+ * @param {number} [y]
+ * @param {number} [z]
+ */ function $ef4e27688b0ecb61$var$Point(x, y, z) {
     if (!(this instanceof $ef4e27688b0ecb61$var$Point)) return new $ef4e27688b0ecb61$var$Point(x, y, z);
     if (Array.isArray(x)) {
         this.x = x[0];
         this.y = x[1];
         this.z = x[2] || 0.0;
-    } else if (typeof x === "object") {
+    } else if (typeof x === 'object') {
         this.x = x.x;
         this.y = x.y;
         this.z = x.z || 0.0;
-    } else if (typeof x === "string" && typeof y === "undefined") {
-        var coords = x.split(",");
-        this.x = parseFloat(coords[0], 10);
-        this.y = parseFloat(coords[1], 10);
-        this.z = parseFloat(coords[2], 10) || 0.0;
+    } else if (typeof x === 'string' && typeof y === 'undefined') {
+        var coords = x.split(',');
+        this.x = parseFloat(coords[0]);
+        this.y = parseFloat(coords[1]);
+        this.z = parseFloat(coords[2]) || 0.0;
     } else {
         this.x = x;
         this.y = y;
         this.z = z || 0.0;
     }
-    console.warn("proj4.Point will be removed in version 3, use proj4.toPoint");
+    console.warn('proj4.Point will be removed in version 3, use proj4.toPoint');
 }
 $ef4e27688b0ecb61$var$Point.fromMGRS = function(mgrsStr) {
     return new $ef4e27688b0ecb61$var$Point((0, $7e782048f8c9ac26$export$b63cca88ddc558a9)(mgrsStr));
@@ -38058,10 +40041,10 @@ function $fb69036c404539e0$export$2e2bcd8739ae039(zone, lon) {
 var $5k61a = parcelRequire("5k61a");
 
 var $7B7Eg = parcelRequire("7B7Eg");
-var $f909ef571a9af96e$export$3f91ef0e0d0d8bf8 = "etmerc";
+var $f909ef571a9af96e$export$3f91ef0e0d0d8bf8 = 'etmerc';
 function $f909ef571a9af96e$export$2cd8252107eb640b() {
     var zone = (0, $fb69036c404539e0$export$2e2bcd8739ae039)(this.zone, this.long0);
-    if (zone === undefined) throw new Error("unknown utm zone");
+    if (zone === undefined) throw new Error('unknown utm zone');
     this.lat0 = 0;
     this.long0 = (6 * Math.abs(zone) - 183) * (0, $7B7Eg.D2R);
     this.x0 = 500000;
@@ -38072,8 +40055,8 @@ function $f909ef571a9af96e$export$2cd8252107eb640b() {
     this.inverse = (0, $5k61a.default).inverse;
 }
 var $f909ef571a9af96e$export$e4b2ac9215619f8d = [
-    "Universal Transverse Mercator System",
-    "utm"
+    'Universal Transverse Mercator System',
+    'utm'
 ];
 var $f909ef571a9af96e$export$2e2bcd8739ae039 = {
     init: $f909ef571a9af96e$export$2cd8252107eb640b,
@@ -38123,7 +40106,7 @@ function $df572233aa7cc19f$export$70ae2c07e401031b(p) {
     return p;
 }
 var $df572233aa7cc19f$export$e4b2ac9215619f8d = [
-    "gauss"
+    'gauss'
 ];
 var $df572233aa7cc19f$export$2e2bcd8739ae039 = {
     init: $df572233aa7cc19f$export$2cd8252107eb640b,
@@ -38143,11 +40126,11 @@ function $d6f46490cf42e2dd$export$2cd8252107eb640b() {
     this.sinc0 = Math.sin(this.phic0);
     this.cosc0 = Math.cos(this.phic0);
     this.R2 = 2 * this.rc;
-    if (!this.title) this.title = "Oblique Stereographic Alternative";
+    if (!this.title) this.title = 'Oblique Stereographic Alternative';
 }
 function $d6f46490cf42e2dd$export$174bb771924e7eb1(p) {
     var sinc, cosc, cosl, k;
-    p.x = (0, $dbd4D.default)(p.x - this.long0);
+    p.x = (0, $dbd4D.default)(p.x - this.long0, this.over);
     (0, $df572233aa7cc19f$export$2e2bcd8739ae039).forward.apply(this, [
         p
     ]);
@@ -38182,15 +40165,15 @@ function $d6f46490cf42e2dd$export$70ae2c07e401031b(p) {
     (0, $df572233aa7cc19f$export$2e2bcd8739ae039).inverse.apply(this, [
         p
     ]);
-    p.x = (0, $dbd4D.default)(p.x + this.long0);
+    p.x = (0, $dbd4D.default)(p.x + this.long0, this.over);
     return p;
 }
 var $d6f46490cf42e2dd$export$e4b2ac9215619f8d = [
-    "Stereographic_North_Pole",
-    "Oblique_Stereographic",
-    "sterea",
-    "Oblique Stereographic Alternative",
-    "Double_Stereographic"
+    'Stereographic_North_Pole',
+    'Oblique_Stereographic',
+    'sterea',
+    'Oblique Stereographic Alternative',
+    'Double_Stereographic'
 ];
 var $d6f46490cf42e2dd$export$2e2bcd8739ae039 = {
     init: $d6f46490cf42e2dd$export$2cd8252107eb640b,
@@ -38201,14 +40184,176 @@ var $d6f46490cf42e2dd$export$2e2bcd8739ae039 = {
 
 
 
-var $2nJNQ = parcelRequire("2nJNQ");
+var $7B7Eg = parcelRequire("7B7Eg");
+
+var $9lchO = parcelRequire("9lchO");
+
+var $4MKOs = parcelRequire("4MKOs");
+
+
+
+var $dbd4D = parcelRequire("dbd4D");
+function $1bc14248ab97445a$export$8adc077b4b982c95(phit, sinphi, eccen) {
+    sinphi *= eccen;
+    return Math.tan(0.5 * ((0, $7B7Eg.HALF_PI) + phit)) * Math.pow((1 - sinphi) / (1 + sinphi), 0.5 * eccen);
+}
+function $1bc14248ab97445a$export$2cd8252107eb640b() {
+    // setting default parameters
+    this.x0 = this.x0 || 0;
+    this.y0 = this.y0 || 0;
+    this.lat0 = this.lat0 || 0;
+    this.long0 = this.long0 || 0;
+    this.coslat0 = Math.cos(this.lat0);
+    this.sinlat0 = Math.sin(this.lat0);
+    if (this.sphere) {
+        if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= (0, $7B7Eg.EPSLN)) this.k0 = 0.5 * (1 + (0, $9lchO.default)(this.lat0) * Math.sin(this.lat_ts));
+    } else {
+        if (Math.abs(this.coslat0) <= (0, $7B7Eg.EPSLN)) {
+            if (this.lat0 > 0) // North pole
+            // trace('stere:north pole');
+            this.con = 1;
+            else // South pole
+            // trace('stere:south pole');
+            this.con = -1;
+        }
+        this.cons = Math.sqrt(Math.pow(1 + this.e, 1 + this.e) * Math.pow(1 - this.e, 1 - this.e));
+        if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= (0, $7B7Eg.EPSLN) && Math.abs(Math.cos(this.lat_ts)) > (0, $7B7Eg.EPSLN)) // When k0 is 1 (default value) and lat_ts is a vaild number and lat0 is at a pole and lat_ts is not at a pole
+        // Recalculate k0 using formula 21-35 from p161 of Snyder, 1987
+        this.k0 = 0.5 * this.cons * (0, $4MKOs.default)(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts)) / (0, $839446b123659551$export$2e2bcd8739ae039)(this.e, this.con * this.lat_ts, this.con * Math.sin(this.lat_ts));
+        this.ms1 = (0, $4MKOs.default)(this.e, this.sinlat0, this.coslat0);
+        this.X0 = 2 * Math.atan($1bc14248ab97445a$export$8adc077b4b982c95(this.lat0, this.sinlat0, this.e)) - (0, $7B7Eg.HALF_PI);
+        this.cosX0 = Math.cos(this.X0);
+        this.sinX0 = Math.sin(this.X0);
+    }
+}
+function $1bc14248ab97445a$export$174bb771924e7eb1(p) {
+    var lon = p.x;
+    var lat = p.y;
+    var sinlat = Math.sin(lat);
+    var coslat = Math.cos(lat);
+    var A, X, sinX, cosX, ts, rh;
+    var dlon = (0, $dbd4D.default)(lon - this.long0, this.over);
+    if (Math.abs(Math.abs(lon - this.long0) - Math.PI) <= (0, $7B7Eg.EPSLN) && Math.abs(lat + this.lat0) <= (0, $7B7Eg.EPSLN)) {
+        // case of the origine point
+        // trace('stere:this is the origin point');
+        p.x = NaN;
+        p.y = NaN;
+        return p;
+    }
+    if (this.sphere) {
+        // trace('stere:sphere case');
+        A = 2 * this.k0 / (1 + this.sinlat0 * sinlat + this.coslat0 * coslat * Math.cos(dlon));
+        p.x = this.a * A * coslat * Math.sin(dlon) + this.x0;
+        p.y = this.a * A * (this.coslat0 * sinlat - this.sinlat0 * coslat * Math.cos(dlon)) + this.y0;
+        return p;
+    } else {
+        X = 2 * Math.atan($1bc14248ab97445a$export$8adc077b4b982c95(lat, sinlat, this.e)) - (0, $7B7Eg.HALF_PI);
+        cosX = Math.cos(X);
+        sinX = Math.sin(X);
+        if (Math.abs(this.coslat0) <= (0, $7B7Eg.EPSLN)) {
+            ts = (0, $839446b123659551$export$2e2bcd8739ae039)(this.e, lat * this.con, this.con * sinlat);
+            rh = 2 * this.a * this.k0 * ts / this.cons;
+            p.x = this.x0 + rh * Math.sin(lon - this.long0);
+            p.y = this.y0 - this.con * rh * Math.cos(lon - this.long0);
+            // trace(p.toString());
+            return p;
+        } else if (Math.abs(this.sinlat0) < (0, $7B7Eg.EPSLN)) {
+            // Eq
+            // trace('stere:equateur');
+            A = 2 * this.a * this.k0 / (1 + cosX * Math.cos(dlon));
+            p.y = A * sinX;
+        } else {
+            // other case
+            // trace('stere:normal case');
+            A = 2 * this.a * this.k0 * this.ms1 / (this.cosX0 * (1 + this.sinX0 * sinX + this.cosX0 * cosX * Math.cos(dlon)));
+            p.y = A * (this.cosX0 * sinX - this.sinX0 * cosX * Math.cos(dlon)) + this.y0;
+        }
+        p.x = A * cosX * Math.sin(dlon) + this.x0;
+    }
+    // trace(p.toString());
+    return p;
+}
+function $1bc14248ab97445a$export$70ae2c07e401031b(p) {
+    p.x -= this.x0;
+    p.y -= this.y0;
+    var lon, lat, ts, ce, Chi;
+    var rh = Math.sqrt(p.x * p.x + p.y * p.y);
+    if (this.sphere) {
+        var c = 2 * Math.atan(rh / (2 * this.a * this.k0));
+        lon = this.long0;
+        lat = this.lat0;
+        if (rh <= (0, $7B7Eg.EPSLN)) {
+            p.x = lon;
+            p.y = lat;
+            return p;
+        }
+        lat = Math.asin(Math.cos(c) * this.sinlat0 + p.y * Math.sin(c) * this.coslat0 / rh);
+        if (Math.abs(this.coslat0) < (0, $7B7Eg.EPSLN)) {
+            if (this.lat0 > 0) lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x, -1 * p.y), this.over);
+            else lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x, p.y), this.over);
+        } else lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x * Math.sin(c), rh * this.coslat0 * Math.cos(c) - p.y * this.sinlat0 * Math.sin(c)), this.over);
+        p.x = lon;
+        p.y = lat;
+        return p;
+    } else if (Math.abs(this.coslat0) <= (0, $7B7Eg.EPSLN)) {
+        if (rh <= (0, $7B7Eg.EPSLN)) {
+            lat = this.lat0;
+            lon = this.long0;
+            p.x = lon;
+            p.y = lat;
+            // trace(p.toString());
+            return p;
+        }
+        p.x *= this.con;
+        p.y *= this.con;
+        ts = rh * this.cons / (2 * this.a * this.k0);
+        lat = this.con * (0, $d234c6e4c40200dc$export$2e2bcd8739ae039)(this.e, ts);
+        lon = this.con * (0, $dbd4D.default)(this.con * this.long0 + Math.atan2(p.x, -1 * p.y), this.over);
+    } else {
+        ce = 2 * Math.atan(rh * this.cosX0 / (2 * this.a * this.k0 * this.ms1));
+        lon = this.long0;
+        if (rh <= (0, $7B7Eg.EPSLN)) Chi = this.X0;
+        else {
+            Chi = Math.asin(Math.cos(ce) * this.sinX0 + p.y * Math.sin(ce) * this.cosX0 / rh);
+            lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x * Math.sin(ce), rh * this.cosX0 * Math.cos(ce) - p.y * this.sinX0 * Math.sin(ce)), this.over);
+        }
+        lat = -1 * (0, $d234c6e4c40200dc$export$2e2bcd8739ae039)(this.e, Math.tan(0.5 * ((0, $7B7Eg.HALF_PI) + Chi)));
+    }
+    p.x = lon;
+    p.y = lat;
+    // trace(p.toString());
+    return p;
+}
+var $1bc14248ab97445a$export$e4b2ac9215619f8d = [
+    'stere',
+    'Stereographic_South_Pole',
+    'Polar_Stereographic_variant_A',
+    'Polar_Stereographic_variant_B',
+    'Polar_Stereographic'
+];
+var $1bc14248ab97445a$export$2e2bcd8739ae039 = {
+    init: $1bc14248ab97445a$export$2cd8252107eb640b,
+    forward: $1bc14248ab97445a$export$174bb771924e7eb1,
+    inverse: $1bc14248ab97445a$export$70ae2c07e401031b,
+    names: $1bc14248ab97445a$export$e4b2ac9215619f8d,
+    ssfn_: $1bc14248ab97445a$export$8adc077b4b982c95
+};
+
+
 /*
   references:
     Formules et constantes pour le Calcul pour la
     projection cylindrique conforme à axe oblique et pour la transformation entre
     des systèmes de référence.
     http://www.swisstopo.admin.ch/internet/swisstopo/fr/home/topics/survey/sys/refsys/switzerland.parsysrelated1.31216.downloadList.77004.DownloadFile.tmp/swissprojectionfr.pdf
-  */ function $3911b393258a5f42$export$2cd8252107eb640b() {
+  */ /**
+ * @typedef {Object} LocalThis
+ * @property {number} lambda0
+ * @property {number} e
+ * @property {number} R
+ * @property {number} b0
+ * @property {number} K
+ */ /** @this {import('../defs.js').ProjectionDefinition & LocalThis} */ function $3911b393258a5f42$export$2cd8252107eb640b() {
     var phy0 = this.lat0;
     this.lambda0 = this.long0;
     var sinPhy0 = Math.sin(phy0);
@@ -38253,9 +40398,9 @@ function $3911b393258a5f42$export$70ae2c07e401031b(p) {
     var prevPhy = -1000;
     var iteration = 0;
     while(Math.abs(phy - prevPhy) > 0.0000001){
-        if (++iteration > 20) //...reportError("omercFwdInfinity");
+        if (++iteration > 20) // ...reportError("omercFwdInfinity");
         return;
-        //S = Math.log(Math.tan(Math.PI / 4 + phy / 2));
+        // S = Math.log(Math.tan(Math.PI / 4 + phy / 2));
         S = 1 / this.alpha * (Math.log(Math.tan(Math.PI / 4 + b / 2)) - this.K) + this.e * Math.log(Math.tan(Math.PI / 4 + Math.asin(this.e * Math.sin(phy)) / 2));
         prevPhy = phy;
         phy = 2 * Math.atan(Math.exp(S)) - Math.PI / 2;
@@ -38265,7 +40410,7 @@ function $3911b393258a5f42$export$70ae2c07e401031b(p) {
     return p;
 }
 var $3911b393258a5f42$export$e4b2ac9215619f8d = [
-    "somerc"
+    'somerc'
 ];
 var $3911b393258a5f42$export$2e2bcd8739ae039 = {
     init: $3911b393258a5f42$export$2cd8252107eb640b,
@@ -38276,34 +40421,55 @@ var $3911b393258a5f42$export$2e2bcd8739ae039 = {
 
 
 
-var $biomK = parcelRequire("biomK");
 
 var $dbd4D = parcelRequire("dbd4D");
 
-var $i2VbV = parcelRequire("i2VbV");
 
 var $7B7Eg = parcelRequire("7B7Eg");
-var $fd3fdaaafb1f7d4e$var$TOL = 1e-7;
+
+/**
+ * @typedef {Object} LocalThis
+ * @property {boolean} no_off
+ * @property {boolean} no_rot
+ * @property {number} rectified_grid_angle
+ * @property {number} es
+ * @property {number} A
+ * @property {number} B
+ * @property {number} E
+ * @property {number} e
+ * @property {number} lam0
+ * @property {number} singam
+ * @property {number} cosgam
+ * @property {number} sinrot
+ * @property {number} cosrot
+ * @property {number} rB
+ * @property {number} ArB
+ * @property {number} BrA
+ * @property {number} u_0
+ * @property {number} v_pole_n
+ * @property {number} v_pole_s
+ */ var $fd3fdaaafb1f7d4e$var$TOL = 1e-7;
 function $fd3fdaaafb1f7d4e$var$isTypeA(P) {
     var typeAProjections = [
-        "Hotine_Oblique_Mercator",
-        "Hotine_Oblique_Mercator_Azimuth_Natural_Origin"
+        'Hotine_Oblique_Mercator',
+        'Hotine_Oblique_Mercator_variant_A',
+        'Hotine_Oblique_Mercator_Azimuth_Natural_Origin'
     ];
-    var projectionName = typeof P.PROJECTION === "object" ? Object.keys(P.PROJECTION)[0] : P.PROJECTION;
-    return "no_uoff" in P || "no_off" in P || typeAProjections.indexOf(projectionName) !== -1;
+    var projectionName = typeof P.projName === 'object' ? Object.keys(P.projName)[0] : P.projName;
+    return 'no_uoff' in P || 'no_off' in P || typeAProjections.indexOf(projectionName) !== -1 || typeAProjections.indexOf((0, $1a58b891b1f8f5fa$export$9ee0bb5510679155)(projectionName)) !== -1;
 }
 function $fd3fdaaafb1f7d4e$export$2cd8252107eb640b() {
-    var con, com, cosph0, D, F, H, L, sinph0, p, J, gamma = 0, gamma0, lamc = 0, lam1 = 0, lam2 = 0, phi1 = 0, phi2 = 0, alpha_c = 0, AB;
+    var con, com, cosph0, D, F, H, L, sinph0, p, J, gamma = 0, gamma0, lamc = 0, lam1 = 0, lam2 = 0, phi1 = 0, phi2 = 0, alpha_c = 0;
     // only Type A uses the no_off or no_uoff property
     // https://github.com/OSGeo/proj.4/issues/104
     this.no_off = $fd3fdaaafb1f7d4e$var$isTypeA(this);
-    this.no_rot = "no_rot" in this;
+    this.no_rot = 'no_rot' in this;
     var alp = false;
-    if ("alpha" in this) alp = true;
+    if ('alpha' in this) alp = true;
     var gam = false;
-    if ("rectified_grid_angle" in this) gam = true;
+    if ('rectified_grid_angle' in this) gam = true;
     if (alp) alpha_c = this.alpha;
-    if (gam) gamma = this.rectified_grid_angle * (0, $7B7Eg.D2R);
+    if (gam) gamma = this.rectified_grid_angle;
     if (alp || gam) lamc = this.longc;
     else {
         lam1 = this.long1;
@@ -38329,7 +40495,7 @@ function $fd3fdaaafb1f7d4e$export$2cd8252107eb640b() {
             if (this.lat0 < 0) F = -F;
         }
         this.E = F += D;
-        this.E *= Math.pow((0, $biomK.default)(this.e, this.lat0, sinph0), this.B);
+        this.E *= Math.pow((0, $839446b123659551$export$2e2bcd8739ae039)(this.e, this.lat0, sinph0), this.B);
     } else {
         this.B = 1 / com;
         this.A = this.k0;
@@ -38345,17 +40511,17 @@ function $fd3fdaaafb1f7d4e$export$2cd8252107eb640b() {
         }
         this.lam0 = lamc - Math.asin(0.5 * (F - 1 / F) * Math.tan(gamma0)) / this.B;
     } else {
-        H = Math.pow((0, $biomK.default)(this.e, phi1, Math.sin(phi1)), this.B);
-        L = Math.pow((0, $biomK.default)(this.e, phi2, Math.sin(phi2)), this.B);
+        H = Math.pow((0, $839446b123659551$export$2e2bcd8739ae039)(this.e, phi1, Math.sin(phi1)), this.B);
+        L = Math.pow((0, $839446b123659551$export$2e2bcd8739ae039)(this.e, phi2, Math.sin(phi2)), this.B);
         F = this.E / H;
         p = (L - H) / (L + H);
         J = this.E * this.E;
         J = (J - L * H) / (J + L * H);
         con = lam1 - lam2;
-        if (con < -Math.pi) lam2 -= (0, $7B7Eg.TWO_PI);
-        else if (con > Math.pi) lam2 += (0, $7B7Eg.TWO_PI);
-        this.lam0 = (0, $dbd4D.default)(0.5 * (lam1 + lam2) - Math.atan(J * Math.tan(0.5 * this.B * (lam1 - lam2)) / p) / this.B);
-        gamma0 = Math.atan(2 * Math.sin(this.B * (0, $dbd4D.default)(lam1 - this.lam0)) / (F - 1 / F));
+        if (con < -Math.PI) lam2 -= (0, $7B7Eg.TWO_PI);
+        else if (con > Math.PI) lam2 += (0, $7B7Eg.TWO_PI);
+        this.lam0 = (0, $dbd4D.default)(0.5 * (lam1 + lam2) - Math.atan(J * Math.tan(0.5 * this.B * (lam1 - lam2)) / p) / this.B, this.over);
+        gamma0 = Math.atan(2 * Math.sin(this.B * (0, $dbd4D.default)(lam1 - this.lam0, this.over)) / (F - 1 / F));
         gamma = alpha_c = Math.asin(D * Math.sin(gamma0));
     }
     this.singam = Math.sin(gamma0);
@@ -38365,7 +40531,6 @@ function $fd3fdaaafb1f7d4e$export$2cd8252107eb640b() {
     this.rB = 1 / this.B;
     this.ArB = this.A * this.rB;
     this.BrA = 1 / this.ArB;
-    AB = this.A * this.B;
     if (this.no_off) this.u_0 = 0;
     else {
         this.u_0 = Math.abs(this.ArB * Math.atan(Math.sqrt(D * D - 1) / Math.cos(alpha_c)));
@@ -38380,7 +40545,7 @@ function $fd3fdaaafb1f7d4e$export$174bb771924e7eb1(p) {
     var S, T, U, V, W, temp, u, v;
     p.x = p.x - this.lam0;
     if (Math.abs(Math.abs(p.y) - (0, $7B7Eg.HALF_PI)) > (0, $7B7Eg.EPSLN)) {
-        W = this.E / Math.pow((0, $biomK.default)(this.e, p.y, Math.sin(p.y)), this.B);
+        W = this.E / Math.pow((0, $839446b123659551$export$2e2bcd8739ae039)(this.e, p.y, Math.sin(p.y)), this.B);
         temp = 1 / W;
         S = 0.5 * (W - temp);
         T = 0.5 * (W + temp);
@@ -38429,7 +40594,7 @@ function $fd3fdaaafb1f7d4e$export$70ae2c07e401031b(p) {
         coords.y = Up < 0 ? -(0, $7B7Eg.HALF_PI) : (0, $7B7Eg.HALF_PI);
     } else {
         coords.y = this.E / Math.sqrt((1 + Up) / (1 - Up));
-        coords.y = (0, $i2VbV.default)(this.e, Math.pow(coords.y, 1 / this.B));
+        coords.y = (0, $d234c6e4c40200dc$export$2e2bcd8739ae039)(this.e, Math.pow(coords.y, 1 / this.B));
         if (coords.y === Infinity) throw new Error();
         coords.x = -this.rB * Math.atan2(Sp * this.cosgam - Vp * this.singam, Math.cos(this.BrA * u));
     }
@@ -38437,13 +40602,15 @@ function $fd3fdaaafb1f7d4e$export$70ae2c07e401031b(p) {
     return coords;
 }
 var $fd3fdaaafb1f7d4e$export$e4b2ac9215619f8d = [
-    "Hotine_Oblique_Mercator",
-    "Hotine Oblique Mercator",
-    "Hotine_Oblique_Mercator_Azimuth_Natural_Origin",
-    "Hotine_Oblique_Mercator_Two_Point_Natural_Origin",
-    "Hotine_Oblique_Mercator_Azimuth_Center",
-    "Oblique_Mercator",
-    "omerc"
+    'Hotine_Oblique_Mercator',
+    'Hotine Oblique Mercator',
+    'Hotine_Oblique_Mercator_variant_A',
+    'Hotine_Oblique_Mercator_Variant_B',
+    'Hotine_Oblique_Mercator_Azimuth_Natural_Origin',
+    'Hotine_Oblique_Mercator_Two_Point_Natural_Origin',
+    'Hotine_Oblique_Mercator_Azimuth_Center',
+    'Oblique_Mercator',
+    'omerc'
 ];
 var $fd3fdaaafb1f7d4e$export$2e2bcd8739ae039 = {
     init: $fd3fdaaafb1f7d4e$export$2cd8252107eb640b,
@@ -38456,28 +40623,26 @@ var $fd3fdaaafb1f7d4e$export$2e2bcd8739ae039 = {
 
 var $4MKOs = parcelRequire("4MKOs");
 
-var $biomK = parcelRequire("biomK");
 
 var $9lchO = parcelRequire("9lchO");
 
 var $dbd4D = parcelRequire("dbd4D");
 
-var $i2VbV = parcelRequire("i2VbV");
 
 var $7B7Eg = parcelRequire("7B7Eg");
 function $cb6e788a2c3f7915$export$2cd8252107eb640b() {
-    //double lat0;                    /* the reference latitude               */
-    //double long0;                   /* the reference longitude              */
-    //double lat1;                    /* first standard parallel              */
-    //double lat2;                    /* second standard parallel             */
-    //double r_maj;                   /* major axis                           */
-    //double r_min;                   /* minor axis                           */
-    //double false_east;              /* x offset in meters                   */
-    //double false_north;             /* y offset in meters                   */
-    //the above value can be set with proj4.defs
-    //example: proj4.defs("EPSG:2154","+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+    // double lat0;                    /* the reference latitude               */
+    // double long0;                   /* the reference longitude              */
+    // double lat1;                    /* first standard parallel              */
+    // double lat2;                    /* second standard parallel             */
+    // double r_maj;                   /* major axis                           */
+    // double r_min;                   /* minor axis                           */
+    // double false_east;              /* x offset in meters                   */
+    // double false_north;             /* y offset in meters                   */
+    // the above value can be set with proj4.defs
+    // example: proj4.defs("EPSG:2154","+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
     if (!this.lat2) this.lat2 = this.lat1;
-     //if lat2 is not defined
+     // if lat2 is not defined
     if (!this.k0) this.k0 = 1;
     this.x0 = this.x0 || 0;
     this.y0 = this.y0 || 0;
@@ -38488,18 +40653,19 @@ function $cb6e788a2c3f7915$export$2cd8252107eb640b() {
     var sin1 = Math.sin(this.lat1);
     var cos1 = Math.cos(this.lat1);
     var ms1 = (0, $4MKOs.default)(this.e, sin1, cos1);
-    var ts1 = (0, $biomK.default)(this.e, this.lat1, sin1);
+    var ts1 = (0, $839446b123659551$export$2e2bcd8739ae039)(this.e, this.lat1, sin1);
     var sin2 = Math.sin(this.lat2);
     var cos2 = Math.cos(this.lat2);
     var ms2 = (0, $4MKOs.default)(this.e, sin2, cos2);
-    var ts2 = (0, $biomK.default)(this.e, this.lat2, sin2);
-    var ts0 = (0, $biomK.default)(this.e, this.lat0, Math.sin(this.lat0));
+    var ts2 = (0, $839446b123659551$export$2e2bcd8739ae039)(this.e, this.lat2, sin2);
+    var ts0 = Math.abs(Math.abs(this.lat0) - (0, $7B7Eg.HALF_PI)) < (0, $7B7Eg.EPSLN) ? 0 // Handle poles by setting ts0 to 0
+     : (0, $839446b123659551$export$2e2bcd8739ae039)(this.e, this.lat0, Math.sin(this.lat0));
     if (Math.abs(this.lat1 - this.lat2) > (0, $7B7Eg.EPSLN)) this.ns = Math.log(ms1 / ms2) / Math.log(ts1 / ts2);
     else this.ns = sin1;
     if (isNaN(this.ns)) this.ns = sin1;
     this.f0 = ms1 / (this.ns * Math.pow(ts1, this.ns));
     this.rh = this.a * this.f0 * Math.pow(ts0, this.ns);
-    if (!this.title) this.title = "Lambert Conformal Conic";
+    if (!this.title) this.title = 'Lambert Conformal Conic';
 }
 function $cb6e788a2c3f7915$export$174bb771924e7eb1(p) {
     var lon = p.x;
@@ -38509,14 +40675,14 @@ function $cb6e788a2c3f7915$export$174bb771924e7eb1(p) {
     var con = Math.abs(Math.abs(lat) - (0, $7B7Eg.HALF_PI));
     var ts, rh1;
     if (con > (0, $7B7Eg.EPSLN)) {
-        ts = (0, $biomK.default)(this.e, lat, Math.sin(lat));
+        ts = (0, $839446b123659551$export$2e2bcd8739ae039)(this.e, lat, Math.sin(lat));
         rh1 = this.a * this.f0 * Math.pow(ts, this.ns);
     } else {
         con = lat * this.ns;
         if (con <= 0) return null;
         rh1 = 0;
     }
-    var theta = this.ns * (0, $dbd4D.default)(lon - this.long0);
+    var theta = this.ns * (0, $dbd4D.default)(lon - this.long0, this.over);
     p.x = this.k0 * (rh1 * Math.sin(theta)) + this.x0;
     p.y = this.k0 * (this.rh - rh1 * Math.cos(theta)) + this.y0;
     return p;
@@ -38538,22 +40704,22 @@ function $cb6e788a2c3f7915$export$70ae2c07e401031b(p) {
     if (rh1 !== 0 || this.ns > 0) {
         con = 1 / this.ns;
         ts = Math.pow(rh1 / (this.a * this.f0), con);
-        lat = (0, $i2VbV.default)(this.e, ts);
+        lat = (0, $d234c6e4c40200dc$export$2e2bcd8739ae039)(this.e, ts);
         if (lat === -9999) return null;
     } else lat = -(0, $7B7Eg.HALF_PI);
-    lon = (0, $dbd4D.default)(theta / this.ns + this.long0);
+    lon = (0, $dbd4D.default)(theta / this.ns + this.long0, this.over);
     p.x = lon;
     p.y = lat;
     return p;
 }
 var $cb6e788a2c3f7915$export$e4b2ac9215619f8d = [
-    "Lambert Tangential Conformal Conic Projection",
-    "Lambert_Conformal_Conic",
-    "Lambert_Conformal_Conic_1SP",
-    "Lambert_Conformal_Conic_2SP",
-    "lcc",
-    "Lambert Conic Conformal (1SP)",
-    "Lambert Conic Conformal (2SP)"
+    'Lambert Tangential Conformal Conic Projection',
+    'Lambert_Conformal_Conic',
+    'Lambert_Conformal_Conic_1SP',
+    'Lambert_Conformal_Conic_2SP',
+    'lcc',
+    'Lambert Conic Conformal (1SP)',
+    'Lambert Conic Conformal (2SP)'
 ];
 var $cb6e788a2c3f7915$export$2e2bcd8739ae039 = {
     init: $cb6e788a2c3f7915$export$2cd8252107eb640b,
@@ -38570,7 +40736,7 @@ function $162e27c6eb9aa4da$export$2cd8252107eb640b() {
     this.es = 0.006674372230614;
     this.e = Math.sqrt(this.es);
     if (!this.lat0) this.lat0 = 0.863937979737193;
-    if (!this.long0) this.long0 = 0.4334234309119251;
+    if (!this.long0) this.long0 = 0.4334234309119251; // 42.5° from Ferro = 24.833° from Greenwich
     /* if scale not set default to 0.9999 */ if (!this.k0) this.k0 = 0.9999;
     this.s45 = 0.785398163397448; /* 45 */ 
     this.s90 = 2 * this.s45;
@@ -38593,7 +40759,7 @@ function $162e27c6eb9aa4da$export$174bb771924e7eb1(p) {
     var gfi, u, deltav, s, d, eps, ro;
     var lon = p.x;
     var lat = p.y;
-    var delta_lon = (0, $dbd4D.default)(lon - this.long0);
+    var delta_lon = (0, $dbd4D.default)(lon - this.long0, this.over);
     /* Transformation */ gfi = Math.pow((1 + this.e * Math.sin(lat)) / (1 - this.e * Math.sin(lat)), this.alfa * this.e / 2);
     u = 2 * (Math.atan(this.k * Math.pow(Math.tan(lat / 2 + this.s45), this.alfa) / gfi) - this.s45);
     deltav = -delta_lon * this.alfa;
@@ -38612,7 +40778,7 @@ function $162e27c6eb9aa4da$export$174bb771924e7eb1(p) {
 function $162e27c6eb9aa4da$export$70ae2c07e401031b(p) {
     var u, deltav, s, d, eps, ro, fi1;
     var ok;
-    /* Transformation */ /* revert y, x*/ var tmp = p.x;
+    /* Transformation */ /* revert y, x */ var tmp = p.x;
     p.x = p.y;
     p.y = tmp;
     if (!this.czech) {
@@ -38639,8 +40805,11 @@ function $162e27c6eb9aa4da$export$70ae2c07e401031b(p) {
     return p;
 }
 var $162e27c6eb9aa4da$export$e4b2ac9215619f8d = [
-    "Krovak",
-    "krovak"
+    'Krovak',
+    'Krovak Modified',
+    'Krovak (North Orientated)',
+    'Krovak Modified (North Orientated)',
+    'krovak'
 ];
 var $162e27c6eb9aa4da$export$2e2bcd8739ae039 = {
     init: $162e27c6eb9aa4da$export$2cd8252107eb640b,
@@ -38701,7 +40870,7 @@ function $36c01451f23e2b38$export$2e2bcd8739ae039(ml, e0, e1, e2, e3) {
         phi += dphi;
         if (Math.abs(dphi) <= 0.0000000001) return phi;
     }
-    //..reportError("IMLFN-CONV:Latitude failed to converge after 15 iterations");
+    // ..reportError("IMLFN-CONV:Latitude failed to converge after 15 iterations");
     return NaN;
 }
 
@@ -38719,15 +40888,15 @@ function $cab6e610f7f26f9c$export$2cd8252107eb640b() {
 }
 function $cab6e610f7f26f9c$export$174bb771924e7eb1(p) {
     /* Forward equations
-      -----------------*/ var x, y;
+      ----------------- */ var x, y;
     var lam = p.x;
     var phi = p.y;
-    lam = (0, $dbd4D.default)(lam - this.long0);
+    lam = (0, $dbd4D.default)(lam - this.long0, this.over);
     if (this.sphere) {
         x = this.a * Math.asin(Math.cos(phi) * Math.sin(lam));
         y = this.a * (Math.atan2(Math.tan(phi), Math.cos(lam)) - this.lat0);
     } else {
-        //ellipsoid
+        // ellipsoid
         var sinphi = Math.sin(phi);
         var cosphi = Math.cos(phi);
         var nl = (0, $cc929bf1073a4f4a$export$2e2bcd8739ae039)(this.a, this.e, sinphi);
@@ -38770,14 +40939,14 @@ function $cab6e610f7f26f9c$export$70ae2c07e401031b(p) {
         phi = phi1 - nl1 * Math.tan(phi1) / rl1 * dl * dl * (0.5 - (1 + 3 * tl1) * dl * dl / 24);
         lam = dl * (1 - dsq * (tl1 / 3 + (1 + 3 * tl1) * tl1 * dsq / 15)) / Math.cos(phi1);
     }
-    p.x = (0, $dbd4D.default)(lam + this.long0);
+    p.x = (0, $dbd4D.default)(lam + this.long0, this.over);
     p.y = (0, $568a11f3be43b3f5$export$2e2bcd8739ae039)(phi);
     return p;
 }
 var $cab6e610f7f26f9c$export$e4b2ac9215619f8d = [
-    "Cassini",
-    "Cassini_Soldner",
-    "cass"
+    'Cassini',
+    'Cassini_Soldner',
+    'cass'
 ];
 var $cab6e610f7f26f9c$export$2e2bcd8739ae039 = {
     init: $cab6e610f7f26f9c$export$2cd8252107eb640b,
@@ -38799,7 +40968,7 @@ var $7sb7x = parcelRequire("7sb7x");
 var $7B7Eg = parcelRequire("7B7Eg");
 function $dc8af4db6ad7738c$export$2cd8252107eb640b() {
     /* Place parameters in static storage for common use
-      -------------------------------------------------*/ this.sin_p14 = Math.sin(this.lat0);
+      ------------------------------------------------- */ this.sin_p14 = Math.sin(this.lat0);
     this.cos_p14 = Math.cos(this.lat0);
     // Approximation for projecting points to the horizon (infinity)
     this.infinity_dist = 1000 * this.a;
@@ -38815,7 +40984,7 @@ function $dc8af4db6ad7738c$export$174bb771924e7eb1(p) {
     var lon = p.x;
     var lat = p.y;
     /* Forward equations
-      -----------------*/ dlon = (0, $dbd4D.default)(lon - this.long0);
+      ----------------- */ dlon = (0, $dbd4D.default)(lon - this.long0, this.over);
     sinphi = Math.sin(lat);
     cosphi = Math.cos(lat);
     coslon = Math.cos(dlon);
@@ -38844,7 +41013,7 @@ function $dc8af4db6ad7738c$export$70ae2c07e401031b(p) {
     var c;
     var lon, lat;
     /* Inverse equations
-      -----------------*/ p.x = (p.x - this.x0) / this.a;
+      ----------------- */ p.x = (p.x - this.x0) / this.a;
     p.y = (p.y - this.y0) / this.a;
     p.x /= this.k0;
     p.y /= this.k0;
@@ -38854,7 +41023,7 @@ function $dc8af4db6ad7738c$export$70ae2c07e401031b(p) {
         cosc = Math.cos(c);
         lat = (0, $7sb7x.default)(cosc * this.sin_p14 + p.y * sinc * this.cos_p14 / rh);
         lon = Math.atan2(p.x * sinc, rh * this.cos_p14 * cosc - p.y * this.sin_p14 * sinc);
-        lon = (0, $dbd4D.default)(this.long0 + lon);
+        lon = (0, $dbd4D.default)(this.long0 + lon, this.over);
     } else {
         lat = this.phic0;
         lon = 0;
@@ -38864,7 +41033,7 @@ function $dc8af4db6ad7738c$export$70ae2c07e401031b(p) {
     return p;
 }
 var $dc8af4db6ad7738c$export$e4b2ac9215619f8d = [
-    "gnom"
+    'gnom'
 ];
 var $dc8af4db6ad7738c$export$2e2bcd8739ae039 = {
     init: $dc8af4db6ad7738c$export$2cd8252107eb640b,
@@ -38888,7 +41057,7 @@ function $107edd792260bfee$export$2e2bcd8739ae039(eccent, q) {
         if (q < 0) return -1 * (0, $7B7Eg.HALF_PI);
         else return 0, $7B7Eg.HALF_PI;
     }
-    //var phi = 0.5* q/(1-eccent*eccent);
+    // var phi = 0.5* q/(1-eccent*eccent);
     var phi = Math.asin(0.5 * q);
     var dphi;
     var sin_phi;
@@ -38902,13 +41071,13 @@ function $107edd792260bfee$export$2e2bcd8739ae039(eccent, q) {
         phi += dphi;
         if (Math.abs(dphi) <= 0.0000000001) return phi;
     }
-    //console.log("IQSFN-CONV:Latitude failed to converge after 30 iterations");
+    // console.log("IQSFN-CONV:Latitude failed to converge after 30 iterations");
     return NaN;
 }
 
 
 function $d87c835a9bc05532$export$2cd8252107eb640b() {
-    //no-op
+    // no-op
     if (!this.sphere) this.k0 = (0, $4MKOs.default)(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
 }
 function $d87c835a9bc05532$export$174bb771924e7eb1(p) {
@@ -38916,7 +41085,7 @@ function $d87c835a9bc05532$export$174bb771924e7eb1(p) {
     var lat = p.y;
     var x, y;
     /* Forward equations
-      -----------------*/ var dlon = (0, $dbd4D.default)(lon - this.long0);
+      ----------------- */ var dlon = (0, $dbd4D.default)(lon - this.long0, this.over);
     if (this.sphere) {
         x = this.x0 + this.a * dlon * Math.cos(this.lat_ts);
         y = this.y0 + this.a * Math.sin(lat) / Math.cos(this.lat_ts);
@@ -38934,18 +41103,18 @@ function $d87c835a9bc05532$export$70ae2c07e401031b(p) {
     p.y -= this.y0;
     var lon, lat;
     if (this.sphere) {
-        lon = (0, $dbd4D.default)(this.long0 + p.x / this.a / Math.cos(this.lat_ts));
+        lon = (0, $dbd4D.default)(this.long0 + p.x / this.a / Math.cos(this.lat_ts), this.over);
         lat = Math.asin(p.y / this.a * Math.cos(this.lat_ts));
     } else {
         lat = (0, $107edd792260bfee$export$2e2bcd8739ae039)(this.e, 2 * p.y * this.k0 / this.a);
-        lon = (0, $dbd4D.default)(this.long0 + p.x / (this.a * this.k0));
+        lon = (0, $dbd4D.default)(this.long0 + p.x / (this.a * this.k0), this.over);
     }
     p.x = lon;
     p.y = lat;
     return p;
 }
 var $d87c835a9bc05532$export$e4b2ac9215619f8d = [
-    "cea"
+    'cea'
 ];
 var $d87c835a9bc05532$export$2e2bcd8739ae039 = {
     init: $d87c835a9bc05532$export$2cd8252107eb640b,
@@ -38964,13 +41133,13 @@ function $2a84ffb934e4751b$export$2cd8252107eb640b() {
     this.lat0 = this.lat0 || 0;
     this.long0 = this.long0 || 0;
     this.lat_ts = this.lat_ts || 0;
-    this.title = this.title || "Equidistant Cylindrical (Plate Carre)";
+    this.title = this.title || 'Equidistant Cylindrical (Plate Carre)';
     this.rc = Math.cos(this.lat_ts);
 }
 function $2a84ffb934e4751b$export$174bb771924e7eb1(p) {
     var lon = p.x;
     var lat = p.y;
-    var dlon = (0, $dbd4D.default)(lon - this.long0);
+    var dlon = (0, $dbd4D.default)(lon - this.long0, this.over);
     var dlat = (0, $568a11f3be43b3f5$export$2e2bcd8739ae039)(lat - this.lat0);
     p.x = this.x0 + this.a * dlon * this.rc;
     p.y = this.y0 + this.a * dlat;
@@ -38979,14 +41148,15 @@ function $2a84ffb934e4751b$export$174bb771924e7eb1(p) {
 function $2a84ffb934e4751b$export$70ae2c07e401031b(p) {
     var x = p.x;
     var y = p.y;
-    p.x = (0, $dbd4D.default)(this.long0 + (x - this.x0) / (this.a * this.rc));
+    p.x = (0, $dbd4D.default)(this.long0 + (x - this.x0) / (this.a * this.rc), this.over);
     p.y = (0, $568a11f3be43b3f5$export$2e2bcd8739ae039)(this.lat0 + (y - this.y0) / this.a);
     return p;
 }
 var $2a84ffb934e4751b$export$e4b2ac9215619f8d = [
-    "Equirectangular",
-    "Equidistant_Cylindrical",
-    "eqc"
+    'Equirectangular',
+    'Equidistant_Cylindrical',
+    'Equidistant_Cylindrical_Spherical',
+    'eqc'
 ];
 var $2a84ffb934e4751b$export$2e2bcd8739ae039 = {
     init: $2a84ffb934e4751b$export$2cd8252107eb640b,
@@ -39007,23 +41177,33 @@ var $dbd4D = parcelRequire("dbd4D");
 
 var $7B7Eg = parcelRequire("7B7Eg");
 
-var $ac4f3e6465d17722$var$MAX_ITER = 20;
+/**
+ * @typedef {Object} LocalThis
+ * @property {number} temp
+ * @property {number} es
+ * @property {number} e
+ * @property {number} e0
+ * @property {number} e1
+ * @property {number} e2
+ * @property {number} e3
+ * @property {number} ml0
+ */ var $ac4f3e6465d17722$var$MAX_ITER = 20;
 function $ac4f3e6465d17722$export$2cd8252107eb640b() {
     /* Place parameters in static storage for common use
-      -------------------------------------------------*/ this.temp = this.b / this.a;
+      ------------------------------------------------- */ this.temp = this.b / this.a;
     this.es = 1 - Math.pow(this.temp, 2); // devait etre dans tmerc.js mais n y est pas donc je commente sinon retour de valeurs nulles
     this.e = Math.sqrt(this.es);
     this.e0 = (0, $1a13b2496406fa53$export$2e2bcd8739ae039)(this.es);
     this.e1 = (0, $2cd33ad30cf5c777$export$2e2bcd8739ae039)(this.es);
     this.e2 = (0, $103627984db2c044$export$2e2bcd8739ae039)(this.es);
     this.e3 = (0, $9c2c69739eb169e0$export$2e2bcd8739ae039)(this.es);
-    this.ml0 = this.a * (0, $d53bef51adc5c7b8$export$2e2bcd8739ae039)(this.e0, this.e1, this.e2, this.e3, this.lat0); //si que des zeros le calcul ne se fait pas
+    this.ml0 = this.a * (0, $d53bef51adc5c7b8$export$2e2bcd8739ae039)(this.e0, this.e1, this.e2, this.e3, this.lat0); // si que des zeros le calcul ne se fait pas
 }
 function $ac4f3e6465d17722$export$174bb771924e7eb1(p) {
     var lon = p.x;
     var lat = p.y;
     var x, y, el;
-    var dlon = (0, $dbd4D.default)(lon - this.long0);
+    var dlon = (0, $dbd4D.default)(lon - this.long0, this.over);
     el = dlon * Math.sin(lat);
     if (this.sphere) {
         if (Math.abs(lat) <= (0, $7B7Eg.EPSLN)) {
@@ -39053,7 +41233,7 @@ function $ac4f3e6465d17722$export$70ae2c07e401031b(p) {
     y = p.y - this.y0;
     if (this.sphere) {
         if (Math.abs(y + this.a * this.lat0) <= (0, $7B7Eg.EPSLN)) {
-            lon = (0, $dbd4D.default)(x / this.a + this.long0);
+            lon = (0, $dbd4D.default)(x / this.a + this.long0, this.over);
             lat = 0;
         } else {
             al = this.lat0 + y / this.a;
@@ -39069,11 +41249,11 @@ function $ac4f3e6465d17722$export$70ae2c07e401031b(p) {
                     break;
                 }
             }
-            lon = (0, $dbd4D.default)(this.long0 + Math.asin(x * Math.tan(phi) / this.a) / Math.sin(lat));
+            lon = (0, $dbd4D.default)(this.long0 + Math.asin(x * Math.tan(phi) / this.a) / Math.sin(lat), this.over);
         }
     } else if (Math.abs(y + this.ml0) <= (0, $7B7Eg.EPSLN)) {
         lat = 0;
-        lon = (0, $dbd4D.default)(this.long0 + x / this.a);
+        lon = (0, $dbd4D.default)(this.long0 + x / this.a, this.over);
     } else {
         al = (this.ml0 + y) / this.a;
         bl = x * x / this.a / this.a + al * al;
@@ -39093,17 +41273,18 @@ function $ac4f3e6465d17722$export$70ae2c07e401031b(p) {
                 break;
             }
         }
-        //lat=phi4z(this.e,this.e0,this.e1,this.e2,this.e3,al,bl,0,0);
+        // lat=phi4z(this.e,this.e0,this.e1,this.e2,this.e3,al,bl,0,0);
         cl = Math.sqrt(1 - this.es * Math.pow(Math.sin(lat), 2)) * Math.tan(lat);
-        lon = (0, $dbd4D.default)(this.long0 + Math.asin(x * cl / this.a) / Math.sin(lat));
+        lon = (0, $dbd4D.default)(this.long0 + Math.asin(x * cl / this.a) / Math.sin(lat), this.over);
     }
     p.x = lon;
     p.y = lat;
     return p;
 }
 var $ac4f3e6465d17722$export$e4b2ac9215619f8d = [
-    "Polyconic",
-    "poly"
+    'Polyconic',
+    'American_Polyconic',
+    'poly'
 ];
 var $ac4f3e6465d17722$export$2e2bcd8739ae039 = {
     init: $ac4f3e6465d17722$export$2cd8252107eb640b,
@@ -39118,13 +41299,13 @@ var $9FhcM = parcelRequire("9FhcM");
 
 var $dbd4D = parcelRequire("dbd4D");
 function $419dc12f1a350df5$export$2cd8252107eb640b() {
-//no-op
+// no-op
 }
 function $419dc12f1a350df5$export$174bb771924e7eb1(p) {
     var lon = p.x;
     var lat = p.y;
     /* Forward equations
-      -----------------*/ var dlon = (0, $dbd4D.default)(lon - this.long0);
+      ----------------- */ var dlon = (0, $dbd4D.default)(lon - this.long0, this.over);
     var x = this.x0 + this.a * dlon;
     var y = this.y0 + this.a * Math.log(Math.tan(Math.PI / 4 + lat / 2.5)) * 1.25;
     p.x = x;
@@ -39134,15 +41315,15 @@ function $419dc12f1a350df5$export$174bb771924e7eb1(p) {
 function $419dc12f1a350df5$export$70ae2c07e401031b(p) {
     p.x -= this.x0;
     p.y -= this.y0;
-    var lon = (0, $dbd4D.default)(this.long0 + p.x / this.a);
+    var lon = (0, $dbd4D.default)(this.long0 + p.x / this.a, this.over);
     var lat = 2.5 * (Math.atan(Math.exp(0.8 * p.y / this.a)) - Math.PI / 4);
     p.x = lon;
     p.y = lat;
     return p;
 }
 var $419dc12f1a350df5$export$e4b2ac9215619f8d = [
-    "Miller_Cylindrical",
-    "mill"
+    'Miller_Cylindrical',
+    'mill'
 ];
 var $419dc12f1a350df5$export$2e2bcd8739ae039 = {
     init: $419dc12f1a350df5$export$2cd8252107eb640b,
@@ -39168,7 +41349,8 @@ var $7sb7x = parcelRequire("7sb7x");
 var $9bb4cd81347ac975$var$MAX_ITER = 20;
 function $9bb4cd81347ac975$export$2cd8252107eb640b() {
     /* Place parameters in static storage for common use
-    -------------------------------------------------*/ if (!this.sphere) this.en = (0, $dMOv3.default)(this.es);
+    ------------------------------------------------- */ this.long0 = this.long0 || 0;
+    if (!this.sphere) this.en = (0, $dMOv3.default)(this.es);
     else {
         this.n = 1;
         this.m = 0;
@@ -39182,7 +41364,7 @@ function $9bb4cd81347ac975$export$174bb771924e7eb1(p) {
     var lon = p.x;
     var lat = p.y;
     /* Forward equations
-    -----------------*/ lon = (0, $dbd4D.default)(lon - this.long0);
+    ----------------- */ lon = (0, $dbd4D.default)(lon - this.long0, this.over);
     if (this.sphere) {
         if (!this.m) lat = this.n !== 1 ? Math.asin(this.n * Math.sin(lat)) : lat;
         else {
@@ -39216,7 +41398,7 @@ function $9bb4cd81347ac975$export$70ae2c07e401031b(p) {
         lon = lon / (this.C_x * (this.m + Math.cos(lat)));
         if (this.m) lat = (0, $7sb7x.default)((this.m * lat + Math.sin(lat)) / this.n);
         else if (this.n !== 1) lat = (0, $7sb7x.default)(Math.sin(lat) / this.n);
-        lon = (0, $dbd4D.default)(lon + this.long0);
+        lon = (0, $dbd4D.default)(lon + this.long0, this.over);
         lat = (0, $568a11f3be43b3f5$export$2e2bcd8739ae039)(lat);
     } else {
         lat = (0, $jZzoQ.default)(p.y / this.a, this.es, this.en);
@@ -39224,8 +41406,8 @@ function $9bb4cd81347ac975$export$70ae2c07e401031b(p) {
         if (s < (0, $7B7Eg.HALF_PI)) {
             s = Math.sin(lat);
             temp = this.long0 + p.x * Math.sqrt(1 - this.es * s * s) / (this.a * Math.cos(lat));
-            //temp = this.long0 + p.x / (this.a * Math.cos(lat));
-            lon = (0, $dbd4D.default)(temp);
+            // temp = this.long0 + p.x / (this.a * Math.cos(lat));
+            lon = (0, $dbd4D.default)(temp, this.over);
         } else if (s - (0, $7B7Eg.EPSLN) < (0, $7B7Eg.HALF_PI)) lon = this.long0;
     }
     p.x = lon;
@@ -39233,8 +41415,8 @@ function $9bb4cd81347ac975$export$70ae2c07e401031b(p) {
     return p;
 }
 var $9bb4cd81347ac975$export$e4b2ac9215619f8d = [
-    "Sinusoidal",
-    "sinu"
+    'Sinusoidal',
+    'sinu'
 ];
 var $9bb4cd81347ac975$export$2e2bcd8739ae039 = {
     init: $9bb4cd81347ac975$export$2cd8252107eb640b,
@@ -39248,16 +41430,20 @@ var $9bb4cd81347ac975$export$2e2bcd8739ae039 = {
 var $dbd4D = parcelRequire("dbd4D");
 
 var $7B7Eg = parcelRequire("7B7Eg");
-function $5b0704453a45ce0e$export$2cd8252107eb640b() {}
+function $5b0704453a45ce0e$export$2cd8252107eb640b() {
+    this.x0 = this.x0 !== undefined ? this.x0 : 0;
+    this.y0 = this.y0 !== undefined ? this.y0 : 0;
+    this.long0 = this.long0 !== undefined ? this.long0 : 0;
+}
 function $5b0704453a45ce0e$export$174bb771924e7eb1(p) {
     /* Forward equations
-      -----------------*/ var lon = p.x;
+      ----------------- */ var lon = p.x;
     var lat = p.y;
-    var delta_lon = (0, $dbd4D.default)(lon - this.long0);
+    var delta_lon = (0, $dbd4D.default)(lon - this.long0, this.over);
     var theta = lat;
     var con = Math.PI * Math.sin(lat);
     /* Iterate using the Newton-Raphson method to find theta
-      -----------------------------------------------------*/ while(true){
+      ----------------------------------------------------- */ while(true){
         var delta_theta = -(theta + Math.sin(theta) - con) / (1 + Math.cos(theta));
         theta += delta_theta;
         if (Math.abs(delta_theta) < (0, $7B7Eg.EPSLN)) break;
@@ -39265,7 +41451,7 @@ function $5b0704453a45ce0e$export$174bb771924e7eb1(p) {
     theta /= 2;
     /* If the latitude is 90 deg, force the x coordinate to be "0 + false easting"
        this is done here because of precision problems with "cos(theta)"
-       --------------------------------------------------------------------------*/ if (Math.PI / 2 - Math.abs(lat) < (0, $7B7Eg.EPSLN)) delta_lon = 0;
+       -------------------------------------------------------------------------- */ if (Math.PI / 2 - Math.abs(lat) < (0, $7B7Eg.EPSLN)) delta_lon = 0;
     var x = 0.900316316158 * this.a * delta_lon * Math.cos(theta) + this.x0;
     var y = 1.4142135623731 * this.a * Math.sin(theta) + this.y0;
     p.x = x;
@@ -39276,14 +41462,14 @@ function $5b0704453a45ce0e$export$70ae2c07e401031b(p) {
     var theta;
     var arg;
     /* Inverse equations
-      -----------------*/ p.x -= this.x0;
+      ----------------- */ p.x -= this.x0;
     p.y -= this.y0;
     arg = p.y / (1.4142135623731 * this.a);
     /* Because of division by zero problems, 'arg' can not be 1.  Therefore
        a number very close to one is used instead.
-       -------------------------------------------------------------------*/ if (Math.abs(arg) > 0.999999999999) arg = 0.999999999999;
+       ------------------------------------------------------------------- */ if (Math.abs(arg) > 0.999999999999) arg = 0.999999999999;
     theta = Math.asin(arg);
-    var lon = (0, $dbd4D.default)(this.long0 + p.x / (0.900316316158 * this.a * Math.cos(theta)));
+    var lon = (0, $dbd4D.default)(this.long0 + p.x / (0.900316316158 * this.a * Math.cos(theta)), this.over);
     if (lon < -Math.PI) lon = -Math.PI;
     if (lon > Math.PI) lon = Math.PI;
     arg = (2 * theta + Math.sin(2 * theta)) / Math.PI;
@@ -39294,8 +41480,8 @@ function $5b0704453a45ce0e$export$70ae2c07e401031b(p) {
     return p;
 }
 var $5b0704453a45ce0e$export$e4b2ac9215619f8d = [
-    "Mollweide",
-    "moll"
+    'Mollweide',
+    'moll'
 ];
 var $5b0704453a45ce0e$export$2e2bcd8739ae039 = {
     init: $5b0704453a45ce0e$export$2cd8252107eb640b,
@@ -39320,7 +41506,7 @@ var $dbd4D = parcelRequire("dbd4D");
 var $7B7Eg = parcelRequire("7B7Eg");
 function $8e1785d1c11b6c16$export$2cd8252107eb640b() {
     /* Place parameters in static storage for common use
-      -------------------------------------------------*/ // Standard Parallels cannot be equal and on opposite sides of the equator
+      ------------------------------------------------- */ // Standard Parallels cannot be equal and on opposite sides of the equator
     if (Math.abs(this.lat1 + this.lat2) < (0, $7B7Eg.EPSLN)) return;
     this.lat2 = this.lat2 || this.lat1;
     this.temp = this.b / this.a;
@@ -39330,15 +41516,15 @@ function $8e1785d1c11b6c16$export$2cd8252107eb640b() {
     this.e1 = (0, $2cd33ad30cf5c777$export$2e2bcd8739ae039)(this.es);
     this.e2 = (0, $103627984db2c044$export$2e2bcd8739ae039)(this.es);
     this.e3 = (0, $9c2c69739eb169e0$export$2e2bcd8739ae039)(this.es);
-    this.sinphi = Math.sin(this.lat1);
-    this.cosphi = Math.cos(this.lat1);
-    this.ms1 = (0, $4MKOs.default)(this.e, this.sinphi, this.cosphi);
+    this.sin_phi = Math.sin(this.lat1);
+    this.cos_phi = Math.cos(this.lat1);
+    this.ms1 = (0, $4MKOs.default)(this.e, this.sin_phi, this.cos_phi);
     this.ml1 = (0, $d53bef51adc5c7b8$export$2e2bcd8739ae039)(this.e0, this.e1, this.e2, this.e3, this.lat1);
-    if (Math.abs(this.lat1 - this.lat2) < (0, $7B7Eg.EPSLN)) this.ns = this.sinphi;
+    if (Math.abs(this.lat1 - this.lat2) < (0, $7B7Eg.EPSLN)) this.ns = this.sin_phi;
     else {
-        this.sinphi = Math.sin(this.lat2);
-        this.cosphi = Math.cos(this.lat2);
-        this.ms2 = (0, $4MKOs.default)(this.e, this.sinphi, this.cosphi);
+        this.sin_phi = Math.sin(this.lat2);
+        this.cos_phi = Math.cos(this.lat2);
+        this.ms2 = (0, $4MKOs.default)(this.e, this.sin_phi, this.cos_phi);
         this.ml2 = (0, $d53bef51adc5c7b8$export$2e2bcd8739ae039)(this.e0, this.e1, this.e2, this.e3, this.lat2);
         this.ns = (this.ms1 - this.ms2) / (this.ml2 - this.ml1);
     }
@@ -39351,12 +41537,12 @@ function $8e1785d1c11b6c16$export$174bb771924e7eb1(p) {
     var lat = p.y;
     var rh1;
     /* Forward equations
-      -----------------*/ if (this.sphere) rh1 = this.a * (this.g - lat);
+      ----------------- */ if (this.sphere) rh1 = this.a * (this.g - lat);
     else {
         var ml = (0, $d53bef51adc5c7b8$export$2e2bcd8739ae039)(this.e0, this.e1, this.e2, this.e3, lat);
         rh1 = this.a * (this.g - ml);
     }
-    var theta = this.ns * (0, $dbd4D.default)(lon - this.long0);
+    var theta = this.ns * (0, $dbd4D.default)(lon - this.long0, this.over);
     var x = this.x0 + rh1 * Math.sin(theta);
     var y = this.y0 + this.rh - rh1 * Math.cos(theta);
     p.x = x;
@@ -39377,7 +41563,7 @@ function $8e1785d1c11b6c16$export$70ae2c07e401031b(p) {
     var theta = 0;
     if (rh1 !== 0) theta = Math.atan2(con * p.x, con * p.y);
     if (this.sphere) {
-        lon = (0, $dbd4D.default)(this.long0 + theta / this.ns);
+        lon = (0, $dbd4D.default)(this.long0 + theta / this.ns, this.over);
         lat = (0, $568a11f3be43b3f5$export$2e2bcd8739ae039)(this.g - rh1 / this.a);
         p.x = lon;
         p.y = lat;
@@ -39385,15 +41571,15 @@ function $8e1785d1c11b6c16$export$70ae2c07e401031b(p) {
     } else {
         var ml = this.g - rh1 / this.a;
         lat = (0, $36c01451f23e2b38$export$2e2bcd8739ae039)(ml, this.e0, this.e1, this.e2, this.e3);
-        lon = (0, $dbd4D.default)(this.long0 + theta / this.ns);
+        lon = (0, $dbd4D.default)(this.long0 + theta / this.ns, this.over);
         p.x = lon;
         p.y = lat;
         return p;
     }
 }
 var $8e1785d1c11b6c16$export$e4b2ac9215619f8d = [
-    "Equidistant_Conic",
-    "eqdc"
+    'Equidistant_Conic',
+    'eqdc'
 ];
 var $8e1785d1c11b6c16$export$2e2bcd8739ae039 = {
     init: $8e1785d1c11b6c16$export$2cd8252107eb640b,
@@ -39410,14 +41596,14 @@ var $7B7Eg = parcelRequire("7B7Eg");
 
 var $7sb7x = parcelRequire("7sb7x");
 function $da3a30e3ca751984$export$2cd8252107eb640b() {
-    //this.R = 6370997; //Radius of earth
+    // this.R = 6370997; //Radius of earth
     this.R = this.a;
 }
 function $da3a30e3ca751984$export$174bb771924e7eb1(p) {
     var lon = p.x;
     var lat = p.y;
     /* Forward equations
-    -----------------*/ var dlon = (0, $dbd4D.default)(lon - this.long0);
+    ----------------- */ var dlon = (0, $dbd4D.default)(lon - this.long0, this.over);
     var x, y;
     if (Math.abs(lat) <= (0, $7B7Eg.EPSLN)) {
         x = this.x0 + this.R * dlon;
@@ -39441,12 +41627,12 @@ function $da3a30e3ca751984$export$174bb771924e7eb1(p) {
     var con = Math.PI * this.R * (al * (g - msq) + Math.sqrt(asq * (g - msq) * (g - msq) - (msq + asq) * (gsq - msq))) / (msq + asq);
     if (dlon < 0) con = -con;
     x = this.x0 + con;
-    //con = Math.abs(con / (Math.PI * this.R));
+    // con = Math.abs(con / (Math.PI * this.R));
     var q = asq + g;
     con = Math.PI * this.R * (m * q - al * Math.sqrt((msq + asq) * (asq + 1) - q * q)) / (msq + asq);
-    if (lat >= 0) //y = this.y0 + Math.PI * this.R * Math.sqrt(1 - con * con - 2 * al * con);
+    if (lat >= 0) // y = this.y0 + Math.PI * this.R * Math.sqrt(1 - con * con - 2 * al * con);
     y = this.y0 + con;
-    else //y = this.y0 - Math.PI * this.R * Math.sqrt(1 - con * con - 2 * al * con);
+    else // y = this.y0 - Math.PI * this.R * Math.sqrt(1 - con * con - 2 * al * con);
     y = this.y0 - con;
     p.x = x;
     p.y = y;
@@ -39461,7 +41647,7 @@ function $da3a30e3ca751984$export$70ae2c07e401031b(p) {
     var th1;
     var d;
     /* inverse equations
-    -----------------*/ p.x -= this.x0;
+    ----------------- */ p.x -= this.x0;
     p.y -= this.y0;
     con = Math.PI * this.R;
     xx = p.x / con;
@@ -39482,15 +41668,16 @@ function $da3a30e3ca751984$export$70ae2c07e401031b(p) {
     if (p.y >= 0) lat = (-m1 * Math.cos(th1 + Math.PI / 3) - c2 / 3 / c3) * Math.PI;
     else lat = -(-m1 * Math.cos(th1 + Math.PI / 3) - c2 / 3 / c3) * Math.PI;
     if (Math.abs(xx) < (0, $7B7Eg.EPSLN)) lon = this.long0;
-    else lon = (0, $dbd4D.default)(this.long0 + Math.PI * (xys - 1 + Math.sqrt(1 + 2 * (xx * xx - yy * yy) + xys * xys)) / 2 / xx);
+    else lon = (0, $dbd4D.default)(this.long0 + Math.PI * (xys - 1 + Math.sqrt(1 + 2 * (xx * xx - yy * yy) + xys * xys)) / 2 / xx, this.over);
     p.x = lon;
     p.y = lat;
     return p;
 }
 var $da3a30e3ca751984$export$e4b2ac9215619f8d = [
-    "Van_der_Grinten_I",
-    "VanDerGrinten",
-    "vandg"
+    'Van_der_Grinten_I',
+    'VanDerGrinten',
+    'Van_der_Grinten',
+    'vandg'
 ];
 var $da3a30e3ca751984$export$2e2bcd8739ae039 = {
     init: $da3a30e3ca751984$export$2cd8252107eb640b,
@@ -39510,33 +41697,127 @@ var $7B7Eg = parcelRequire("7B7Eg");
 
 
 
-
 var $7sb7x = parcelRequire("7sb7x");
+
+/**
+ * Calculates the inverse geodesic problem using Vincenty's formulae.
+ * Computes the forward azimuth and ellipsoidal distance between two points
+ * specified by latitude and longitude on the surface of an ellipsoid.
+ *
+ * @param {number} lat1 Latitude of the first point in radians.
+ * @param {number} lon1 Longitude of the first point in radians.
+ * @param {number} lat2 Latitude of the second point in radians.
+ * @param {number} lon2 Longitude of the second point in radians.
+ * @param {number} a Semi-major axis of the ellipsoid (meters).
+ * @param {number} f Flattening of the ellipsoid.
+ * @returns {{ azi1: number, s12: number }} An object containing:
+ *   - azi1: Forward azimuth from the first point to the second point (radians).
+ *   - s12: Ellipsoidal distance between the two points (meters).
+ */ function $a2bcb5c1026eec87$export$56278523bd130841(lat1, lon1, lat2, lon2, a, f) {
+    const L = lon2 - lon1;
+    const U1 = Math.atan((1 - f) * Math.tan(lat1));
+    const U2 = Math.atan((1 - f) * Math.tan(lat2));
+    const sinU1 = Math.sin(U1), cosU1 = Math.cos(U1);
+    const sinU2 = Math.sin(U2), cosU2 = Math.cos(U2);
+    let lambda = L, lambdaP, iterLimit = 100;
+    let sinLambda, cosLambda, sinSigma, cosSigma, sigma, sinAlpha, cos2Alpha, cos2SigmaM, C;
+    let uSq, A, B, deltaSigma, s;
+    do {
+        sinLambda = Math.sin(lambda);
+        cosLambda = Math.cos(lambda);
+        sinSigma = Math.sqrt(cosU2 * sinLambda * (cosU2 * sinLambda) + (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda) * (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda));
+        if (sinSigma === 0) return {
+            azi1: 0,
+            s12: 0
+        }; // coincident points
+        cosSigma = sinU1 * sinU2 + cosU1 * cosU2 * cosLambda;
+        sigma = Math.atan2(sinSigma, cosSigma);
+        sinAlpha = cosU1 * cosU2 * sinLambda / sinSigma;
+        cos2Alpha = 1 - sinAlpha * sinAlpha;
+        cos2SigmaM = cos2Alpha !== 0 ? cosSigma - 2 * sinU1 * sinU2 / cos2Alpha : 0;
+        C = f / 16 * cos2Alpha * (4 + f * (4 - 3 * cos2Alpha));
+        lambdaP = lambda;
+        lambda = L + (1 - C) * f * sinAlpha * (sigma + C * sinSigma * (cos2SigmaM + C * cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM)));
+    }while (Math.abs(lambda - lambdaP) > 1e-12 && --iterLimit > 0);
+    if (iterLimit === 0) return {
+        azi1: NaN,
+        s12: NaN
+    }; // formula failed to converge
+    uSq = cos2Alpha * (a * a - a * (1 - f) * (a * (1 - f))) / (a * (1 - f) * (a * (1 - f)));
+    A = 1 + uSq / 16384 * (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)));
+    B = uSq / 1024 * (256 + uSq * (-128 + uSq * (74 - 47 * uSq)));
+    deltaSigma = B * sinSigma * (cos2SigmaM + B / 4 * (cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM) - B / 6 * cos2SigmaM * (-3 + 4 * sinSigma * sinSigma) * (-3 + 4 * cos2SigmaM * cos2SigmaM)));
+    s = a * (1 - f) * A * (sigma - deltaSigma);
+    // Forward azimuth
+    const azi1 = Math.atan2(cosU2 * sinLambda, cosU1 * sinU2 - sinU1 * cosU2 * cosLambda);
+    return {
+        azi1: azi1,
+        s12: s
+    };
+}
+function $a2bcb5c1026eec87$export$b5a922c94102a306(lat1, lon1, azi1, s12, a, f) {
+    const U1 = Math.atan((1 - f) * Math.tan(lat1));
+    const sinU1 = Math.sin(U1), cosU1 = Math.cos(U1);
+    const sinAlpha1 = Math.sin(azi1), cosAlpha1 = Math.cos(azi1);
+    const sigma1 = Math.atan2(sinU1, cosU1 * cosAlpha1);
+    const sinAlpha = cosU1 * sinAlpha1;
+    const cos2Alpha = 1 - sinAlpha * sinAlpha;
+    const uSq = cos2Alpha * (a * a - a * (1 - f) * (a * (1 - f))) / (a * (1 - f) * (a * (1 - f)));
+    const A = 1 + uSq / 16384 * (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)));
+    const B = uSq / 1024 * (256 + uSq * (-128 + uSq * (74 - 47 * uSq)));
+    let sigma = s12 / (a * (1 - f) * A), sigmaP, iterLimit = 100;
+    let cos2SigmaM, sinSigma, cosSigma, deltaSigma;
+    do {
+        cos2SigmaM = Math.cos(2 * sigma1 + sigma);
+        sinSigma = Math.sin(sigma);
+        cosSigma = Math.cos(sigma);
+        deltaSigma = B * sinSigma * (cos2SigmaM + B / 4 * (cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM) - B / 6 * cos2SigmaM * (-3 + 4 * sinSigma * sinSigma) * (-3 + 4 * cos2SigmaM * cos2SigmaM)));
+        sigmaP = sigma;
+        sigma = s12 / (a * (1 - f) * A) + deltaSigma;
+    }while (Math.abs(sigma - sigmaP) > 1e-12 && --iterLimit > 0);
+    if (iterLimit === 0) return {
+        lat2: NaN,
+        lon2: NaN
+    };
+    const tmp = sinU1 * sinSigma - cosU1 * cosSigma * cosAlpha1;
+    const lat2 = Math.atan2(sinU1 * cosSigma + cosU1 * sinSigma * cosAlpha1, (1 - f) * Math.sqrt(sinAlpha * sinAlpha + tmp * tmp));
+    const lambda = Math.atan2(sinSigma * sinAlpha1, cosU1 * cosSigma - sinU1 * sinSigma * cosAlpha1);
+    const C = f / 16 * cos2Alpha * (4 + f * (4 - 3 * cos2Alpha));
+    const L = lambda - (1 - C) * f * sinAlpha * (sigma + C * sinSigma * (cos2SigmaM + C * cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM)));
+    const lon2 = lon1 + L;
+    return {
+        lat2: lat2,
+        lon2: lon2
+    };
+}
+
 
 function $0d20bac18942304a$export$2cd8252107eb640b() {
     this.sin_p12 = Math.sin(this.lat0);
     this.cos_p12 = Math.cos(this.lat0);
+    // flattening for ellipsoid
+    this.f = this.es / (1 + Math.sqrt(1 - this.es));
 }
 function $0d20bac18942304a$export$174bb771924e7eb1(p) {
     var lon = p.x;
     var lat = p.y;
     var sinphi = Math.sin(p.y);
     var cosphi = Math.cos(p.y);
-    var dlon = (0, $dbd4D.default)(lon - this.long0);
-    var e0, e1, e2, e3, Mlp, Ml, tanphi, Nl1, Nl, psi, Az, G, H, GH, Hs, c, kp, cos_c, s, s2, s3, s4, s5;
+    var dlon = (0, $dbd4D.default)(lon - this.long0, this.over);
+    var e0, e1, e2, e3, Mlp, Ml, c, kp, cos_c, vars, azi1;
     if (this.sphere) {
         if (Math.abs(this.sin_p12 - 1) <= (0, $7B7Eg.EPSLN)) {
-            //North Pole case
+            // North Pole case
             p.x = this.x0 + this.a * ((0, $7B7Eg.HALF_PI) - lat) * Math.sin(dlon);
             p.y = this.y0 - this.a * ((0, $7B7Eg.HALF_PI) - lat) * Math.cos(dlon);
             return p;
         } else if (Math.abs(this.sin_p12 + 1) <= (0, $7B7Eg.EPSLN)) {
-            //South Pole case
+            // South Pole case
             p.x = this.x0 + this.a * ((0, $7B7Eg.HALF_PI) + lat) * Math.sin(dlon);
             p.y = this.y0 + this.a * ((0, $7B7Eg.HALF_PI) + lat) * Math.cos(dlon);
             return p;
         } else {
-            //default case
+            // default case
             cos_c = this.sin_p12 * sinphi + this.cos_p12 * cosphi * Math.cos(dlon);
             c = Math.acos(cos_c);
             kp = c ? c / Math.sin(c) : 1;
@@ -39550,40 +41831,29 @@ function $0d20bac18942304a$export$174bb771924e7eb1(p) {
         e2 = (0, $103627984db2c044$export$2e2bcd8739ae039)(this.es);
         e3 = (0, $9c2c69739eb169e0$export$2e2bcd8739ae039)(this.es);
         if (Math.abs(this.sin_p12 - 1) <= (0, $7B7Eg.EPSLN)) {
-            //North Pole case
+            // North Pole case
             Mlp = this.a * (0, $d53bef51adc5c7b8$export$2e2bcd8739ae039)(e0, e1, e2, e3, (0, $7B7Eg.HALF_PI));
             Ml = this.a * (0, $d53bef51adc5c7b8$export$2e2bcd8739ae039)(e0, e1, e2, e3, lat);
             p.x = this.x0 + (Mlp - Ml) * Math.sin(dlon);
             p.y = this.y0 - (Mlp - Ml) * Math.cos(dlon);
             return p;
         } else if (Math.abs(this.sin_p12 + 1) <= (0, $7B7Eg.EPSLN)) {
-            //South Pole case
+            // South Pole case
             Mlp = this.a * (0, $d53bef51adc5c7b8$export$2e2bcd8739ae039)(e0, e1, e2, e3, (0, $7B7Eg.HALF_PI));
             Ml = this.a * (0, $d53bef51adc5c7b8$export$2e2bcd8739ae039)(e0, e1, e2, e3, lat);
             p.x = this.x0 + (Mlp + Ml) * Math.sin(dlon);
             p.y = this.y0 + (Mlp + Ml) * Math.cos(dlon);
             return p;
         } else {
-            //Default case
-            tanphi = sinphi / cosphi;
-            Nl1 = (0, $cc929bf1073a4f4a$export$2e2bcd8739ae039)(this.a, this.e, this.sin_p12);
-            Nl = (0, $cc929bf1073a4f4a$export$2e2bcd8739ae039)(this.a, this.e, sinphi);
-            psi = Math.atan((1 - this.es) * tanphi + this.es * Nl1 * this.sin_p12 / (Nl * cosphi));
-            Az = Math.atan2(Math.sin(dlon), this.cos_p12 * Math.tan(psi) - this.sin_p12 * Math.cos(dlon));
-            if (Az === 0) s = Math.asin(this.cos_p12 * Math.sin(psi) - this.sin_p12 * Math.cos(psi));
-            else if (Math.abs(Math.abs(Az) - Math.PI) <= (0, $7B7Eg.EPSLN)) s = -Math.asin(this.cos_p12 * Math.sin(psi) - this.sin_p12 * Math.cos(psi));
-            else s = Math.asin(Math.sin(dlon) * Math.cos(psi) / Math.sin(Az));
-            G = this.e * this.sin_p12 / Math.sqrt(1 - this.es);
-            H = this.e * this.cos_p12 * Math.cos(Az) / Math.sqrt(1 - this.es);
-            GH = G * H;
-            Hs = H * H;
-            s2 = s * s;
-            s3 = s2 * s;
-            s4 = s3 * s;
-            s5 = s4 * s;
-            c = Nl1 * s * (1 - s2 * Hs * (1 - Hs) / 6 + s3 / 8 * GH * (1 - 2 * Hs) + s4 / 120 * (Hs * (4 - 7 * Hs) - 3 * G * G * (1 - 7 * Hs)) - s5 / 48 * GH);
-            p.x = this.x0 + c * Math.sin(Az);
-            p.y = this.y0 + c * Math.cos(Az);
+            // Default case
+            if (Math.abs(lon) < (0, $7B7Eg.EPSLN) && Math.abs(lat - this.lat0) < (0, $7B7Eg.EPSLN)) {
+                p.x = p.y = 0;
+                return p;
+            }
+            vars = (0, $a2bcb5c1026eec87$export$56278523bd130841)(this.lat0, this.long0, lat, lon, this.a, this.f);
+            azi1 = vars.azi1;
+            p.x = vars.s12 * Math.sin(azi1);
+            p.y = vars.s12 * Math.cos(azi1);
             return p;
         }
     }
@@ -39591,7 +41861,7 @@ function $0d20bac18942304a$export$174bb771924e7eb1(p) {
 function $0d20bac18942304a$export$70ae2c07e401031b(p) {
     p.x -= this.x0;
     p.y -= this.y0;
-    var rh, z, sinz, cosz, lon, lat, con, e0, e1, e2, e3, Mlp, M, N1, psi, Az, cosAz, tmp, A, B, D, Ee, F, sinpsi;
+    var rh, z, sinz, cosz, lon, lat, con, e0, e1, e2, e3, Mlp, M, azi1, s12, vars;
     if (this.sphere) {
         rh = Math.sqrt(p.x * p.x + p.y * p.y);
         if (rh > 2 * (0, $7B7Eg.HALF_PI) * this.a) return;
@@ -39604,15 +41874,9 @@ function $0d20bac18942304a$export$70ae2c07e401031b(p) {
             lat = (0, $7sb7x.default)(cosz * this.sin_p12 + p.y * sinz * this.cos_p12 / rh);
             con = Math.abs(this.lat0) - (0, $7B7Eg.HALF_PI);
             if (Math.abs(con) <= (0, $7B7Eg.EPSLN)) {
-                if (this.lat0 >= 0) lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x, -p.y));
-                else lon = (0, $dbd4D.default)(this.long0 - Math.atan2(-p.x, p.y));
-            } else /*con = cosz - this.sin_p12 * Math.sin(lat);
-        if ((Math.abs(con) < EPSLN) && (Math.abs(p.x) < EPSLN)) {
-          //no-op, just keep the lon value as is
-        } else {
-          var temp = Math.atan2((p.x * sinz * this.cos_p12), (con * rh));
-          lon = adjust_lon(this.long0 + Math.atan2((p.x * sinz * this.cos_p12), (con * rh)));
-        }*/ lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x * sinz, rh * this.cos_p12 * cosz - p.y * this.sin_p12 * sinz));
+                if (this.lat0 >= 0) lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x, -p.y), this.over);
+                else lon = (0, $dbd4D.default)(this.long0 - Math.atan2(-p.x, p.y), this.over);
+            } else lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x * sinz, rh * this.cos_p12 * cosz - p.y * this.sin_p12 * sinz), this.over);
         }
         p.x = lon;
         p.y = lat;
@@ -39623,50 +41887,39 @@ function $0d20bac18942304a$export$70ae2c07e401031b(p) {
         e2 = (0, $103627984db2c044$export$2e2bcd8739ae039)(this.es);
         e3 = (0, $9c2c69739eb169e0$export$2e2bcd8739ae039)(this.es);
         if (Math.abs(this.sin_p12 - 1) <= (0, $7B7Eg.EPSLN)) {
-            //North pole case
+            // North pole case
             Mlp = this.a * (0, $d53bef51adc5c7b8$export$2e2bcd8739ae039)(e0, e1, e2, e3, (0, $7B7Eg.HALF_PI));
             rh = Math.sqrt(p.x * p.x + p.y * p.y);
             M = Mlp - rh;
             lat = (0, $36c01451f23e2b38$export$2e2bcd8739ae039)(M / this.a, e0, e1, e2, e3);
-            lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x, -1 * p.y));
+            lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x, -1 * p.y), this.over);
             p.x = lon;
             p.y = lat;
             return p;
         } else if (Math.abs(this.sin_p12 + 1) <= (0, $7B7Eg.EPSLN)) {
-            //South pole case
+            // South pole case
             Mlp = this.a * (0, $d53bef51adc5c7b8$export$2e2bcd8739ae039)(e0, e1, e2, e3, (0, $7B7Eg.HALF_PI));
             rh = Math.sqrt(p.x * p.x + p.y * p.y);
             M = rh - Mlp;
             lat = (0, $36c01451f23e2b38$export$2e2bcd8739ae039)(M / this.a, e0, e1, e2, e3);
-            lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x, p.y));
+            lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x, p.y), this.over);
             p.x = lon;
             p.y = lat;
             return p;
         } else {
-            //default case
-            rh = Math.sqrt(p.x * p.x + p.y * p.y);
-            Az = Math.atan2(p.x, p.y);
-            N1 = (0, $cc929bf1073a4f4a$export$2e2bcd8739ae039)(this.a, this.e, this.sin_p12);
-            cosAz = Math.cos(Az);
-            tmp = this.e * this.cos_p12 * cosAz;
-            A = -tmp * tmp / (1 - this.es);
-            B = 3 * this.es * (1 - A) * this.sin_p12 * this.cos_p12 * cosAz / (1 - this.es);
-            D = rh / N1;
-            Ee = D - A * (1 + A) * Math.pow(D, 3) / 6 - B * (1 + 3 * A) * Math.pow(D, 4) / 24;
-            F = 1 - A * Ee * Ee / 2 - D * Ee * Ee * Ee / 6;
-            psi = Math.asin(this.sin_p12 * Math.cos(Ee) + this.cos_p12 * Math.sin(Ee) * cosAz);
-            lon = (0, $dbd4D.default)(this.long0 + Math.asin(Math.sin(Az) * Math.sin(Ee) / Math.cos(psi)));
-            sinpsi = Math.sin(psi);
-            lat = Math.atan2((sinpsi - this.es * F * this.sin_p12) * Math.tan(psi), sinpsi * (1 - this.es));
-            p.x = lon;
-            p.y = lat;
+            // default case
+            azi1 = Math.atan2(p.x, p.y);
+            s12 = Math.sqrt(p.x * p.x + p.y * p.y);
+            vars = (0, $a2bcb5c1026eec87$export$b5a922c94102a306)(this.lat0, this.long0, azi1, s12, this.a, this.f);
+            p.x = vars.lon2;
+            p.y = vars.lat2;
             return p;
         }
     }
 }
 var $0d20bac18942304a$export$e4b2ac9215619f8d = [
-    "Azimuthal_Equidistant",
-    "aeqd"
+    'Azimuthal_Equidistant',
+    'aeqd'
 ];
 var $0d20bac18942304a$export$2e2bcd8739ae039 = {
     init: $0d20bac18942304a$export$2cd8252107eb640b,
@@ -39683,10 +41936,10 @@ var $7sb7x = parcelRequire("7sb7x");
 
 var $7B7Eg = parcelRequire("7B7Eg");
 function $7c472ee478505ffb$export$2cd8252107eb640b() {
-    //double temp;      /* temporary variable    */
+    // double temp;      /* temporary variable    */
     /* Place parameters in static storage for common use
-      -------------------------------------------------*/ this.sin_p14 = Math.sin(this.lat0);
-    this.cos_p14 = Math.cos(this.lat0);
+      ------------------------------------------------- */ this.sin_p14 = Math.sin(this.lat0 || 0);
+    this.cos_p14 = Math.cos(this.lat0 || 0);
 }
 function $7c472ee478505ffb$export$174bb771924e7eb1(p) {
     var sinphi, cosphi; /* sin and cos value        */ 
@@ -39697,7 +41950,7 @@ function $7c472ee478505ffb$export$174bb771924e7eb1(p) {
     var lon = p.x;
     var lat = p.y;
     /* Forward equations
-      -----------------*/ dlon = (0, $dbd4D.default)(lon - this.long0);
+      ----------------- */ dlon = (0, $dbd4D.default)(lon - (this.long0 || 0), this.over);
     sinphi = Math.sin(lat);
     cosphi = Math.cos(lat);
     coslon = Math.cos(dlon);
@@ -39705,7 +41958,7 @@ function $7c472ee478505ffb$export$174bb771924e7eb1(p) {
     ksp = 1;
     if (g > 0 || Math.abs(g) <= (0, $7B7Eg.EPSLN)) {
         x = this.a * ksp * cosphi * Math.sin(dlon);
-        y = this.y0 + this.a * ksp * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon);
+        y = (this.y0 || 0) + this.a * ksp * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon);
     }
     p.x = x;
     p.y = y;
@@ -39717,36 +41970,39 @@ function $7c472ee478505ffb$export$70ae2c07e401031b(p) {
     var sinz, cosz; /* sin of z and cos of z      */ 
     var con;
     var lon, lat;
+    var long0, lat0;
     /* Inverse equations
-      -----------------*/ p.x -= this.x0;
-    p.y -= this.y0;
+      ----------------- */ p.x -= this.x0 || 0;
+    p.y -= this.y0 || 0;
     rh = Math.sqrt(p.x * p.x + p.y * p.y);
     z = (0, $7sb7x.default)(rh / this.a);
     sinz = Math.sin(z);
     cosz = Math.cos(z);
-    lon = this.long0;
+    long0 = this.long0 || 0;
+    lat0 = this.lat0 || 0;
+    lon = long0;
     if (Math.abs(rh) <= (0, $7B7Eg.EPSLN)) {
-        lat = this.lat0;
+        lat = lat0;
         p.x = lon;
         p.y = lat;
         return p;
     }
     lat = (0, $7sb7x.default)(cosz * this.sin_p14 + p.y * sinz * this.cos_p14 / rh);
-    con = Math.abs(this.lat0) - (0, $7B7Eg.HALF_PI);
+    con = Math.abs(lat0) - (0, $7B7Eg.HALF_PI);
     if (Math.abs(con) <= (0, $7B7Eg.EPSLN)) {
-        if (this.lat0 >= 0) lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x, -p.y));
-        else lon = (0, $dbd4D.default)(this.long0 - Math.atan2(-p.x, p.y));
+        if (lat0 >= 0) lon = (0, $dbd4D.default)(long0 + Math.atan2(p.x, -p.y), this.over);
+        else lon = (0, $dbd4D.default)(long0 - Math.atan2(-p.x, p.y), this.over);
         p.x = lon;
         p.y = lat;
         return p;
     }
-    lon = (0, $dbd4D.default)(this.long0 + Math.atan2(p.x * sinz, rh * this.cos_p14 * cosz - p.y * this.sin_p14 * sinz));
+    lon = (0, $dbd4D.default)(long0 + Math.atan2(p.x * sinz, rh * this.cos_p14 * cosz - p.y * this.sin_p14 * sinz), this.over);
     p.x = lon;
     p.y = lat;
     return p;
 }
 var $7c472ee478505ffb$export$e4b2ac9215619f8d = [
-    "ortho"
+    'ortho'
 ];
 var $7c472ee478505ffb$export$2e2bcd8739ae039 = {
     init: $7c472ee478505ffb$export$2cd8252107eb640b,
@@ -39760,7 +42016,15 @@ var $7c472ee478505ffb$export$2e2bcd8739ae039 = {
 // https://github.com/OSGeo/proj.4/blob/master/src/PJ_qsc.c
 
 var $7B7Eg = parcelRequire("7B7Eg");
-/* constants */ var $e2b671b4af6fb0f4$var$FACE_ENUM = {
+/**
+ * @typedef {Object} LocalThis
+ * @property {number} face
+ * @property {number} x0
+ * @property {number} y0
+ * @property {number} es
+ * @property {number} one_minus_f
+ * @property {number} one_minus_f_squared
+ */ /* constants */ var $e2b671b4af6fb0f4$var$FACE_ENUM = {
     FRONT: 1,
     RIGHT: 2,
     BACK: 3,
@@ -39780,7 +42044,7 @@ function $e2b671b4af6fb0f4$export$2cd8252107eb640b() {
     this.lat0 = this.lat0 || 0;
     this.long0 = this.long0 || 0;
     this.lat_ts = this.lat_ts || 0;
-    this.title = this.title || "Quadrilateralized Spherical Cube";
+    this.title = this.title || 'Quadrilateralized Spherical Cube';
     /* Determine the cube face from the center of projection. */ if (this.lat0 >= (0, $7B7Eg.HALF_PI) - (0, $7B7Eg.FORTPI) / 2.0) this.face = $e2b671b4af6fb0f4$var$FACE_ENUM.TOP;
     else if (this.lat0 <= -((0, $7B7Eg.HALF_PI) - (0, $7B7Eg.FORTPI) / 2.0)) this.face = $e2b671b4af6fb0f4$var$FACE_ENUM.BOTTOM;
     else if (Math.abs(this.long0) <= (0, $7B7Eg.FORTPI)) this.face = $e2b671b4af6fb0f4$var$FACE_ENUM.FRONT;
@@ -39813,7 +42077,7 @@ function $e2b671b4af6fb0f4$export$174bb771924e7eb1(p) {
    * This depends on the cube face and the area on it.
    * For the top and bottom face, we can compute theta and phi
    * directly from phi, lam. For the other faces, we must use
-   * unit sphere cartesian coordinates as an intermediate step. */ lon = p.x; //lon = lp.lam;
+   * unit sphere cartesian coordinates as an intermediate step. */ lon = p.x; // lon = lp.lam;
     if (this.face === $e2b671b4af6fb0f4$var$FACE_ENUM.TOP) {
         phi = (0, $7B7Eg.HALF_PI) - lat;
         if (lon >= (0, $7B7Eg.FORTPI) && lon <= (0, $7B7Eg.HALF_PI) + (0, $7B7Eg.FORTPI)) {
@@ -40029,9 +42293,9 @@ function $e2b671b4af6fb0f4$export$70ae2c07e401031b(p) {
     return slon;
 }
 var $e2b671b4af6fb0f4$export$e4b2ac9215619f8d = [
-    "Quadrilateralized Spherical Cube",
-    "Quadrilateralized_Spherical_Cube",
-    "qsc"
+    'Quadrilateralized Spherical Cube',
+    'Quadrilateralized_Spherical_Cube',
+    'qsc'
 ];
 var $e2b671b4af6fb0f4$export$2e2bcd8739ae039 = {
     init: $e2b671b4af6fb0f4$export$2cd8252107eb640b,
@@ -40305,10 +42569,10 @@ function $3e20f333fd7a6b26$export$2cd8252107eb640b() {
     this.y0 = this.y0 || 0;
     this.long0 = this.long0 || 0;
     this.es = 0;
-    this.title = this.title || "Robinson";
+    this.title = this.title || 'Robinson';
 }
 function $3e20f333fd7a6b26$export$174bb771924e7eb1(ll) {
-    var lon = (0, $dbd4D.default)(ll.x - this.long0);
+    var lon = (0, $dbd4D.default)(ll.x - this.long0, this.over);
     var dphi = Math.abs(ll.y);
     var i = Math.floor(dphi * $3e20f333fd7a6b26$var$C1);
     if (i < 0) i = 0;
@@ -40352,12 +42616,12 @@ function $3e20f333fd7a6b26$export$70ae2c07e401031b(xy) {
         ll.y = (5 * i + t) * (0, $7B7Eg.D2R);
         if (xy.y < 0) ll.y = -ll.y;
     }
-    ll.x = (0, $dbd4D.default)(ll.x + this.long0);
+    ll.x = (0, $dbd4D.default)(ll.x + this.long0, this.over);
     return ll;
 }
 var $3e20f333fd7a6b26$export$e4b2ac9215619f8d = [
-    "Robinson",
-    "robin"
+    'Robinson',
+    'robin'
 ];
 var $3e20f333fd7a6b26$export$2e2bcd8739ae039 = {
     init: $3e20f333fd7a6b26$export$2cd8252107eb640b,
@@ -40369,7 +42633,7 @@ var $3e20f333fd7a6b26$export$2e2bcd8739ae039 = {
 
 
 function $502244ea60bce063$export$2cd8252107eb640b() {
-    this.name = "geocent";
+    this.name = 'geocent';
 }
 function $502244ea60bce063$export$174bb771924e7eb1(p) {
     var point = (0, $9492081abc6963cf$export$4a4ae2976f9a808a)(p, this.es, this.a);
@@ -40380,10 +42644,10 @@ function $502244ea60bce063$export$70ae2c07e401031b(p) {
     return point;
 }
 var $502244ea60bce063$export$e4b2ac9215619f8d = [
-    "Geocentric",
-    "geocentric",
-    "geocent",
-    "Geocent"
+    'Geocentric',
+    'geocentric',
+    'geocent',
+    'Geocent'
 ];
 var $502244ea60bce063$export$2e2bcd8739ae039 = {
     init: $502244ea60bce063$export$2cd8252107eb640b,
@@ -40397,7 +42661,25 @@ var $502244ea60bce063$export$2e2bcd8739ae039 = {
 var $7B7Eg = parcelRequire("7B7Eg");
 
 var $9WCjH = parcelRequire("9WCjH");
-var $2047387e2590e962$var$mode = {
+/**
+ * @typedef {Object} LocalThis
+ * @property {number} mode
+ * @property {number} sinph0
+ * @property {number} cosph0
+ * @property {number} pn1
+ * @property {number} h
+ * @property {number} rp
+ * @property {number} p
+ * @property {number} h1
+ * @property {number} pfact
+ * @property {number} es
+ * @property {number} tilt
+ * @property {number} azi
+ * @property {number} cg
+ * @property {number} sg
+ * @property {number} cw
+ * @property {number} sw
+ */ var $2047387e2590e962$var$mode = {
     N_POLE: 0,
     S_POLE: 1,
     EQUIT: 2,
@@ -40429,8 +42711,8 @@ var $2047387e2590e962$var$params = {
 };
 function $2047387e2590e962$export$2cd8252107eb640b() {
     Object.keys($2047387e2590e962$var$params).forEach((function(p) {
-        if (typeof this[p] === "undefined") this[p] = $2047387e2590e962$var$params[p].def;
-        else if ($2047387e2590e962$var$params[p].num && isNaN(this[p])) throw new Error("Invalid parameter value, must be numeric " + p + " = " + this[p]);
+        if (typeof this[p] === 'undefined') this[p] = $2047387e2590e962$var$params[p].def;
+        else if ($2047387e2590e962$var$params[p].num && isNaN(this[p])) throw new Error('Invalid parameter value, must be numeric ' + p + ' = ' + this[p]);
         else if ($2047387e2590e962$var$params[p].num) this[p] = parseFloat(this[p]);
         if ($2047387e2590e962$var$params[p].degrees) this[p] = this[p] * (0, $7B7Eg.D2R);
     }).bind(this));
@@ -40442,7 +42724,7 @@ function $2047387e2590e962$export$2cd8252107eb640b() {
         this.cosph0 = Math.cos(this.lat0);
     }
     this.pn1 = this.h / this.a; // Normalize relative to the Earth's radius
-    if (this.pn1 <= 0 || this.pn1 > 1e10) throw new Error("Invalid height");
+    if (this.pn1 <= 0 || this.pn1 > 1e10) throw new Error('Invalid height');
     this.p = 1 + this.pn1;
     this.rp = 1 / this.p;
     this.h1 = 1 / this.pn1;
@@ -40491,7 +42773,7 @@ function $2047387e2590e962$export$174bb771924e7eb1(p) {
             y *= cosphi * coslam;
             break;
     }
-    // Tilt 
+    // Tilt
     var yt, ba;
     yt = y * this.cg + x * this.sg;
     ba = 1 / (yt * this.sw * this.h1 + this.cw);
@@ -40550,8 +42832,8 @@ function $2047387e2590e962$export$70ae2c07e401031b(p) {
     return p;
 }
 var $2047387e2590e962$export$e4b2ac9215619f8d = [
-    "Tilted_Perspective",
-    "tpers"
+    'Tilted_Perspective',
+    'tpers'
 ];
 var $2047387e2590e962$export$2e2bcd8739ae039 = {
     init: $2047387e2590e962$export$2cd8252107eb640b,
@@ -40564,7 +42846,7 @@ var $2047387e2590e962$export$2e2bcd8739ae039 = {
 
 var $9WCjH = parcelRequire("9WCjH");
 function $ea6c4c28823cbc89$export$2cd8252107eb640b() {
-    this.flip_axis = this.sweep === "x" ? 1 : 0;
+    this.flip_axis = this.sweep === 'x' ? 1 : 0;
     this.h = Number(this.h);
     this.radius_g_1 = this.h / this.a;
     if (this.radius_g_1 <= 0 || this.radius_g_1 > 1e10) throw new Error();
@@ -40576,21 +42858,21 @@ function $ea6c4c28823cbc89$export$2cd8252107eb640b() {
         this.radius_p = Math.sqrt(one_es);
         this.radius_p2 = one_es;
         this.radius_p_inv2 = rone_es;
-        this.shape = "ellipse"; // Use as a condition in the forward and inverse functions.
+        this.shape = 'ellipse'; // Use as a condition in the forward and inverse functions.
     } else {
         this.radius_p = 1.0;
         this.radius_p2 = 1.0;
         this.radius_p_inv2 = 1.0;
-        this.shape = "sphere"; // Use as a condition in the forward and inverse functions.
+        this.shape = 'sphere'; // Use as a condition in the forward and inverse functions.
     }
-    if (!this.title) this.title = "Geostationary Satellite View";
+    if (!this.title) this.title = 'Geostationary Satellite View';
 }
 function $ea6c4c28823cbc89$var$forward(p) {
     var lon = p.x;
     var lat = p.y;
     var tmp, v_x, v_y, v_z;
     lon = lon - this.long0;
-    if (this.shape === "ellipse") {
+    if (this.shape === 'ellipse') {
         lat = Math.atan(this.radius_p2 * Math.tan(lat));
         var r = this.radius_p / (0, $9WCjH.default)(this.radius_p * Math.cos(lat), Math.sin(lat));
         v_x = r * Math.cos(lon) * Math.cos(lat);
@@ -40609,7 +42891,7 @@ function $ea6c4c28823cbc89$var$forward(p) {
             p.x = this.radius_g_1 * Math.atan(v_y / tmp);
             p.y = this.radius_g_1 * Math.atan(v_z / (0, $9WCjH.default)(v_y, tmp));
         }
-    } else if (this.shape === "sphere") {
+    } else if (this.shape === 'sphere') {
         tmp = Math.cos(lat);
         v_x = Math.cos(lon) * tmp;
         v_y = Math.sin(lon) * tmp;
@@ -40634,7 +42916,7 @@ function $ea6c4c28823cbc89$var$inverse(p) {
     var a, b, det, k;
     p.x = p.x / this.a;
     p.y = p.y / this.a;
-    if (this.shape === "ellipse") {
+    if (this.shape === 'ellipse') {
         if (this.flip_axis) {
             v_z = Math.tan(p.y / this.radius_g_1);
             v_y = Math.tan(p.x / this.radius_g_1) * (0, $9WCjH.default)(1.0, v_z);
@@ -40658,7 +42940,7 @@ function $ea6c4c28823cbc89$var$inverse(p) {
         p.x = Math.atan2(v_y, v_x);
         p.y = Math.atan(v_z * Math.cos(p.x) / v_x);
         p.y = Math.atan(this.radius_p_inv2 * Math.tan(p.y));
-    } else if (this.shape === "sphere") {
+    } else if (this.shape === 'sphere') {
         if (this.flip_axis) {
             v_z = Math.tan(p.y / this.radius_g_1);
             v_y = Math.tan(p.x / this.radius_g_1) * Math.sqrt(1.0 + v_z * v_z);
@@ -40685,9 +42967,9 @@ function $ea6c4c28823cbc89$var$inverse(p) {
     return p;
 }
 var $ea6c4c28823cbc89$export$e4b2ac9215619f8d = [
-    "Geostationary Satellite View",
-    "Geostationary_Satellite",
-    "geos"
+    'Geostationary Satellite View',
+    'Geostationary_Satellite',
+    'geos'
 ];
 var $ea6c4c28823cbc89$export$2e2bcd8739ae039 = {
     init: $ea6c4c28823cbc89$export$2cd8252107eb640b,
@@ -40730,9 +43012,11 @@ var $78b9c9768fb52350$var$A1 = 1.340264, $78b9c9768fb52350$var$A2 = -0.081106, $
 function $78b9c9768fb52350$export$2cd8252107eb640b() {
     this.es = 0;
     this.long0 = this.long0 !== undefined ? this.long0 : 0;
+    this.x0 = this.x0 !== undefined ? this.x0 : 0;
+    this.y0 = this.y0 !== undefined ? this.y0 : 0;
 }
 function $78b9c9768fb52350$export$174bb771924e7eb1(p) {
-    var lam = (0, $dbd4D.default)(p.x - this.long0);
+    var lam = (0, $dbd4D.default)(p.x - this.long0, this.over);
     var phi = p.y;
     var paramLat = Math.asin($78b9c9768fb52350$var$M * Math.sin(phi)), paramLatSq = paramLat * paramLat, paramLatPow6 = paramLatSq * paramLatSq * paramLatSq;
     p.x = lam * Math.cos(paramLat) / ($78b9c9768fb52350$var$M * ($78b9c9768fb52350$var$A1 + 3 * $78b9c9768fb52350$var$A2 * paramLatSq + paramLatPow6 * (7 * $78b9c9768fb52350$var$A3 + 9 * $78b9c9768fb52350$var$A4 * paramLatSq)));
@@ -40757,13 +43041,13 @@ function $78b9c9768fb52350$export$70ae2c07e401031b(p) {
     paramLatPow6 = paramLatSq * paramLatSq * paramLatSq;
     p.x = $78b9c9768fb52350$var$M * p.x * ($78b9c9768fb52350$var$A1 + 3 * $78b9c9768fb52350$var$A2 * paramLatSq + paramLatPow6 * (7 * $78b9c9768fb52350$var$A3 + 9 * $78b9c9768fb52350$var$A4 * paramLatSq)) / Math.cos(paramLat);
     p.y = Math.asin(Math.sin(paramLat) / $78b9c9768fb52350$var$M);
-    p.x = (0, $dbd4D.default)(p.x + this.long0);
+    p.x = (0, $dbd4D.default)(p.x + this.long0, this.over);
     return p;
 }
 var $78b9c9768fb52350$export$e4b2ac9215619f8d = [
-    "eqearth",
-    "Equal Earth",
-    "Equal_Earth"
+    'eqearth',
+    'Equal Earth',
+    'Equal_Earth'
 ];
 var $78b9c9768fb52350$export$2e2bcd8739ae039 = {
     init: $78b9c9768fb52350$export$2cd8252107eb640b,
@@ -40786,7 +43070,15 @@ var $jZzoQ = parcelRequire("jZzoQ");
 var $doDgE = parcelRequire("doDgE");
 
 var $7B7Eg = parcelRequire("7B7Eg");
-var $50fdeedd8f35a993$var$EPS10 = 1e-10;
+/**
+ * @typedef {Object} LocalThis
+ * @property {number} phi1
+ * @property {number} cphi1
+ * @property {number} es
+ * @property {Array<number>} en
+ * @property {number} m1
+ * @property {number} am1
+ */ var $50fdeedd8f35a993$var$EPS10 = 1e-10;
 function $50fdeedd8f35a993$export$2cd8252107eb640b() {
     var c;
     this.phi1 = this.lat1;
@@ -40805,7 +43097,7 @@ function $50fdeedd8f35a993$export$2cd8252107eb640b() {
     }
 }
 function $50fdeedd8f35a993$var$e_fwd(p) {
-    var lam = (0, $dbd4D.default)(p.x - (this.long0 || 0));
+    var lam = (0, $dbd4D.default)(p.x - (this.long0 || 0), this.over);
     var phi = p.y;
     var rh, E, c;
     rh = this.am1 + this.m1 - (0, $doDgE.default)(phi, E = Math.sin(phi), c = Math.cos(phi), this.en);
@@ -40827,12 +43119,12 @@ function $50fdeedd8f35a993$var$e_inv(p) {
         lam = rh * Math.atan2(p.x, p.y) * Math.sqrt(1 - this.es * s * s) / Math.cos(phi);
     } else if (Math.abs(s - (0, $7B7Eg.HALF_PI)) <= $50fdeedd8f35a993$var$EPS10) lam = 0;
     else throw new Error();
-    p.x = (0, $dbd4D.default)(lam + (this.long0 || 0));
+    p.x = (0, $dbd4D.default)(lam + (this.long0 || 0), this.over);
     p.y = (0, $568a11f3be43b3f5$export$2e2bcd8739ae039)(phi);
     return p;
 }
 function $50fdeedd8f35a993$var$s_fwd(p) {
-    var lam = (0, $dbd4D.default)(p.x - (this.long0 || 0));
+    var lam = (0, $dbd4D.default)(p.x - (this.long0 || 0), this.over);
     var phi = p.y;
     var E, rh;
     rh = this.cphi1 + this.phi1 - phi;
@@ -40853,17 +43145,281 @@ function $50fdeedd8f35a993$var$s_inv(p) {
     if (Math.abs(phi) > (0, $7B7Eg.HALF_PI)) throw new Error();
     if (Math.abs(Math.abs(phi) - (0, $7B7Eg.HALF_PI)) <= $50fdeedd8f35a993$var$EPS10) lam = 0;
     else lam = rh * Math.atan2(p.x, p.y) / Math.cos(phi);
-    p.x = (0, $dbd4D.default)(lam + (this.long0 || 0));
+    p.x = (0, $dbd4D.default)(lam + (this.long0 || 0), this.over);
     p.y = (0, $568a11f3be43b3f5$export$2e2bcd8739ae039)(phi);
     return p;
 }
 var $50fdeedd8f35a993$export$e4b2ac9215619f8d = [
-    "bonne",
-    "Bonne (Werner lat_1=90)"
+    'bonne',
+    'Bonne (Werner lat_1=90)'
 ];
 var $50fdeedd8f35a993$export$2e2bcd8739ae039 = {
     init: $50fdeedd8f35a993$export$2cd8252107eb640b,
     names: $50fdeedd8f35a993$export$e4b2ac9215619f8d
+};
+
+
+
+var $dbd4D = parcelRequire("dbd4D");
+
+var $7B7Eg = parcelRequire("7B7Eg");
+
+
+/**
+    Original projection implementation:
+        https://github.com/OSGeo/PROJ/blob/46c47e9adf6376ae06afabe5d24a0016a05ced82/src/projections/ob_tran.cpp
+
+    Documentation:
+        https://proj.org/operations/projections/ob_tran.html
+
+    References/Formulas:
+        https://pubs.usgs.gov/pp/1395/report.pdf
+
+    Examples:
+        +proj=ob_tran +o_proj=moll +o_lat_p=45 +o_lon_p=-90
+        +proj=ob_tran +o_proj=moll +o_lat_p=45 +o_lon_p=-90 +lon_0=60
+        +proj=ob_tran +o_proj=moll +o_lat_p=45 +o_lon_p=-90 +lon_0=-90
+*/ const $43cca5c1c3c70650$var$projectionType = {
+    OBLIQUE: {
+        forward: $43cca5c1c3c70650$var$forwardOblique,
+        inverse: $43cca5c1c3c70650$var$inverseOblique
+    },
+    TRANSVERSE: {
+        forward: $43cca5c1c3c70650$var$forwardTransverse,
+        inverse: $43cca5c1c3c70650$var$inverseTransverse
+    }
+};
+/**
+ * @typedef {Object} LocalThis
+ * @property {number} lamp
+ * @property {number} cphip
+ * @property {number} sphip
+ * @property {Object} projectionType
+ * @property {string | undefined} o_proj
+ * @property {string | undefined} o_lon_p
+ * @property {string | undefined} o_lat_p
+ * @property {string | undefined} o_alpha
+ * @property {string | undefined} o_lon_c
+ * @property {string | undefined} o_lat_c
+ * @property {string | undefined} o_lon_1
+ * @property {string | undefined} o_lat_1
+ * @property {string | undefined} o_lon_2
+ * @property {string | undefined} o_lat_2
+ * @property {number | undefined} oLongP
+ * @property {number | undefined} oLatP
+ * @property {number | undefined} oAlpha
+ * @property {number | undefined} oLongC
+ * @property {number | undefined} oLatC
+ * @property {number | undefined} oLong1
+ * @property {number | undefined} oLat1
+ * @property {number | undefined} oLong2
+ * @property {number | undefined} oLat2
+ * @property {boolean} isIdentity
+ * @property {import('..').Converter} obliqueProjection
+ *
+ */ /**
+ *    Parameters can be from the following sets:
+ *       New pole --> o_lat_p, o_lon_p
+ *       Rotate about point --> o_alpha, o_lon_c, o_lat_c
+ *       New equator points --> lon_1, lat_1, lon_2, lat_2
+ *
+ *    Per the original source code, the parameter sets are
+ *    checked in the order of the object below.
+ */ const $43cca5c1c3c70650$var$paramSets = {
+    ROTATE: {
+        o_alpha: 'oAlpha',
+        o_lon_c: 'oLongC',
+        o_lat_c: 'oLatC'
+    },
+    NEW_POLE: {
+        o_lat_p: 'oLatP',
+        o_lon_p: 'oLongP'
+    },
+    NEW_EQUATOR: {
+        o_lon_1: 'oLong1',
+        o_lat_1: 'oLat1',
+        o_lon_2: 'oLong2',
+        o_lat_2: 'oLat2'
+    }
+};
+function $43cca5c1c3c70650$export$2cd8252107eb640b() {
+    this.x0 = this.x0 || 0;
+    this.y0 = this.y0 || 0;
+    this.long0 = this.long0 || 0;
+    this.title = this.title || 'General Oblique Transformation';
+    this.isIdentity = (0, $fa7a8d9fafd312a9$export$e4b2ac9215619f8d).includes(this.o_proj);
+    /** Verify required parameters exist */ if (!this.o_proj) throw new Error('Missing parameter: o_proj');
+    if (this.o_proj === `ob_tran`) throw new Error('Invalid value for o_proj: ' + this.o_proj);
+    const newProjStr = this.projStr.replace('+proj=ob_tran', '').replace('+o_proj=', '+proj=').trim();
+    /** @type {import('../defs.js').ProjectionDefinition} */ const oProj = (0, $673c8104677fb23d$export$2e2bcd8739ae039)(newProjStr);
+    if (!oProj) throw new Error('Invalid parameter: o_proj. Unknown projection ' + this.o_proj);
+    oProj.long0 = 0; // we handle long0 before/after forward/inverse
+    this.obliqueProjection = oProj;
+    let matchedSet;
+    const paramSetsKeys = Object.keys($43cca5c1c3c70650$var$paramSets);
+    /**
+   * parse strings, convert to radians, throw on NaN
+   * @param {string} name
+   * @returns {number | undefined}
+   */ const parseParam = (name)=>{
+        if (typeof this[name] === `undefined`) return undefined;
+        const val = parseFloat(this[name]) * (0, $7B7Eg.D2R);
+        if (isNaN(val)) throw new Error('Invalid value for ' + name + ': ' + this[name]);
+        return val;
+    };
+    for(let i = 0; i < paramSetsKeys.length; i++){
+        const setKey = paramSetsKeys[i];
+        const set = $43cca5c1c3c70650$var$paramSets[setKey];
+        const params = Object.entries(set);
+        const setHasParams = params.some(([p])=>typeof this[p] !== 'undefined');
+        if (!setHasParams) continue;
+        matchedSet = set;
+        for(let ii = 0; ii < params.length; ii++){
+            const [inputParam, param] = params[ii];
+            const val = parseParam(inputParam);
+            if (typeof val === 'undefined') throw new Error('Missing parameter: ' + inputParam + '.');
+            this[param] = val;
+        }
+        break;
+    }
+    if (!matchedSet) throw new Error('No valid parameters provided for ob_tran projection.');
+    const { lamp: lamp, phip: phip } = $43cca5c1c3c70650$var$createRotation(this, matchedSet);
+    this.lamp = lamp;
+    if (Math.abs(phip) > (0, $7B7Eg.EPSLN)) {
+        this.cphip = Math.cos(phip);
+        this.sphip = Math.sin(phip);
+        this.projectionType = $43cca5c1c3c70650$var$projectionType.OBLIQUE;
+    } else this.projectionType = $43cca5c1c3c70650$var$projectionType.TRANSVERSE;
+}
+function $43cca5c1c3c70650$export$174bb771924e7eb1(p) {
+    return this.projectionType.forward(this, p);
+}
+function $43cca5c1c3c70650$export$70ae2c07e401031b(p) {
+    return this.projectionType.inverse(this, p);
+}
+/**
+ * @param {import('../defs.js').ProjectionDefinition & LocalThis} params - Initialized projection definition
+ * @param {Object} how - Transformation method
+ * @returns {{phip: number, lamp: number}}
+ */ function $43cca5c1c3c70650$var$createRotation(params, how) {
+    let phip, lamp;
+    if (how === $43cca5c1c3c70650$var$paramSets.ROTATE) {
+        let lamc = params.oLongC;
+        let phic = params.oLatC;
+        let alpha = params.oAlpha;
+        if (Math.abs(Math.abs(phic) - (0, $7B7Eg.HALF_PI)) <= (0, $7B7Eg.EPSLN)) throw new Error('Invalid value for o_lat_c: ' + params.o_lat_c + " should be < 90\xb0");
+        lamp = lamc + Math.atan2(-1 * Math.cos(alpha), -1 * Math.sin(alpha) * Math.sin(phic));
+        phip = Math.asin(Math.cos(phic) * Math.sin(alpha));
+    } else if (how === $43cca5c1c3c70650$var$paramSets.NEW_POLE) {
+        lamp = params.oLongP;
+        phip = params.oLatP;
+    } else {
+        let lam1 = params.oLong1;
+        let phi1 = params.oLat1;
+        let lam2 = params.oLong2;
+        let phi2 = params.oLat2;
+        let con = Math.abs(phi1);
+        if (Math.abs(phi1) > (0, $7B7Eg.HALF_PI) - (0, $7B7Eg.EPSLN)) throw new Error('Invalid value for o_lat_1: ' + params.o_lat_1 + " should be < 90\xb0");
+        if (Math.abs(phi2) > (0, $7B7Eg.HALF_PI) - (0, $7B7Eg.EPSLN)) throw new Error('Invalid value for o_lat_2: ' + params.o_lat_2 + " should be < 90\xb0");
+        if (Math.abs(phi1 - phi2) < (0, $7B7Eg.EPSLN)) throw new Error('Invalid value for o_lat_1 and o_lat_2: o_lat_1 should be different from o_lat_2');
+        if (con < (0, $7B7Eg.EPSLN)) throw new Error('Invalid value for o_lat_1: o_lat_1 should be different from zero');
+        lamp = Math.atan2(Math.cos(phi1) * Math.sin(phi2) * Math.cos(lam1) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(lam2), Math.sin(phi1) * Math.cos(phi2) * Math.sin(lam2) - Math.cos(phi1) * Math.sin(phi2) * Math.sin(lam1));
+        phip = Math.atan(-1 * Math.cos(lamp - lam1) / Math.tan(phi1));
+    }
+    return {
+        lamp: lamp,
+        phip: phip
+    };
+}
+/**
+ * Forward (lng, lat) to (x, y) for oblique case
+ * @param {import('../defs.js').ProjectionDefinition & LocalThis} self
+ * @param {{x: number, y: number}} lp - lambda, phi
+ */ function $43cca5c1c3c70650$var$forwardOblique(self, lp) {
+    let { x: lam, y: phi } = lp;
+    lam += self.long0;
+    const coslam = Math.cos(lam);
+    const sinphi = Math.sin(phi);
+    const cosphi = Math.cos(phi);
+    lp.x = (0, $dbd4D.default)(Math.atan2(cosphi * Math.sin(lam), self.sphip * cosphi * coslam + self.cphip * sinphi) + self.lamp);
+    lp.y = Math.asin(self.sphip * sinphi - self.cphip * cosphi * coslam);
+    const result = self.obliqueProjection.forward(lp);
+    if (self.isIdentity) {
+        result.x *= (0, $7B7Eg.R2D);
+        result.y *= (0, $7B7Eg.R2D);
+    }
+    return result;
+}
+/**
+ * Forward (lng, lat) to (x, y) for transverse case
+ * @param {import('../defs.js').ProjectionDefinition & LocalThis} self
+ * @param {{x: number, y: number}} lp - lambda, phi
+ */ function $43cca5c1c3c70650$var$forwardTransverse(self, lp) {
+    let { x: lam, y: phi } = lp;
+    lam += self.long0;
+    const cosphi = Math.cos(phi);
+    const coslam = Math.cos(lam);
+    lp.x = (0, $dbd4D.default)(Math.atan2(cosphi * Math.sin(lam), Math.sin(phi)) + self.lamp);
+    lp.y = Math.asin(-1 * cosphi * coslam);
+    const result = self.obliqueProjection.forward(lp);
+    if (self.isIdentity) {
+        result.x *= (0, $7B7Eg.R2D);
+        result.y *= (0, $7B7Eg.R2D);
+    }
+    return result;
+}
+/**
+ * Inverse (x, y) to (lng, lat) for oblique case
+ * @param {import('../defs.js').ProjectionDefinition & LocalThis} self
+ * @param {{x: number, y: number}} lp - lambda, phi
+ */ function $43cca5c1c3c70650$var$inverseOblique(self, lp) {
+    if (self.isIdentity) {
+        lp.x *= (0, $7B7Eg.D2R);
+        lp.y *= (0, $7B7Eg.D2R);
+    }
+    const innerLp = self.obliqueProjection.inverse(lp);
+    let { x: lam, y: phi } = innerLp;
+    if (lam < Number.MAX_VALUE) {
+        lam -= self.lamp;
+        const coslam = Math.cos(lam);
+        const sinphi = Math.sin(phi);
+        const cosphi = Math.cos(phi);
+        lp.x = Math.atan2(cosphi * Math.sin(lam), self.sphip * cosphi * coslam - self.cphip * sinphi);
+        lp.y = Math.asin(self.sphip * sinphi + self.cphip * cosphi * coslam);
+    }
+    lp.x = (0, $dbd4D.default)(lp.x + self.long0);
+    return lp;
+}
+/**
+ * Inverse (x, y) to (lng, lat) for transverse case
+ * @param {import('../defs.js').ProjectionDefinition & LocalThis} self
+ * @param {{x: number, y: number}} lp - lambda, phi
+ */ function $43cca5c1c3c70650$var$inverseTransverse(self, lp) {
+    if (self.isIdentity) {
+        lp.x *= (0, $7B7Eg.D2R);
+        lp.y *= (0, $7B7Eg.D2R);
+    }
+    const innerLp = self.obliqueProjection.inverse(lp);
+    let { x: lam, y: phi } = innerLp;
+    if (lam < Number.MAX_VALUE) {
+        const cosphi = Math.cos(phi);
+        lam -= self.lamp;
+        lp.x = Math.atan2(cosphi * Math.sin(lam), -1 * Math.sin(phi));
+        lp.y = Math.asin(cosphi * Math.cos(lam));
+    }
+    lp.x = (0, $dbd4D.default)(lp.x + self.long0);
+    return lp;
+}
+var $43cca5c1c3c70650$export$e4b2ac9215619f8d = [
+    'General Oblique Transformation',
+    'General_Oblique_Transformation',
+    'ob_tran'
+];
+var $43cca5c1c3c70650$export$2e2bcd8739ae039 = {
+    init: $43cca5c1c3c70650$export$2cd8252107eb640b,
+    forward: $43cca5c1c3c70650$export$174bb771924e7eb1,
+    inverse: $43cca5c1c3c70650$export$70ae2c07e401031b,
+    names: $43cca5c1c3c70650$export$e4b2ac9215619f8d
 };
 
 
@@ -40872,7 +43428,7 @@ function $481b868241c1e8ef$export$2e2bcd8739ae039(proj4) {
     proj4.Proj.projections.add((0, $5k61a.default));
     proj4.Proj.projections.add((0, $f909ef571a9af96e$export$2e2bcd8739ae039));
     proj4.Proj.projections.add((0, $d6f46490cf42e2dd$export$2e2bcd8739ae039));
-    proj4.Proj.projections.add((0, $2nJNQ.default));
+    proj4.Proj.projections.add((0, $1bc14248ab97445a$export$2e2bcd8739ae039));
     proj4.Proj.projections.add((0, $3911b393258a5f42$export$2e2bcd8739ae039));
     proj4.Proj.projections.add((0, $fd3fdaaafb1f7d4e$export$2e2bcd8739ae039));
     proj4.Proj.projections.add((0, $cb6e788a2c3f7915$export$2e2bcd8739ae039));
@@ -40899,21 +43455,38 @@ function $481b868241c1e8ef$export$2e2bcd8739ae039(proj4) {
     proj4.Proj.projections.add((0, $ea6c4c28823cbc89$export$2e2bcd8739ae039));
     proj4.Proj.projections.add((0, $78b9c9768fb52350$export$2e2bcd8739ae039));
     proj4.Proj.projections.add((0, $50fdeedd8f35a993$export$2e2bcd8739ae039));
+    proj4.Proj.projections.add((0, $43cca5c1c3c70650$export$2e2bcd8739ae039));
 }
 
 
-(0, $afb9f31c9f432b0c$export$2e2bcd8739ae039).defaultDatum = "WGS84"; //default datum
-(0, $afb9f31c9f432b0c$export$2e2bcd8739ae039).Proj = (0, $673c8104677fb23d$export$2e2bcd8739ae039);
-(0, $afb9f31c9f432b0c$export$2e2bcd8739ae039).WGS84 = new (0, $afb9f31c9f432b0c$export$2e2bcd8739ae039).Proj("WGS84");
-(0, $afb9f31c9f432b0c$export$2e2bcd8739ae039).Point = (0, $ef4e27688b0ecb61$export$2e2bcd8739ae039);
-(0, $afb9f31c9f432b0c$export$2e2bcd8739ae039).toPoint = (0, $75c20f164bd887af$export$2e2bcd8739ae039);
-(0, $afb9f31c9f432b0c$export$2e2bcd8739ae039).defs = (0, $426e87aa95b0b211$export$2e2bcd8739ae039);
-(0, $afb9f31c9f432b0c$export$2e2bcd8739ae039).nadgrid = (0, $11c5d1275fd03d1e$export$2e2bcd8739ae039);
-(0, $afb9f31c9f432b0c$export$2e2bcd8739ae039).transform = (0, $b56b1bf61c7cfac7$export$2e2bcd8739ae039);
-(0, $afb9f31c9f432b0c$export$2e2bcd8739ae039).mgrs = (0, $7e782048f8c9ac26$export$2e2bcd8739ae039);
-(0, $afb9f31c9f432b0c$export$2e2bcd8739ae039).version = "__VERSION__";
-(0, $481b868241c1e8ef$export$2e2bcd8739ae039)((0, $afb9f31c9f432b0c$export$2e2bcd8739ae039));
-var $95be21a9180ad848$export$2e2bcd8739ae039 = (0, $afb9f31c9f432b0c$export$2e2bcd8739ae039);
+/**
+ * @typedef {Object} Mgrs
+ * @property {(lonlat: [number, number]) => string} forward
+ * @property {(mgrsString: string) => [number, number, number, number]} inverse
+ * @property {(mgrsString: string) => [number, number]} toPoint
+ */ /**
+ * @typedef {import('./defs').ProjectionDefinition} ProjectionDefinition
+ * @typedef {import('./core').TemplateCoordinates} TemplateCoordinates
+ * @typedef {import('./core').InterfaceCoordinates} InterfaceCoordinates
+ * @typedef {import('./core').Converter} Converter
+ * @typedef {import('./Proj').DatumDefinition} DatumDefinition
+ */ /**
+ * @template {import('./core').TemplateCoordinates} T
+ * @type {core<T> & {defaultDatum: string, Proj: typeof Proj, WGS84: Proj, Point: typeof Point, toPoint: typeof common, defs: typeof defs, nadgrid: typeof nadgrid, transform: typeof transform, mgrs: Mgrs, version: string}}
+ */ const $95be21a9180ad848$var$proj4 = Object.assign((0, $afb9f31c9f432b0c$export$2e2bcd8739ae039), {
+    defaultDatum: 'WGS84',
+    Proj: $673c8104677fb23d$export$2e2bcd8739ae039,
+    WGS84: new (0, $673c8104677fb23d$export$2e2bcd8739ae039)('WGS84'),
+    Point: $ef4e27688b0ecb61$export$2e2bcd8739ae039,
+    toPoint: (0, $75c20f164bd887af$export$2e2bcd8739ae039),
+    defs: $426e87aa95b0b211$export$2e2bcd8739ae039,
+    nadgrid: $11c5d1275fd03d1e$export$2e2bcd8739ae039,
+    transform: $b56b1bf61c7cfac7$export$2e2bcd8739ae039,
+    mgrs: $7e782048f8c9ac26$export$2e2bcd8739ae039,
+    version: '__VERSION__'
+});
+(0, $481b868241c1e8ef$export$2e2bcd8739ae039)($95be21a9180ad848$var$proj4);
+var $95be21a9180ad848$export$2e2bcd8739ae039 = $95be21a9180ad848$var$proj4;
 
 
 const $b251515a8a352057$var$data = {
@@ -42203,8 +44776,8 @@ const $b251515a8a352057$var$data = {
         ]
     }
 };
-const $b251515a8a352057$export$71fe30d513ffc90b = $b251515a8a352057$var$partial("turbo");
-const $b251515a8a352057$export$37e229ac698df558 = $b251515a8a352057$var$partial("turbo_r");
+const $b251515a8a352057$export$71fe30d513ffc90b = $b251515a8a352057$var$partial('turbo');
+const $b251515a8a352057$export$37e229ac698df558 = $b251515a8a352057$var$partial('turbo_r');
 /*
 Define auxiliary functions for evaluating colormaps
  */ function $b251515a8a352057$var$evaluate_cmap(x, name, reverse) {
@@ -42215,14 +44788,14 @@ Define auxiliary functions for evaluating colormaps
      * @reverse {boolean} reverse - Whether or not to reverse the colormap.
      * @return {list} - A 3-tuple (R, G, B) containing the color assigned to `x`.
      */ // Ensure that the value of `x` is valid (i.e., 0 <= x <= 1)
-    if (!(0 <= x <= 1)) alert("Illegal value for x! Must be in [0, 1].");
+    if (!(0 <= x <= 1)) alert('Illegal value for x! Must be in [0, 1].');
     // Ensure that `name` is a valid colormap
-    if (!(name in $b251515a8a352057$var$data)) alert("Colormap " + name + "does not exist!");
+    if (!(name in $b251515a8a352057$var$data)) alert('Colormap ' + name + 'does not exist!');
     // We can get the reverse colormap by evaluating colormap(1-x)
     if (reverse === true) x = 1 - x;
     // Get the colors and whether or not we need to interpolate
-    let colors = $b251515a8a352057$var$data[name]["colors"];
-    let interpolate = $b251515a8a352057$var$data[name]["interpolate"];
+    let colors = $b251515a8a352057$var$data[name]['colors'];
+    let interpolate = $b251515a8a352057$var$data[name]['interpolate'];
     if (interpolate === true) return $b251515a8a352057$var$interpolated(x, colors);
     else return $b251515a8a352057$var$qualitative(x, colors);
 }
@@ -42251,7 +44824,7 @@ function $b251515a8a352057$var$qualitative(x, colors) {
     ];
 }
 function $b251515a8a352057$var$partial(name) {
-    if (name.endsWith("_r")) return function(x) {
+    if (name.endsWith('_r')) return function(x) {
         return $b251515a8a352057$var$evaluate_cmap(x, name.substring(0, name.length - 2), true);
     };
     else return function(x) {
@@ -42260,17 +44833,17 @@ function $b251515a8a352057$var$partial(name) {
 }
 
 
-const $ab189090502049a5$var$gridProjection = "DE1200";
-const $ab189090502049a5$var$gridProjStr = "+proj=stere +lat_0=90 +lat_ts=60 +lon_0=10 +a=6378137 +b=6356752.3142451802 +no_defs +x_0=543196.83521776402 +y_0=3622588.8619310018";
+const $ab189090502049a5$var$gridProjection = 'DE1200';
+const $ab189090502049a5$var$gridProjStr = '+proj=stere +lat_0=90 +lat_ts=60 +lon_0=10 +a=6378137 +b=6356752.3142451802 +no_defs +x_0=543196.83521776402 +y_0=3622588.8619310018';
 class $ab189090502049a5$var$FrameControl extends (0, $073a42a03e127bc6$export$2e2bcd8739ae039) {
     constructor(layer, frames){
-        const slider = document.createElement("input");
-        slider.type = "range";
-        const label = document.createElement("h3");
-        const toggle = document.createElement("img");
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        const label = document.createElement('h3');
+        const toggle = document.createElement('img');
         toggle.src = new URL("pause.svg", import.meta.url).toString();
-        const element = document.createElement("div");
-        element.className = "frame-selector ol-unselectable ol-control";
+        const element = document.createElement('div');
+        element.className = 'frame-selector ol-unselectable ol-control';
         element.appendChild(label);
         element.appendChild(toggle);
         element.appendChild(slider);
@@ -42283,26 +44856,26 @@ class $ab189090502049a5$var$FrameControl extends (0, $073a42a03e127bc6$export$2e
         this.label = label;
         this.toggle = toggle;
         this.autoplayIntervalId = null;
-        slider.addEventListener("input", ()=>{
+        slider.addEventListener('input', ()=>{
             this.stopAutoplay();
             this.setFrame();
         }, false);
-        toggle.addEventListener("click", ()=>this.toggleAutoplay(), false);
+        toggle.addEventListener('click', ()=>this.toggleAutoplay(), false);
     }
     setFrames(frames) {
         this.frames = frames;
-        this.slider.min = "0";
+        this.slider.min = '0';
         this.slider.max = (frames.length - 1).toString();
-        this.slider.value = "0";
+        this.slider.value = '0';
         this.setFrame();
     }
     setFrame(idx) {
-        idx = typeof idx !== "undefined" ? idx : this.slider.value;
+        idx = typeof idx !== 'undefined' ? idx : this.slider.value;
         this.label.textContent = this.frames[idx].label;
         this.layer.setSource(this.frames[idx].source);
     }
     nextFrame() {
-        if (this.slider.value == this.slider.max) this.slider.value = "0";
+        if (this.slider.value == this.slider.max) this.slider.value = '0';
         else this.slider.stepUp();
         this.setFrame();
     }
@@ -42342,8 +44915,8 @@ function $ab189090502049a5$var$precipitation_to_rgba(precip) {
 }
 function $ab189090502049a5$var$makeSource(record, width, height, projection, extent) {
     // Create an OpenLayers source with PNG data URL from a given radar record
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = true; // Enable image smoothing
     canvas.width = width;
     canvas.height = height;
@@ -42372,7 +44945,7 @@ function $ab189090502049a5$var$makeSource(record, width, height, projection, ext
 class $ab189090502049a5$export$b531eec335465587 extends (0, $19fe8e3abedf4df0$export$c7c07a37856565d) {
     connectedCallback() {
         super.connectedCallback();
-        console.log("connected", this.lat, this.lon, this.zoom);
+        console.log('connected', this.lat, this.lon, this.zoom);
         this._loadMap();
     /*
         this._attachObserver();*/ }
@@ -42390,10 +44963,10 @@ class $ab189090502049a5$export$b531eec335465587 extends (0, $19fe8e3abedf4df0$ex
         }*/ }
     async _loadMap() {
         if (this._loading) return;
-        let map = this.shadowRoot.getElementById("map");
+        let map = this.shadowRoot.getElementById('map');
         if (!map) {
-            map = document.createElement("div");
-            map.id = "map";
+            map = document.createElement('div');
+            map.id = 'map';
             this.shadowRoot.append(map);
         }
         this._loading = true;
@@ -42406,7 +44979,22 @@ class $ab189090502049a5$export$b531eec335465587 extends (0, $19fe8e3abedf4df0$ex
                 target: map,
                 layers: [
                     new (0, $da4918b2f77ef6de$export$2e2bcd8739ae039)({
-                        source: new (0, $25838c5bce8055ee$export$2e2bcd8739ae039)()
+                        source: new (0, $25838c5bce8055ee$export$2e2bcd8739ae039)({
+                            crossOrigin: 'anonymous',
+                            tileLoadFunction: (tile, src)=>{
+                                fetch(src, {
+                                    referrer: location.href,
+                                    referrerPolicy: 'origin',
+                                    mode: 'cors'
+                                }).then((r)=>r.blob()).then((blob)=>{
+                                    const url = URL.createObjectURL(blob);
+                                    const img = tile.getImage();
+                                    img.onload = ()=>URL.revokeObjectURL(url);
+                                    img.onerror = ()=>URL.revokeObjectURL(url);
+                                    img.src = url;
+                                }).catch(()=>tile.setState(3));
+                            }
+                        })
                     }),
                     imageLayer
                 ],
@@ -42435,8 +45023,8 @@ class $ab189090502049a5$export$b531eec335465587 extends (0, $19fe8e3abedf4df0$ex
                         0.5,
                         46
                     ],
-                    anchorXUnits: "fraction",
-                    anchorYUnits: "pixels",
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'pixels',
                     src: new URL("home.png", import.meta.url).toString(),
                     scale: 0.1
                 })
@@ -42464,10 +45052,10 @@ class $ab189090502049a5$export$b531eec335465587 extends (0, $19fe8e3abedf4df0$ex
     update(changedProps) {
         super.update(changedProps);
         if (!this._loaded) return;
-        console.log("update", changedProps);
+        console.log('update', changedProps);
         let autoFitRequired = false;
-        const oldHass = changedProps.get("hass");
-        if (changedProps.has("_loaded") || changedProps.has("latitude") || changedProps.has("longitude")) {
+        const oldHass = changedProps.get('hass');
+        if (changedProps.has('_loaded') || changedProps.has('latitude') || changedProps.has('longitude')) {
             this._draw();
             autoFitRequired = true;
         }
@@ -42541,8 +45129,8 @@ class $ab189090502049a5$export$b531eec335465587 extends (0, $19fe8e3abedf4df0$ex
         const start = new Date();
         const endDate = new Date(start.getTime() + 10800000);
         fetch(`https://api.brightsky.dev/radar?tz=Europe/Berlin&lat=${this.lat}&lon=${this.lon}&distance=100000&date=${start.toISOString()}&last_date=${endDate.toISOString()}`).then((resp)=>resp.json()).then((data)=>{
-            const topLeft = (0, $983289ae1d13cd2a$export$51186ad6e864892a)(data.geometry.coordinates[0], "EPSG:4326", "DE1200");
-            const bottomRight = (0, $983289ae1d13cd2a$export$51186ad6e864892a)(data.geometry.coordinates[2], "EPSG:4326", "DE1200");
+            const topLeft = (0, $983289ae1d13cd2a$export$51186ad6e864892a)(data.geometry.coordinates[0], 'EPSG:4326', 'DE1200');
+            const bottomRight = (0, $983289ae1d13cd2a$export$51186ad6e864892a)(data.geometry.coordinates[2], 'EPSG:4326', 'DE1200');
             const gridExtent = [
                 Math.round(topLeft[0]),
                 Math.round(bottomRight[1]),
@@ -42556,17 +45144,12 @@ class $ab189090502049a5$export$b531eec335465587 extends (0, $19fe8e3abedf4df0$ex
             this.frameControl.setFrames(frames);
             if (first) {
                 this.frameControl.startAutoplay();
-                this.map.getTargetElement().classList.remove("spinner");
+                this.map.getTargetElement().classList.remove('spinner');
             }
         });
     }
     constructor(...args){
-        super(...args);
-        this._loaded = false;
-        this.lat = 0;
-        this.lon = 0;
-        this.zoom = 9;
-        this._loading = false;
+        super(...args), this._loaded = false, this.lat = 0, this.lon = 0, this.zoom = 9, this._loading = false;
     }
 }
 (0, $24c52f343453d62d$export$29e00dfd3077644b)([
@@ -42590,7 +45173,7 @@ class $ab189090502049a5$export$b531eec335465587 extends (0, $19fe8e3abedf4df0$ex
     })
 ], $ab189090502049a5$export$b531eec335465587.prototype, "zoom", void 0);
 $ab189090502049a5$export$b531eec335465587 = (0, $24c52f343453d62d$export$29e00dfd3077644b)([
-    (0, $14742f68afc766d6$export$da64fc29f17f9d0e)("regenradar-card-map")
+    (0, $14742f68afc766d6$export$da64fc29f17f9d0e)('regenradar-card-map')
 ], $ab189090502049a5$export$b531eec335465587);
 
 
